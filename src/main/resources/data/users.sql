@@ -25,7 +25,7 @@ INSERT INTO users VALUES (6, 'Arsenio', 'Matthews', 'semper.pretium.neque@mauris
 INSERT INTO users VALUES (7, 'Jemima', 'Cantu', 'et.risus.quisque@mollis.co.uk', 'j[zaKv*N6_', '2466 Clearland Circle Edmonds G1W', 3);
 INSERT INTO users VALUES (8, 'Carol', 'Arnold', 'dapibus.rutrum@litoratorquent.com', '5{7V{fN&tW', '6871 Thornwood Dr. Sammamish H1Y 2H8', 3);
 INSERT INTO users VALUES (9, 'Jane', 'Forbes', 'janiebaby@adipiscingenimmi.edu', 'z"4eu5z!VF', '9605 Pheasant Circle Gold Bar Montreal 98011',3);
-INSERT INTO users VALUES (10, 'Ursa', 'William', 'malesuada@mauriseu.net', '/GHL6zJ(j\', '7985 Center Street Renton 75201', 3);
+INSERT INTO users VALUES (10, 'Ursa', 'William', 'malesuada@mauriseu.net', '/GHL6zJ(j', '7985 Center Street Renton 75201', 3);
 SELECT pg_catalog.setval('users_id_seq', 10, true);
 
 INSERT INTO user_role VALUES (1, 'admin'), (2, 'employee'), (3, 'customer');
