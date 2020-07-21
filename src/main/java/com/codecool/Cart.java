@@ -5,9 +5,9 @@ import java.util.Map;
 public class Cart {
     //private final Map<Product, User> products;
 
-    public void add(Product product) {
-
-    }
+    //public void add(Product product) {
+    //
+    //}
 
     public int size(){
         return 0;
