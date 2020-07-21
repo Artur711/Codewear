@@ -5,10 +5,15 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     first_name character varying(255) NOT NULL,
     last_name character varying(255) NOT NULL,
-    email character varying(255) NOT NULL,
+    email character varying(255) NOT NULL UNIQUE,
     password character varying(255) NOT NULL,
 	address character varying(255) NOT NULL,
 	user_role integer NOT NULL
+);
+
+CREATE TABLE user_role (
+    id SERIAL PRIMARY KEY,
+	role character varying(255) NOT NULL
 );
 
 INSERT INTO users VALUES (1, 'admin', 'admin', 'admin@codewear.com', 'admin', '1970 Napa Ct. Bothell 98027', 1);
@@ -20,14 +25,8 @@ INSERT INTO users VALUES (6, 'Arsenio', 'Matthews', 'semper.pretium.neque@mauris
 INSERT INTO users VALUES (7, 'Jemima', 'Cantu', 'et.risus.quisque@mollis.co.uk', 'j[zaKv*N6_', '2466 Clearland Circle Edmonds G1W', 3);
 INSERT INTO users VALUES (8, 'Carol', 'Arnold', 'dapibus.rutrum@litoratorquent.com', '5{7V{fN&tW', '6871 Thornwood Dr. Sammamish H1Y 2H8', 3);
 INSERT INTO users VALUES (9, 'Jane', 'Forbes', 'janiebaby@adipiscingenimmi.edu', 'z"4eu5z!VF', '9605 Pheasant Circle Gold Bar Montreal 98011',3);
-INSERT INTO users VALUES (10, 'Ursa', 'William', 'malesuada@mauriseu.net', '/GHL6zJ(j', '7985 Center Street Renton 75201', 3);
+INSERT INTO users VALUES (10, 'Ursa', 'William', 'malesuada@mauriseu.net', '/GHL6zJ(j\', '7985 Center Street Renton 75201', 3);
 SELECT pg_catalog.setval('users_id_seq', 10, true);
-
-
-CREATE TABLE user_role (
-    id SERIAL PRIMARY KEY,
-	role character varying(255) NOT NULL
-);
 
 INSERT INTO user_role VALUES (1, 'admin'), (2, 'employee'), (3, 'customer');
 SELECT pg_catalog.setval('user_role_id_seq', 3, true);
