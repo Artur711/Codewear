@@ -3,7 +3,7 @@ package com.codecool;
 import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 
-public class PostgresSQLConnect {
+public class PostgresSQLDataSource implements SQLDataSource {
 
     public DataSource connect() {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
