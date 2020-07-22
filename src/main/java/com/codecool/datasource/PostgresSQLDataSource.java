@@ -5,9 +5,9 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 
 public class PostgresSQLDataSource implements SQLDataSource {
-    private String databaseName;
-    private String user;
-    private String password;
+    private final String databaseName;
+    private final String user;
+    private final String password;
 
     public PostgresSQLDataSource(String databaseName, String user, String password) {
         this.databaseName = databaseName;
