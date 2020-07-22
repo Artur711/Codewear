@@ -18,8 +18,6 @@ public class MainView {
         int input = scanner.nextInt();
         scanner.nextLine();
         return input;
-
-
     }
 
     public String getStringInput() {
