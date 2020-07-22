@@ -2,9 +2,10 @@ package com.codecool.datasource;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
-import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-public class PostgresSQLDataSource implements SQLDataSource {
+public class PostgresSQLDataSource {
 
     private final PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
@@ -14,7 +15,12 @@ public class PostgresSQLDataSource implements SQLDataSource {
         dataSource.setPassword(password);
     }
 
-    public DataSource connect() {
-        return dataSource;
+    public Connection connect() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println("Error during connecting: " + e.getMessage());
+        }
+        return null;
     }
 }
