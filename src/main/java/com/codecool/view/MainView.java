@@ -20,7 +20,7 @@ public class MainView {
     }
 
     public String getStringInput() {
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public void print(String message) {
