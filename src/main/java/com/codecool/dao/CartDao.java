@@ -1,8 +1,8 @@
 package com.codecool.dao;
 
-import com.codecool.model.Product;
+import com.codecool.model.Cart;
 
 public interface CartDao {
 
-    int addProductToCart(Product product);
+    int addUserCart(Cart cart);
 }
