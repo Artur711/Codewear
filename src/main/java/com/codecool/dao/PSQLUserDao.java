@@ -5,13 +5,14 @@ import com.codecool.enums.Role;
 import com.codecool.model.User;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PSQLUserDAO implements UserDAO {
+public class PSQLUserDao implements UserDao {
 
     SQLDataSource dataSource;
 
-    public PSQLUserDAO(SQLDataSource dataSource) {
+    public PSQLUserDao(SQLDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -32,5 +33,21 @@ public class PSQLUserDAO implements UserDAO {
         }
         return 0;
 
+    }
+
+    @Override
+    public boolean isRegistered(User user) {
+        String sql = "SELECT * FROM users WHERE email = ? and password = ?";
+        try(PreparedStatement st = dataSource.connect().getConnection().prepareStatement(sql)) {
+            st.setString(1, user.getEmail());
+            st.setString(2, user.getPassword());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return false;
     }
 }
