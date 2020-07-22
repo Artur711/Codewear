@@ -68,7 +68,7 @@ public class RootController {
         String[] fields = {"email", "password"};
         String[] answers = new String[fields.length];
         for (int i = 0; i < fields.length; i++) {
-            System.out.printf("Please enter your %s: ", fields[i]);
+            System.out.printf("Enter your %s: ", fields[i]);
             answers[i] = view.getStringInput();
         }
         return new User(answers[0], answers[1]);

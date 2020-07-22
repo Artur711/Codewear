@@ -8,6 +8,7 @@ public class PostgresSQLDataSource implements SQLDataSource {
     private final String databaseName;
     private final String user;
     private final String password;
+    PGSimpleDataSource dataSource = new PGSimpleDataSource();
 
     public PostgresSQLDataSource(String databaseName, String user, String password) {
         this.databaseName = databaseName;
@@ -16,7 +17,6 @@ public class PostgresSQLDataSource implements SQLDataSource {
     }
 
     public DataSource connect() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setDatabaseName(this.databaseName);
         dataSource.setUser(this.user);
         dataSource.setPassword(this.password);
