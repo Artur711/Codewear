@@ -1,6 +1,8 @@
 package com.codecool.controllers;
 
 import com.codecool.datasource.PostgresSQLDataSource;
+import com.codecool.select.SelectDAO;
+import com.codecool.select.SelectPostgres;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +15,8 @@ public class ApplicationController {
 
     public void run() {
         Connection conn = setup();
+//        SelectDAO select = new SelectPostgres(conn);
+//        select.run();
         new RootController(conn).run();
     }
 

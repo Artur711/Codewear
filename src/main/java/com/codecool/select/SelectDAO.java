@@ -4,5 +4,5 @@ public interface SelectDAO {
 
     public void run();
 
-    public String generatSelectQuery();
+    public String generatSelectQuery(String query);
 }

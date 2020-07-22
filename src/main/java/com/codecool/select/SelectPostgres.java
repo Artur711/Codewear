@@ -11,7 +11,6 @@ public class SelectPostgres implements SelectDAO {
     private List<List<Object>> objectList;
     private String command;
     private List<String> optionToSelect = new ArrayList<>();
-    private Boolean isWhereStatement = false;
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
 
     public SelectPostgres(Connection conn) {
@@ -24,20 +23,20 @@ public class SelectPostgres implements SelectDAO {
             getSelect(option);
         }
 
-        command = generatSelectQuery();
+        command = generatSelectQuery("SELECT * FROM products");
         objectList = temporaryMetod(command);
         view.printList(objectList);
     }
 
     @Override
-    public String generatSelectQuery() {
-        String query = "SELECT * FROM products";
+    public String generatSelectQuery(String query) {
+        Boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
         for (int index = 0; index < optionToSelect.size(); index++) {
-            if (!optionToSelect.get(index).equals("All") && !this.isWhereStatement) {
+            if (!optionToSelect.get(index).equals("All") && !isWhereStatement) {
                 sb.append(String.format(" where %s = '%s'", selectOption[index], optionToSelect.get(index)));
-                this.isWhereStatement = true;
+                isWhereStatement = true;
             }
             else if (!optionToSelect.get(index).equals("All")) {
                 sb.append(String.format(" and %s = '%s'", selectOption[index], optionToSelect.get(index)));
@@ -47,7 +46,12 @@ public class SelectPostgres implements SelectDAO {
     }
 
     private void getSelect(String selectBY) {
-        command = String.format("SELECT %s FROM products;", selectBY);
+        if (selectBY.equals("gender")) {
+            command = String.format("SELECT %s FROM products", selectBY);
+        }
+        else {
+            command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY));
+        }
         Boolean isRun = true;
 
         objectList = temporaryMetod(command);
