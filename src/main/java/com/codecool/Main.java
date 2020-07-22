@@ -1,13 +1,11 @@
 package com.codecool;
 
 
-import java.io.IOException;
+import com.codecool.controllers.ApplicationController;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-    //    System.out.println( "Hello World!" );
-        ApplicationController app = new ApplicationController();
-        app.run();
+    public static void main(String[] args) {
+        new ApplicationController().run();
     }
 }

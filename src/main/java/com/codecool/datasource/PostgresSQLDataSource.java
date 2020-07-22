@@ -1,4 +1,4 @@
-package com.codecool;
+package com.codecool.datasource;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
