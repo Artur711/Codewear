@@ -15,12 +15,15 @@ public class MainView {
     }
 
     public int getIntegerInput() {
-        return scanner.nextInt();
+        int input = scanner.nextInt();
+        scanner.nextLine();
+        return input;
+
 
     }
 
     public String getStringInput() {
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public void print(String message) {
@@ -33,7 +36,6 @@ public class MainView {
     }
 
     public void pressEnterToContinue() {
-        scanner.nextLine();
         System.out.println("\nPress Enter key to go back to main menu...\n");
         scanner.nextLine();
     }
