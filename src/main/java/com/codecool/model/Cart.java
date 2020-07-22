@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class Cart {
 
-    //private final Map<Product, User> products;
     String user_id;
     String product_id;
     int quantity;
