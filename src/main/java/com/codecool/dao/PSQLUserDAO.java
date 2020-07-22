@@ -16,7 +16,7 @@ public class PSQLUserDAO implements UserDAO {
     }
 
     @Override
-    public void addCustomerUser(User user) {
+    public int addCustomerUser(User user) {
         String sql = "INSERT INTO users (first_name, last_name, email, password, address, user_role) VALUES (?, ?, ?, ?, ?, ?)";
         try(PreparedStatement st = dataSource.connect().getConnection().prepareStatement(sql)) {
             st.setString(1, user.getFirstName());
@@ -25,12 +25,12 @@ public class PSQLUserDAO implements UserDAO {
             st.setString(4, user.getPassword());
             st.setString(5, user.getAddress());
             st.setInt(6, Role.CUSTOMER.getRoleID());
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
-
+        return 0;
 
     }
 }

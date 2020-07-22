@@ -44,7 +44,10 @@ public class RootController {
     }
 
     public void createUserAccount() {
-        userDao.addCustomerUser(getUserData());
+        User user = getUserData();
+        if (userDao.addCustomerUser(user) == 1) {
+            System.out.println("Your account has been created!");
+        }
     }
 
     public User getUserData() {

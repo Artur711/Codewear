@@ -4,5 +4,5 @@ import com.codecool.model.User;
 
 public interface UserDAO {
 
-    void addCustomerUser(User user);
+    int addCustomerUser(User user);
 }
