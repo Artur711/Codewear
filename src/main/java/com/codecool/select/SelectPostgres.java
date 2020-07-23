@@ -1,5 +1,7 @@
-    package com.codecool.select;
+package com.codecool.select;
 
+import com.codecool.dao.TableProductsDAO;
+import com.codecool.dao.TableProductsPostgres;
 import com.codecool.view.SelectView;
 
 import java.sql.*;
@@ -10,11 +12,14 @@ public class SelectPostgres implements SelectDAO {
     private Connection conn;
     private List<List<Object>> objectList;
     private String command;
-    private List<String> optionToSelect = new ArrayList<>();
+//    private List<String> optionToSelect = new ArrayList<>();
+    private Map<String, String> mapOptionToSelect = new HashMap<>();
+    private TableProductsDAO tableProd;
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
 
     public SelectPostgres(Connection conn) {
         this.conn = conn;
+        this.tableProd = new TableProductsPostgres(conn);
     }
 
     @Override
@@ -23,38 +28,38 @@ public class SelectPostgres implements SelectDAO {
             getSelect(option);
         }
 
-        command = generatSelectQuery("SELECT * FROM products");
-        objectList = temporaryMetod(command);
+        command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
+        objectList = tableProd.getTableFromDatabase(command);
         view.printList(objectList);
     }
 
     @Override
-    public String generatSelectQuery(String query) {
+    public String generateSelectQuery(String query, Map<String, String> mapOptionToSelect) {
         Boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
-        for (int index = 0; index < optionToSelect.size(); index++) {
-            if (!optionToSelect.get(index).equals("All") && !isWhereStatement) {
-                sb.append(String.format(" where %s = '%s'", selectOption[index], optionToSelect.get(index)));
-                isWhereStatement = true;
-            }
-            else if (!optionToSelect.get(index).equals("All")) {
-                sb.append(String.format(" and %s = '%s'", selectOption[index], optionToSelect.get(index)));
+        for (int index = 0; index < selectOption.length; index++) {
+            String vauleOfMap = mapOptionToSelect.get(selectOption[index]);
+
+            if (!(vauleOfMap == null)) {
+                if (!vauleOfMap.equals("All") && !isWhereStatement) {
+                    sb.append(String.format(" where %s = '%s'", selectOption[index], vauleOfMap));
+                    isWhereStatement = true;
+                }
+                else if (!vauleOfMap.equals("All")) {
+                    sb.append(String.format(" and %s = '%s'", selectOption[index], vauleOfMap));
+                }
             }
         }
+
         return sb.toString();
     }
 
     private void getSelect(String selectBY) {
-        if (selectBY.equals("gender")) {
-            command = String.format("SELECT %s FROM products", selectBY);
-        }
-        else {
-            command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY));
-        }
+        command = generateSelectQuery(String.format("SELECT %s FROM products", selectBY), this.mapOptionToSelect);
         Boolean isRun = true;
 
-        objectList = temporaryMetod(command);
+        objectList = tableProd.getTableFromDatabase(command);
         List<Object> optionList= getOptions(objectList);
         view.printSelectOption(optionList);
         view.provideOption();
@@ -63,14 +68,14 @@ public class SelectPostgres implements SelectDAO {
             Scanner scan = new Scanner(System.in);
             try {
                 int option = scan.nextInt();
-                this.optionToSelect.add(String.valueOf(optionList.get(option - 1)));
+                this.mapOptionToSelect.put(selectBY, String.valueOf(optionList.get(option - 1)));
+//                this.optionToSelect.add(String.valueOf(optionList.get(option - 1)));
                 isRun = false;
             } catch (InputMismatchException | IndexOutOfBoundsException e) {
                 scan.next();
             }
         }
     }
-
 
     private List<Object> getOptions(List<List<Object>> objectList) {
         List<Object> optionList = new ArrayList<>();
@@ -82,29 +87,5 @@ public class SelectPostgres implements SelectDAO {
         }
         optionList.add("All");
         return optionList;
-    }
-
-    private List<List<Object>> temporaryMetod(String command) {
-        List<List<Object>> objectList = new ArrayList<>();
-
-        try (PreparedStatement st = this.conn.prepareStatement(command);
-             ResultSet rs = st.executeQuery()) {
-
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnCount = meta.getColumnCount();
-
-            while (rs.next()) {
-                List<Object> oList = new ArrayList<>();
-
-                for (int index = 0; index < columnCount; index++) {
-                    oList.add(rs.getObject(index + 1));
-                }
-                objectList.add(oList);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error executing query");
-        }
-        return objectList;
     }
 }

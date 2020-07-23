@@ -6,5 +6,5 @@ public interface UserDao {
 
     int addCustomerUser(User user);
 
-    boolean isRegistered(User user);
+    User validateUser(User user);
 }

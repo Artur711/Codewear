@@ -1,5 +1,7 @@
 package com.codecool.controllers;
 
+import com.codecool.dao.PSQLUserDao;
+import com.codecool.dao.UserDao;
 import com.codecool.datasource.PostgresSQLDataSource;
 import com.codecool.select.SelectDAO;
 import com.codecool.select.SelectPostgres;
@@ -9,15 +11,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ApplicationController {
 
     public void run() {
         Connection conn = setup();
-//        SelectDAO select = new SelectPostgres(conn);
-//        select.run();
-        new RootController(conn).run();
+
+        UserDao userDao = new PSQLUserDao(conn);
+        SelectDAO selectDao = new SelectPostgres(conn);
+        new RootController(userDao, selectDao).run();
+
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error closing connection: " + e.getMessage());
+        }
     }
 
     public Connection setup() {

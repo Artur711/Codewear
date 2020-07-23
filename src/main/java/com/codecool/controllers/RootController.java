@@ -1,23 +1,22 @@
+
 package com.codecool.controllers;
 
-import com.codecool.dao.PSQLUserDao;
 import com.codecool.dao.UserDao;
 import com.codecool.model.User;
-import com.codecool.view.MainView;
-
-import java.sql.Connection;
+import com.codecool.select.SelectDAO;
+import com.codecool.view.View;
 
 
 public class RootController {
 
-    MainView view;
-    UserDao userDao;
-    CustomerController customer;
+    private final View view;
+    private final UserDao userDao;
+    private final SelectDAO selectDao;
 
-    public RootController(Connection conn) {
-        view = new MainView();
-        userDao = new PSQLUserDao(conn);
-        customer = new CustomerController();
+    public RootController(UserDao userDao, SelectDAO selectDao) {
+        this.userDao = userDao;
+        this.selectDao = selectDao;
+        view = new View();
     }
 
     public void run() {
@@ -27,7 +26,7 @@ public class RootController {
         while (isRunning) {
 
             view.clearScreen();
-            view.mainMenu();
+            view.displayMainMenu();
             int input = view.getIntegerInput();
 
             switch(input) {
@@ -35,7 +34,7 @@ public class RootController {
                     createUserAccount();
                     break;
                 case 2:
-                    isRegistered();
+                    validateUser();
                     break;
                 case 3:
                     customer.run();
@@ -57,13 +56,13 @@ public class RootController {
     public User getUserData() {
         view.clearScreen();
         System.out.println("Please enter your details:");
-        String[] fields = {"first name: ", "last name: ", "email: ", "password: ", "address: "};
+        String[] fields = {"first name: ", "last name: ", "email: ", "password: "};
         String[] answers = new String[fields.length];
         for (int i = 0; i < fields.length; i++) {
             view.print(fields[i]);
             answers[i] = view.getStringInput();
         }
-        return new User(answers[0], answers[1], answers[2], answers[3], answers[4]);
+        return new User(answers[0], answers[1], answers[2], answers[3]);
     }
 
     public User getUserCredentials() {
@@ -75,16 +74,21 @@ public class RootController {
             answers[i] = view.getStringInput();
         }
         return new User(answers[0], answers[1]);
-     }
+    }
 
-     public void isRegistered() {
-        if (userDao.isRegistered(getUserCredentials())) {
-            view.print("\nYou have successfully logged in");
+    public void validateUser() {
+        User user = userDao.validateUser(getUserCredentials());
+        if (user != null && user.getRoleID() == 1) {
+            new AdminController(view, userDao).run();
+        } else if (user != null && user.getRoleID() == 3) {
+            view.print("\n You have succesfully logged in");
+            view.pressEnterToContinue();
         } else {
-            view.print("\nIncorrect email or password");
+            view.print("\nIncorrect email or password\n");
+            view.pressEnterToContinue();
+
         }
 
-        view.pressEnterToContinue();
-     }
+    }
 
 }

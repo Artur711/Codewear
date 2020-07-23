@@ -1,6 +1,7 @@
 package com.codecool.dao;
 
 import com.codecool.enums.Role;
+import com.codecool.enums.UserTable;
 import com.codecool.model.User;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 
 public class PSQLUserDao implements UserDao {
 
-    Connection conn;
+    private final Connection conn;
 
     public PSQLUserDao(Connection conn) {
         this.conn = conn;
@@ -18,14 +19,13 @@ public class PSQLUserDao implements UserDao {
 
     @Override
     public int addCustomerUser(User user) {
-        String sql = "INSERT INTO users (first_name, last_name, email, password, address, user_role) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (first_name, last_name, email, password, user_role) VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, user.getFirstName());
             st.setString(2, user.getLastName());
             st.setString(3, user.getEmail());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getAddress());
-            st.setInt(6, Role.CUSTOMER.getRoleID());
+            st.setInt(5, Role.CUSTOMER.getRoleID());
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -36,18 +36,23 @@ public class PSQLUserDao implements UserDao {
     }
 
     @Override
-    public boolean isRegistered(User user) {
-        String sql = "SELECT * FROM users WHERE email = ? and password = ?";
+    public User validateUser(User user) {
+        String sql = "SELECT id, first_name, last_name, email, password, address, user_role FROM users WHERE email = ? and password = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, user.getEmail());
             st.setString(2, user.getPassword());
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return true;
+                user.setId(rs.getInt(UserTable.ID.getIndex()));
+                user.setFirstName(rs.getString(UserTable.FIRST_NAME.getIndex()));
+                user.setLastName(rs.getString(UserTable.LAST_NAME.getIndex()));
+                user.setAddress(rs.getString(UserTable.ADDRESS.getIndex()));
+                user.setRoleID(rs.getInt(UserTable.USER_ROLE.getIndex()));
+                return user;
             }
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 }
