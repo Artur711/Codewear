@@ -3,6 +3,7 @@ package com.codecool.controllers;
 
 import com.codecool.dao.UserDao;
 import com.codecool.model.User;
+import com.codecool.select.SelectDAO;
 import com.codecool.view.View;
 
 
@@ -10,9 +11,11 @@ public class RootController {
 
     private final View view;
     private final UserDao userDao;
+    private final SelectDAO selectDao;
 
-    public RootController(UserDao userDao) {
+    public RootController(UserDao userDao, SelectDAO selectDao) {
         this.userDao = userDao;
+        this.selectDao = selectDao;
         view = new View();
     }
 

@@ -18,10 +18,10 @@ public class ApplicationController {
 
     public void run() {
         Connection conn = setup();
+
         UserDao userDao = new PSQLUserDao(conn);
-//        SelectDAO select = new SelectPostgres(conn);
-//        select.run();
-        new RootController(userDao).run();
+        SelectDAO selectDao = new SelectPostgres(conn);
+        new RootController(userDao, selectDao).run();
 
         try {
             conn.close();
