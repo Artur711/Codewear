@@ -7,7 +7,7 @@ public class CustomerView {
     private Scanner scanner = new Scanner(System.in);
 
     public void CustomerMenu() {
-        String[] options = {"My orders", "Manage account", "Help", "Back to Main Menu"};
+        String[] options = {"My cart", "My orders", "My personal details", "Help", "Back to Main Menu"};
         for (int i = 0; i < options.length; i++) {
             System.out.format("%d. %s\n", i + 1, options[i]);
         }

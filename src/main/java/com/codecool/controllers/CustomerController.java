@@ -7,11 +7,9 @@ import java.sql.Connection;
 public class CustomerController {
 
     CustomerView view;
-    RootController root;
 
 
     public CustomerController() {
-
         view = new CustomerView();
     }
 
@@ -31,9 +29,11 @@ public class CustomerController {
                 case 2:
                     break;
                 case 3:
+                    break;
+                case 4:
                     view.clearScreen();
                     view.CustomerHelp();
-                case 4:
+                case 5:
                     break;
             }
         }
