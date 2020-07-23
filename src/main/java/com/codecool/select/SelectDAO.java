@@ -1,10 +1,10 @@
 package com.codecool.select;
 
-import java.util.List;
+import java.util.Map;
 
 public interface SelectDAO {
 
     public void run();
 
-    public String generatSelectQuery(String query, List<String> optionToSelect);
+    public String generateSelectQuery(String query, Map<String, String> mapOptionToSelect);
 }
