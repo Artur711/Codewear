@@ -1,5 +1,7 @@
 package com.codecool.model;
 
+import com.codecool.enums.Role;
+
 public class User {
 
     int id;
@@ -17,7 +19,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.address = address;
-        roleID = 3;
     }
 
     public User(String firstName, String lastName, String email, String password) {
@@ -25,7 +26,7 @@ public class User {
     }
 
     public User(String email, String password) {
-        this(0, "", "", email, password, null);
+        this(9999, null, null, email, password, null);
     }
 
     public int getId() {

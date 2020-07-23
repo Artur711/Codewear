@@ -1,5 +1,7 @@
 package com.codecool.controllers;
 
+import com.codecool.dao.PSQLUserDao;
+import com.codecool.dao.UserDao;
 import com.codecool.datasource.PostgresSQLDataSource;
 import com.codecool.select.SelectDAO;
 import com.codecool.select.SelectPostgres;
@@ -16,9 +18,11 @@ public class ApplicationController {
 
     public void run() {
         Connection conn = setup();
+        UserDao userDao = new PSQLUserDao(conn);
 //        SelectDAO select = new SelectPostgres(conn);
 //        select.run();
-        new RootController(conn).run();
+        new RootController(userDao).run();
+
         try {
             conn.close();
         } catch (SQLException e) {

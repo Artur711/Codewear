@@ -1,12 +1,9 @@
 
 package com.codecool.controllers;
 
-import com.codecool.dao.PSQLUserDao;
 import com.codecool.dao.UserDao;
 import com.codecool.model.User;
 import com.codecool.view.View;
-
-import java.sql.Connection;
 
 
 public class RootController {
@@ -14,9 +11,9 @@ public class RootController {
     private final View view;
     private final UserDao userDao;
 
-    public RootController(Connection conn) {
+    public RootController(UserDao userDao) {
+        this.userDao = userDao;
         view = new View();
-        userDao = new PSQLUserDao(conn);
     }
 
     public void run() {
