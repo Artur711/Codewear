@@ -12,11 +12,13 @@ public class RootController {
     private final View view;
     private final UserDao userDao;
     private final SelectDAO selectDao;
+    private final CustomerController customerController;
 
     public RootController(UserDao userDao, SelectDAO selectDao) {
         this.userDao = userDao;
         this.selectDao = selectDao;
         view = new View();
+        customerController = new CustomerController();
     }
 
     public void run() {
@@ -37,6 +39,8 @@ public class RootController {
                     validateUser();
                     break;
                 case 3:
+                    customerController.run();
+                case 4:
                     isRunning = false;
             }
         }
