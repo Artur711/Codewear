@@ -26,13 +26,13 @@ public class SelectPostgres implements SelectDAO {
             getSelect(option);
         }
 
-        command = generatSelectQuery("SELECT * FROM products");
+        command = generatSelectQuery("SELECT * FROM products", this.optionToSelect);
         objectList = tableProd.getTableFromDatabase(command);
         view.printList(objectList);
     }
 
     @Override
-    public String generatSelectQuery(String query) {
+    public String generatSelectQuery(String query, List<String> optionToSelect) {
         Boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
@@ -49,7 +49,7 @@ public class SelectPostgres implements SelectDAO {
     }
 
     private void getSelect(String selectBY) {
-        command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY));
+        command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY), this.optionToSelect);
         Boolean isRun = true;
 
         objectList = tableProd.getTableFromDatabase(command);
