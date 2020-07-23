@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ApplicationController {
@@ -18,6 +19,11 @@ public class ApplicationController {
 //        SelectDAO select = new SelectPostgres(conn);
 //        select.run();
         new RootController(conn).run();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error closing connection: " + e.getMessage());
+        }
     }
 
     public Connection setup() {
