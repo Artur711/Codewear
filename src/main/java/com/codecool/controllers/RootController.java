@@ -12,10 +12,12 @@ public class RootController {
 
     MainView view;
     UserDao userDao;
+    CustomerController customer;
 
     public RootController(Connection conn) {
         view = new MainView();
         userDao = new PSQLUserDao(conn);
+        customer = new CustomerController();
     }
 
     public void run() {
@@ -36,6 +38,8 @@ public class RootController {
                     isRegistered();
                     break;
                 case 3:
+                    customer.run();
+                case 4:
                     isRunning = false;
             }
         }

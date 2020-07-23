@@ -7,7 +7,7 @@ public class MainView {
     private final Scanner scanner = new Scanner(System.in);
 
     public void mainMenu() {
-        String[] options = {"Create an account", "Sign in", "Quit"};
+        String[] options = {"Create an account", "Sign in", "My account", "Quit"};
         for (int i = 0; i < options.length; i++) {
             System.out.format("%d. %s\n", i + 1, options[i]);
         }
