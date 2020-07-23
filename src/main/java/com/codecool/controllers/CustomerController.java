@@ -2,12 +2,10 @@ package com.codecool.controllers;
 
 import com.codecool.view.CustomerView;
 
-import java.sql.Connection;
 
 public class CustomerController {
 
     CustomerView view;
-
 
     public CustomerController() {
         view = new CustomerView();
