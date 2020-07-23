@@ -16,8 +16,8 @@ public class ApplicationController {
 
     public void run() {
         Connection conn = setup();
-//        SelectDAO select = new SelectPostgres(conn);
-//        select.run();
+        SelectDAO select = new SelectPostgres(conn);
+        select.run();
         new RootController(conn).run();
         try {
             conn.close();

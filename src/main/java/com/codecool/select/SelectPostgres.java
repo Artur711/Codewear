@@ -1,5 +1,7 @@
-    package com.codecool.select;
+package com.codecool.select;
 
+import com.codecool.datasource.TableProductsDAO;
+import com.codecool.datasource.TableProductsPostgres;
 import com.codecool.view.SelectView;
 
 import java.sql.*;
@@ -11,6 +13,7 @@ public class SelectPostgres implements SelectDAO {
     private List<List<Object>> objectList;
     private String command;
     private List<String> optionToSelect = new ArrayList<>();
+    private TableProductsDAO tableProd = new TableProductsPostgres(conn);
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
 
     public SelectPostgres(Connection conn) {
@@ -24,7 +27,7 @@ public class SelectPostgres implements SelectDAO {
         }
 
         command = generatSelectQuery("SELECT * FROM products");
-        objectList = temporaryMetod(command);
+        objectList = tableProd.getTableFromDatabase(command);
         view.printList(objectList);
     }
 
@@ -46,15 +49,10 @@ public class SelectPostgres implements SelectDAO {
     }
 
     private void getSelect(String selectBY) {
-        if (selectBY.equals("gender")) {
-            command = String.format("SELECT %s FROM products", selectBY);
-        }
-        else {
-            command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY));
-        }
+        command = generatSelectQuery(String.format("SELECT %s FROM products", selectBY));
         Boolean isRun = true;
 
-        objectList = temporaryMetod(command);
+        objectList = tableProd.getTableFromDatabase(command);
         List<Object> optionList= getOptions(objectList);
         view.printSelectOption(optionList);
         view.provideOption();
@@ -71,7 +69,6 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-
     private List<Object> getOptions(List<List<Object>> objectList) {
         List<Object> optionList = new ArrayList<>();
 
@@ -82,29 +79,5 @@ public class SelectPostgres implements SelectDAO {
         }
         optionList.add("All");
         return optionList;
-    }
-
-    private List<List<Object>> temporaryMetod(String command) {
-        List<List<Object>> objectList = new ArrayList<>();
-
-        try (PreparedStatement st = this.conn.prepareStatement(command);
-             ResultSet rs = st.executeQuery()) {
-
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnCount = meta.getColumnCount();
-
-            while (rs.next()) {
-                List<Object> oList = new ArrayList<>();
-
-                for (int index = 0; index < columnCount; index++) {
-                    oList.add(rs.getObject(index + 1));
-                }
-                objectList.add(oList);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error executing query");
-        }
-        return objectList;
     }
 }
