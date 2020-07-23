@@ -1,7 +1,7 @@
 package com.codecool.select;
 
-import com.codecool.datasource.TableProductsDAO;
-import com.codecool.datasource.TableProductsPostgres;
+import com.codecool.dao.TableProductsDAO;
+import com.codecool.dao.TableProductsPostgres;
 import com.codecool.view.SelectView;
 
 import java.sql.*;

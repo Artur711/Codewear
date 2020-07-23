@@ -1,4 +1,4 @@
-package com.codecool.datasource;
+package com.codecool.dao;
 
 import java.util.List;
 
