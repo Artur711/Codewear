@@ -53,6 +53,19 @@ class SelectPostgresTest {
     }
 
     @Test
+    void generateSelectQueryTest_All_TShirt_All_XL() {
+        optionToSelect = new HashMap<>();
+        optionToSelect.put("gender", "All");
+        optionToSelect.put("type", "T-Shirt");
+        optionToSelect.put("colour", "All");
+        optionToSelect.put("sizes", "XL");
+
+        String command = selectObject.generateSelectQuery(query, optionToSelect);
+        String commandResult = "SELECT * FROM products where type = 'T-Shirt' and sizes = 'XL'";
+        assertEquals(commandResult, command);
+    }
+
+    @Test
     void generateSelectQueryTest_All() {
         optionToSelect = new HashMap<>();
         optionToSelect.put("gender", "All");
