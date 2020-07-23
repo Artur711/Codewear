@@ -1,22 +1,22 @@
 
 package com.codecool.controllers;
 
-import com.codecool.dao.PSQLUserDao;
 import com.codecool.dao.UserDao;
 import com.codecool.model.User;
+import com.codecool.select.SelectDAO;
 import com.codecool.view.View;
-
-import java.sql.Connection;
 
 
 public class RootController {
 
     private final View view;
     private final UserDao userDao;
+    private final SelectDAO selectDao;
 
-    public RootController(Connection conn) {
+    public RootController(UserDao userDao, SelectDAO selectDao) {
+        this.userDao = userDao;
+        this.selectDao = selectDao;
         view = new View();
-        userDao = new PSQLUserDao(conn);
     }
 
     public void run() {

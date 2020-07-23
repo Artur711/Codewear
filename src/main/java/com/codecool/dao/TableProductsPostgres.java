@@ -1,4 +1,6 @@
-package com.codecool.datasource;
+package com.codecool.dao;
+
+import com.codecool.dao.TableProductsDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

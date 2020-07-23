@@ -37,7 +37,7 @@ public class PSQLUserDao implements UserDao {
 
     @Override
     public User validateUser(User user) {
-        String sql = "SELECT * FROM users WHERE email = ? and password = ?";
+        String sql = "SELECT id, first_name, last_name, email, password, address, user_role FROM users WHERE email = ? and password = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, user.getEmail());
             st.setString(2, user.getPassword());
