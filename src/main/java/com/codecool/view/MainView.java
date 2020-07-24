@@ -5,9 +5,8 @@ import java.util.Scanner;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
-import static com.diogonunes.jcolor.Attribute.RED_BACK;
 
-public class View {
+public class MainView {
 
     private final Scanner scanner = new Scanner(System.in);
     private final String HEADER = "  W E L C O M E  T O  C O D E W E A R  ";
