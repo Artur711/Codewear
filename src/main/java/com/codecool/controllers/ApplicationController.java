@@ -23,8 +23,7 @@ public class ApplicationController {
 
         UserDao userDao = new PSQLUserDao(conn);
         SelectDAO selectDao = new SelectPostgres(conn);
-        selectDao.run();
-//        new RootController(userDao, selectDao).run();
+        new RootController(userDao, selectDao).run();
 
 
         try {
