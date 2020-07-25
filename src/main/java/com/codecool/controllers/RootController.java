@@ -49,46 +49,24 @@ public class RootController {
     }
 
     public void createUserAccount() {
-        User user = getUserData();
+        User user = mainView.getUserData();
         if (userDao.addCustomerUser(user) == 1) {
-            System.out.println("Your account has been created!");
+            mainView.displayAccountCreationMessage();
         }
-        mainView.pressEnterToContinue();
     }
 
-    public User getUserData() {
-        mainView.clearScreen();
-        System.out.println("Please enter your details:");
-        String[] fields = {"first name: ", "last name: ", "email: ", "password: "};
-        String[] answers = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            mainView.print(fields[i]);
-            answers[i] = mainView.getStringInput();
-        }
-        return new User(answers[0], answers[1], answers[2], answers[3]);
-    }
 
-    public User getUserCredentials() {
-        mainView.clearScreen();
-        String[] fields = {"email", "password"};
-        String[] answers = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            System.out.printf("Enter your %s: ", fields[i]);
-            answers[i] = mainView.getStringInput();
-        }
-        return new User(answers[0], answers[1]);
-    }
 
     public void validateUser() {
-        User user = userDao.validateUser(getUserCredentials());
+        User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
             new AdminController(mainView, userDao).run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             mainView.print("\n You have succesfully logged in");
-            mainView.pressEnterToContinue();
+            mainView.pressEnterToContinue("");
         } else {
             mainView.print("\nIncorrect email or password\n");
-            mainView.pressEnterToContinue();
+            mainView.pressEnterToContinue("");
 
         }
 
