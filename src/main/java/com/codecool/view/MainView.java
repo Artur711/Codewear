@@ -1,4 +1,5 @@
 package com.codecool.view;
+import com.codecool.enums.UserInfo;
 import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 import com.diogonunes.jcolor.Attribute;
@@ -12,23 +13,19 @@ import static com.diogonunes.jcolor.Attribute.*;
 public class MainView {
 
     private final Scanner scanner = new Scanner(System.in);
-    private final int MENU_WIDTH = 39;
-    private final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT(), RED_BACK());
-    private final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), BLACK_TEXT(), RED_BACK());
+    private final String[] fields = {UserInfo.FIRST_NAME.getDisplay(),
+                       UserInfo.LAST_NAME.getDisplay(),
+                       UserInfo.EMAIL.getDisplay(),
+                       UserInfo.PASSWORD.getDisplay()};
 
     public void displayMenuOptions(String[] options) {
         for (int i = 0; i < options.length; i++) {
-            System.out.printf(colorize("  %d. %s", MENU_FORMAT ), i + 1, options[i]);
-            System.out.print(colorize(" ".repeat(MENU_WIDTH - options[i].length() - 5), MENU_FORMAT));
-            System.out.println();
+            System.out.format("%d. %s%n", (i + 1), options[i]);
         }
-        drawLine(MENU_WIDTH, RED_BACK());
     }
 
     public void displayMainMenu() {
-        drawLine(MENU_WIDTH, RED_BACK());
-        System.out.println(colorize("  W E L C O M E  T O  C O D E W E A R  ", HEADER_FORMAT));
-        drawLine(MENU_WIDTH, RED_BACK());
+        System.out.println("W E L C O M E  T O  C O D E W E A R  \n");
         String[] options = {"Create an account", "Sign in", "Quit"};
         displayMenuOptions(options);
     }
@@ -37,13 +34,6 @@ public class MainView {
         String[] options = {"Add/Edit/Delete user", "Sign out"};
         print("Welcome to Admin dashboard\n");
         displayMenuOptions(options);
-    }
-
-    public void drawLine(int width, Attribute color) {
-        for (int i = 0; i < width; i++) {
-            System.out.print(colorize(" ", color));
-        }
-        System.out.println();
     }
 
     public int getIntegerInput() {
@@ -71,14 +61,12 @@ public class MainView {
     }
 
     public void pressEnterToContinue(String prompt) {
-        System.out.print(colorize(prompt, HEADER_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
+        System.out.println(prompt);
         scanner.nextLine();
     }
 
     public User getUserData() {
 
-        String[] fields = {"first name: ", "last name: ", "email: ", "password: "};
         String[] answers = new String[fields.length];
         displayRegistrationScreen(fields[0], "", "", "", "");
         for (int i = 0; i < fields.length; i++) {
@@ -86,16 +74,18 @@ public class MainView {
 
             switch(i) {
                 case 0:
-                    displayRegistrationScreen("last name: ", answers[i], "", "", "");
+                    displayRegistrationScreen(UserInfo.LAST_NAME.getDisplay(), answers[i], "", "", "");
                     break;
                 case 1:
-                    displayRegistrationScreen("email: ", answers[i - 1], answers[i], "", "");
+                    displayRegistrationScreen(UserInfo.EMAIL.getDisplay(), answers[i - 1], answers[i], "", "");
                     break;
                 case 2:
-                    displayRegistrationScreen("password: ", answers[i - 2], answers[i - 1], answers[i], "");
+                    displayRegistrationScreen(UserInfo.PASSWORD.getDisplay(), answers[i - 2], answers[i - 1], answers[i], "");
                     break;
                 case 3:
-                    displayRegistrationScreen("password: ", answers[i - 3], answers[i - 2], answers[i - 1], answers[i]);
+                    displayRegistrationScreen(UserInfo.PASSWORD.getDisplay(), answers[i - 3], answers[i - 2], answers[i - 1], answers[i]);
+                default:
+
             }
 
         }
@@ -103,80 +93,52 @@ public class MainView {
     }
 
     public void displayRegistrationScreen(String field, String firstName, String lastName, String email, String password) {
+
+        String[] answers = {firstName,  lastName,  email,  password};
+
         clearScreen();
-        drawLine(MENU_WIDTH, RED_BACK());
-        String prompt = "  Please enter your " + field;
-        System.out.print(colorize(prompt, HEADER_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  first name: " + firstName;
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  last Name: " + lastName;
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  email: " + email;
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  password: " + password;
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        drawLine(MENU_WIDTH, RED_BACK());
+        System.out.println("Please enter your " + field);
+        for (int i = 0; i < fields.length; i++) {
+            System.out.println(fields[i] + ": " + answers[i]);
+        }
+
     }
 
     public void displayLoginScreen(String field, String email, String password) {
         clearScreen();
-        drawLine(MENU_WIDTH, RED_BACK());
-        String prompt = "  Please enter your " + field;
-        System.out.print(colorize(prompt, HEADER_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  email: " + email;
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        prompt = "  password: " + maskPassword((password));
-        System.out.print(colorize(prompt, MENU_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - prompt.length()), MENU_FORMAT));
-        drawLine(MENU_WIDTH, RED_BACK());
-    }
-
-    public String maskPassword(String password) {
-        return "*".repeat(password.length());
+        String[] answers = {email,  password};
+        String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
+        System.out.println("Please enter your " + field);
+        for (int i = 0; i < answers.length; i++) {
+            System.out.println(credentials[i] + ": " + answers[i]);
+        }
     }
 
     public User getUserCredentials() {
-        clearScreen();
-        String[] fields = {"email", "password"};
-        String[] answers = new String[fields.length];
-        displayLoginScreen(fields[0], "", "");
-        for (int i = 0; i < fields.length; i++) {
+        String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
+        String[] answers = new String[credentials.length];
+        displayLoginScreen(UserInfo.EMAIL.getDisplay(), "", "");
+        for (int i = 0; i < credentials.length; i++) {
             answers[i] = getStringInput();
 
-            switch(i) {
-                case 0:
-                    displayLoginScreen("password: ", answers[i], "");
-                    break;
-                case 1:
-                    displayLoginScreen("password: ", answers[i - 1], answers[i]);
-                    break;
+            if (i == 0) {
+                displayLoginScreen("password: ", answers[i], "");
+            } else {
+                displayLoginScreen("password: ", answers[i - 1], answers[i]);
             }
         }
         return new User(answers[0], answers[1]);
     }
 
     public void displayAccountCreationMessage() {
-        String text = "  Your account has been created!";
-        System.out.print(colorize(text, HEADER_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - text.length()), MENU_FORMAT));
-        drawLine(MENU_WIDTH, RED_BACK());
-        pressEnterToContinue("  Press enter to return to main menu");
+        System.out.print("\nYour account has been created!\n");
+
+        pressEnterToContinue("\nPress enter to return to main menu");
 
     }
 
     public void displayErrorWhileLoggingMessage() {
-        String text = "  Incorrect email or password";
-        System.out.print(colorize(text, HEADER_FORMAT));
-        System.out.println(colorize(" ".repeat(MENU_WIDTH - text.length()), MENU_FORMAT));
-        drawLine(MENU_WIDTH, RED_BACK());
-        pressEnterToContinue("  Press enter to return to main menu");
+        System.out.print("\nIncorrect email or password\n");
+        pressEnterToContinue("\nPress enter to return to main menu");
     }
-
 }

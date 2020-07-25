@@ -55,14 +55,12 @@ public class RootController {
         }
     }
 
-
-
     public void validateUser() {
         User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
             new AdminController(mainView, userDao).run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
-            mainView.print("\n You have succesfully logged in");
+            mainView.print("\n You have successfully logged in");
             mainView.pressEnterToContinue("");
         } else {
             mainView.displayErrorWhileLoggingMessage();
