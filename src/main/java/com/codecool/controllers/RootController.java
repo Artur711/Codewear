@@ -65,8 +65,7 @@ public class RootController {
             mainView.print("\n You have succesfully logged in");
             mainView.pressEnterToContinue("");
         } else {
-            mainView.print("\nIncorrect email or password\n");
-            mainView.pressEnterToContinue("");
+            mainView.displayErrorWhileLoggingMessage();
 
         }
 
