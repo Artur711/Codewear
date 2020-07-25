@@ -66,36 +66,22 @@ public class MainView {
     }
 
     public User getUserData() {
+        String[] answers = new String[] {"", "", "", ""};
+        String[] fields = {UserInfo.LAST_NAME.getDisplay(),
+                UserInfo.EMAIL.getDisplay(),
+                UserInfo.PASSWORD.getDisplay(),
+                UserInfo.PASSWORD.getDisplay()};
 
-        String[] answers = new String[fields.length];
-        displayRegistrationScreen(fields[0], "", "", "", "");
-        for (int i = 0; i < fields.length; i++) {
+        displayRegistrationScreen(UserInfo.FIRST_NAME.getDisplay(), answers);
+        for (int i = 0; i < fields.length ; i++) {
             answers[i] = getStringInput();
-
-            switch(i) {
-                case 0:
-                    displayRegistrationScreen(UserInfo.LAST_NAME.getDisplay(), answers[i], "", "", "");
-                    break;
-                case 1:
-                    displayRegistrationScreen(UserInfo.EMAIL.getDisplay(), answers[i - 1], answers[i], "", "");
-                    break;
-                case 2:
-                    displayRegistrationScreen(UserInfo.PASSWORD.getDisplay(), answers[i - 2], answers[i - 1], answers[i], "");
-                    break;
-                case 3:
-                    displayRegistrationScreen(UserInfo.PASSWORD.getDisplay(), answers[i - 3], answers[i - 2], answers[i - 1], answers[i]);
-                default:
-
-            }
+            displayRegistrationScreen(fields[i], answers);
 
         }
         return new User(answers[0], answers[1], answers[2], answers[3]);
     }
 
-    public void displayRegistrationScreen(String field, String firstName, String lastName, String email, String password) {
-
-        String[] answers = {firstName,  lastName,  email,  password};
-
+    public void displayRegistrationScreen(String field, String[] answers) {
         clearScreen();
         System.out.println("Please enter your " + field);
         for (int i = 0; i < fields.length; i++) {
@@ -104,9 +90,8 @@ public class MainView {
 
     }
 
-    public void displayLoginScreen(String field, String email, String password) {
+    public void displayLoginScreen(String field, String[] answers) {
         clearScreen();
-        String[] answers = {email,  password};
         String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
         System.out.println("Please enter your " + field);
         for (int i = 0; i < answers.length; i++) {
@@ -115,17 +100,13 @@ public class MainView {
     }
 
     public User getUserCredentials() {
-        String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
-        String[] answers = new String[credentials.length];
-        displayLoginScreen(UserInfo.EMAIL.getDisplay(), "", "");
-        for (int i = 0; i < credentials.length; i++) {
+        String[] credentials = {UserInfo.PASSWORD.getDisplay(), UserInfo.PASSWORD.getDisplay()};
+        String[] answers = new String[] {"", ""};
+        displayLoginScreen(UserInfo.EMAIL.getDisplay(), answers);
+        for (int i = 0; i < credentials.length ; i++) {
             answers[i] = getStringInput();
+            displayLoginScreen(credentials[i], answers);
 
-            if (i == 0) {
-                displayLoginScreen("password: ", answers[i], "");
-            } else {
-                displayLoginScreen("password: ", answers[i - 1], answers[i]);
-            }
         }
         return new User(answers[0], answers[1]);
     }
