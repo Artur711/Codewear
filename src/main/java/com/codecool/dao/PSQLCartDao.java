@@ -2,6 +2,7 @@ package com.codecool.dao;
 
 import com.codecool.model.Cart;
 import com.codecool.model.Product;
+import com.codecool.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,12 +19,12 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int addToUserCart(Cart cart) {
+    public int addToUserCart(int user_id, int product_id, int quantity) {
         String sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, cart.getUser_id());
-            st.setInt(2, cart.getProduct_id());
-            st.setInt(3, cart.getQuantity());
+            st.setInt(1, user_id);
+            st.setInt(2, product_id);
+            st.setInt(3, quantity);
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -33,9 +34,11 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int deleteFromUserCart(Cart cart, Product product) {
+    public int deleteFromUserCart(int user_id, int product_id) {
         String sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, user_id);
+            st.setInt(2, product_id);
             return st.executeUpdate();
 
         } catch (SQLException e) {
