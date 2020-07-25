@@ -2,14 +2,17 @@ package com.codecool.dao;
 
 import com.codecool.model.Cart;
 import com.codecool.model.Product;
+import com.codecool.model.User;
 
 import java.util.Map;
 
 public interface CartDao {
 
-    int addToUserCart(Cart cart);
+    int addToUserCart(int user_id, int product_id, int quantity);
 
-    int deleteFromUserCart(Cart cart, Product product);
+    int deleteItemFromUserCart(int user_id, int product_id);
 
-    Map<Product, Integer> getProductsFromCart();
+    int deleteAllFromUserCart(int user_id);
+
+    Map<Integer, Integer> getCartOfItems(int user_id);
 }

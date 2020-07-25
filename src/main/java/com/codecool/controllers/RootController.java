@@ -1,8 +1,12 @@
 
 package com.codecool.controllers;
 
+import com.codecool.dao.CartDao;
+import com.codecool.dao.PSQLCartDao;
 import com.codecool.dao.UserDao;
 import com.codecool.enums.Role;
+import com.codecool.model.Cart;
+
 import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.MainView;
@@ -14,11 +18,13 @@ public class RootController {
     private final UserDao userDao;
     private final SelectDAO selectDao;
     private final CustomerController customerController;
+    private final CartDao cartDao;
 
-    public RootController(UserDao userDao, SelectDAO selectDao) {
+    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao) {
         this.userDao = userDao;
         this.selectDao = selectDao;
         mainView = new MainView();
+        this.cartDao = cartDao;
         customerController = new CustomerController();
     }
 
@@ -41,8 +47,10 @@ public class RootController {
                     break;
                 case 3:
                     customerController.run();
+                    break;
                 case 4:
                     isRunning = false;
+                default:
             }
         }
 
