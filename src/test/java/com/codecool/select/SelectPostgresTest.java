@@ -2,13 +2,14 @@ package com.codecool.select;
 
 import com.codecool.controllers.ApplicationController;
 import org.junit.jupiter.api.Test;
-
-import java.sql.Connection;
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class SelectPostgresTest {
+import java.sql.Connection;
+import java.util.Map;
+import java.util.HashMap;
+
+
+public class SelectPostgresTest {
     private Map<String, String> optionToSelect;
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
     private ApplicationController ac = new ApplicationController();

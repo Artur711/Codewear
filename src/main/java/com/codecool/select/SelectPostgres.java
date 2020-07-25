@@ -1,18 +1,24 @@
 package com.codecool.select;
 
+import com.codecool.dao.PSQLReadImage;
 import com.codecool.dao.TableProductsDAO;
 import com.codecool.dao.TableProductsPostgres;
 import com.codecool.view.SelectView;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 
 public class SelectPostgres implements SelectDAO {
     private SelectView view = new SelectView();
     private Connection conn;
     private List<List<Object>> objectList;
     private String command;
-//    private List<String> optionToSelect = new ArrayList<>();
     private Map<String, String> mapOptionToSelect = new HashMap<>();
     private TableProductsDAO tableProd;
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
@@ -30,7 +36,9 @@ public class SelectPostgres implements SelectDAO {
 
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         objectList = tableProd.getTableFromDatabase(command);
-        view.printList(objectList);
+//        view.printList(objectList);
+//        view.printProductDetails(objectList.get(0));
+        viewTheResults(objectList);
     }
 
     @Override
@@ -69,7 +77,6 @@ public class SelectPostgres implements SelectDAO {
             try {
                 int option = scan.nextInt();
                 this.mapOptionToSelect.put(selectBY, String.valueOf(optionList.get(option - 1)));
-//                this.optionToSelect.add(String.valueOf(optionList.get(option - 1)));
                 isRun = false;
             } catch (InputMismatchException | IndexOutOfBoundsException e) {
                 scan.next();
@@ -87,5 +94,29 @@ public class SelectPostgres implements SelectDAO {
         }
         optionList.add("All");
         return optionList;
+    }
+
+    private void viewTheResults(List<List<Object>> objectList) {
+        boolean isRun = true;
+        Scanner scan = new Scanner(System.in);
+        List<Object> detailsList = objectList.get(0);
+
+        SelectIteratorDAO selectIteratorDAO = new SelectIteratorPostgres(objectList);
+
+        while (isRun) {
+            view.printProductDetails(detailsList);
+            String result = scan.nextLine().toLowerCase();
+
+            if (result.equals("n")) {
+                detailsList = selectIteratorDAO.getNext();
+            } else if (result.equals("p")) {
+                detailsList = selectIteratorDAO.getPrevious();
+            } else if (result.equals("v")) {
+                PSQLReadImage readImage = new PSQLReadImage(this.conn);
+                readImage.run(String.valueOf(detailsList.get(1)));
+            } else if (result.equals("q")) {
+                isRun = false;
+            }
+        }
     }
 }

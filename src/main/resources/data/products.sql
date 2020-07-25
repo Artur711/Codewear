@@ -2,11 +2,11 @@ DROP TABLE IF EXISTS products;
 
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
-    product_name character varying(255) NOT NULL,
-    gender character varying(100) NOT NULL, 
-    type character varying(100) NOT NULL,
-    colour character varying(255) NOT NULL,
-    sizes character varying(100) NOT NULL,
+    product_name character varying(30) NOT NULL,
+    gender character varying(6) NOT NULL, 
+    type character varying(15) NOT NULL,
+    colour character varying(25) NOT NULL,
+    sizes character varying(3) NOT NULL,
     prices integer NOT NULL,
     quantity_on_stock integer NOT NULL
 );
@@ -180,21 +180,21 @@ INSERT INTO products VALUES (204, 'Men T-Shirt model 8', 'Male', 'T-Shirt', 'cob
 INSERT INTO products VALUES (6328, 'Men T-Shirt model 8', 'Male', 'T-Shirt', 'cobalt', 'M', 35, 34);
 INSERT INTO products VALUES (8733, 'Men T-Shirt model 8', 'Male', 'T-Shirt', 'cobalt', '3XL', 35, 113);
 INSERT INTO products VALUES (847, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '122', 31.2, 204);
-INSERT INTO products VALUES (9952, 'Woman Leggins model 2', 'Female', 'Pants', 'grey melange', '128', 31.2, 10);
-INSERT INTO products VALUES (943, 'Woman Leggins model 3', 'Female', 'Pants', 'grey melange', '134', 31.2, 42);
-INSERT INTO products VALUES (8990, 'Woman Leggins model 4', 'Female', 'Pants', 'grey melange', '140', 31.2, 195);
-INSERT INTO products VALUES (6123, 'Woman Leggins model 5', 'Female', 'Pants', 'grey melange', '146', 31.2, 133);
-INSERT INTO products VALUES (4174, 'Woman Leggins model 6', 'Female', 'Pants', 'grey melange', '152', 31.2, 117);
-INSERT INTO products VALUES (6511, 'Woman Leggins model 7', 'Female', 'Pants', 'grey melange', '158', 31.2, 110);
-INSERT INTO products VALUES (9193, 'Woman Leggins model 8', 'Female', 'Pants', 'grey melange', '164', 31.2, 4);
-INSERT INTO products VALUES (7516, 'Woman Leggins model 9', 'Female', 'Pants', 'navy', '122', 31.2, 146);
-INSERT INTO products VALUES (9395, 'Woman Leggins model 10', 'Female', 'Pants', 'navy', '128', 31.2, 0);
-INSERT INTO products VALUES (9618, 'Woman Leggins model 11', 'Female', 'Pants', 'navy', '134', 31.2, 75);
-INSERT INTO products VALUES (3776, 'Woman Leggins model 12', 'Female', 'Pants', 'navy', '140', 31.2, 221);
-INSERT INTO products VALUES (8540, 'Woman Leggins model 13', 'Female', 'Pants', 'navy', '146', 31.2, 115);
-INSERT INTO products VALUES (6574, 'Woman Leggins model 14', 'Female', 'Pants', 'navy', '152', 31.2, 120);
-INSERT INTO products VALUES (7311, 'Woman Leggins model 15', 'Female', 'Pants', 'navy', '158', 31.2, 113);
-INSERT INTO products VALUES (9629, 'Woman Leggins model 16', 'Female', 'Pants', 'navy', '164', 31.2, 69);
+INSERT INTO products VALUES (9952, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '128', 31.2, 10);
+INSERT INTO products VALUES (943, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '134', 31.2, 42);
+INSERT INTO products VALUES (8990, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '140', 31.2, 195);
+INSERT INTO products VALUES (6123, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '146', 31.2, 133);
+INSERT INTO products VALUES (4174, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '152', 31.2, 117);
+INSERT INTO products VALUES (6511, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '158', 31.2, 110);
+INSERT INTO products VALUES (9193, 'Woman Leggins model 1', 'Female', 'Pants', 'grey melange', '164', 31.2, 4);
+INSERT INTO products VALUES (7516, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '122', 31.2, 146);
+INSERT INTO products VALUES (9395, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '128', 31.2, 0);
+INSERT INTO products VALUES (9618, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '134', 31.2, 75);
+INSERT INTO products VALUES (3776, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '140', 31.2, 221);
+INSERT INTO products VALUES (8540, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '146', 31.2, 115);
+INSERT INTO products VALUES (6574, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '152', 31.2, 120);
+INSERT INTO products VALUES (7311, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '158', 31.2, 113);
+INSERT INTO products VALUES (9629, 'Woman Leggins model 2', 'Female', 'Pants', 'navy', '164', 31.2, 69);
 INSERT INTO products VALUES (3230, 'Men Sweatshirt model 1', 'Male', 'Sweatshirt', 'cold light grey melange', '122', 65.4, 250);
 INSERT INTO products VALUES (6795, 'Men Sweatshirt model 1', 'Male', 'Sweatshirt', 'cold light grey melange', '128', 65.4, 130);
 INSERT INTO products VALUES (8831, 'Men Sweatshirt model 1', 'Male', 'Sweatshirt', 'cold light grey melange', '134', 65.4, 4);

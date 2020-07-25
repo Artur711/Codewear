@@ -1,5 +1,7 @@
 package com.codecool.controllers;
 
+import com.codecool.dao.InsertImagesToDatabase;
+import com.codecool.dao.PSQLReadImage;
 import com.codecool.dao.PSQLUserDao;
 import com.codecool.dao.UserDao;
 import com.codecool.datasource.PostgresSQLDataSource;
@@ -21,7 +23,9 @@ public class ApplicationController {
 
         UserDao userDao = new PSQLUserDao(conn);
         SelectDAO selectDao = new SelectPostgres(conn);
-        new RootController(userDao, selectDao).run();
+        selectDao.run();
+//        new RootController(userDao, selectDao).run();
+
 
         try {
             conn.close();
