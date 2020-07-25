@@ -1,7 +1,10 @@
 
 package com.codecool.controllers;
 
+import com.codecool.dao.CartDao;
+import com.codecool.dao.PSQLCartDao;
 import com.codecool.dao.UserDao;
+import com.codecool.model.Cart;
 import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.View;
@@ -13,10 +16,12 @@ public class RootController {
     private final UserDao userDao;
     private final SelectDAO selectDao;
     private final CustomerController customerController;
+    private final CartDao cartDao;
 
-    public RootController(UserDao userDao, SelectDAO selectDao) {
+    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao) {
         this.userDao = userDao;
         this.selectDao = selectDao;
+        this.cartDao = cartDao;
         view = new View();
         customerController = new CustomerController();
     }
