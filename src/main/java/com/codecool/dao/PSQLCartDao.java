@@ -61,18 +61,37 @@ public class PSQLCartDao implements CartDao{
     @Override
     public Map<Integer, Integer> getCartOfItems(int user_id) {
         Map<Integer, Integer> cartOfItems = new HashMap<Integer, Integer>();
-        String sql = "SELECT * FROM cart WHERE user_id = ?";
+        String sql = "SELECT * FROM cart WHERE user_id = ?;";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, user_id);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                int product_id = rs.getInt(2);
-                int quantity = rs.getInt(3);
+            while(rs.next()) {
+                int product_id = rs.getInt("product_id");
+                int quantity = rs.getInt("quantity");
                 cartOfItems.put(product_id, quantity);
             }
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
         return cartOfItems;
+    }
+
+    @Override
+    public int changeQuantityOfProduct(int user_id, int product_id, int quantity) {
+        String sql = "UPDATE cart SET quantity = ? WHERE user_id = ? and product_id = ?;";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, quantity);
+            st.setInt(2, user_id);
+            st.setInt(3, product_id);
+            return st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public boolean checkQuantityOnStock(int quantityInOrder){
+        return true;
     }
 }
