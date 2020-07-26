@@ -1,10 +1,12 @@
 package com.codecool.select;
 
+import com.codecool.dao.Product;
+
 import java.util.List;
 
 public interface SelectIteratorDAO {
 
-    public List<Object> getNext();
+    public Product getNext();
 
-    public List<Object> getPrevious();
+    public Product getPrevious();
 }

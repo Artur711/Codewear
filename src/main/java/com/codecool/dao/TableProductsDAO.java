@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface TableProductsDAO {
 
-    public List<List<Object>> getTableFromDatabase (String command);
+    public List<Product> getTableFromDatabase (String command);
+
+    public List<List<Object>> getTableAllDetails (String command);
 }

@@ -1,5 +1,7 @@
 package com.codecool.view;
 
+import com.codecool.dao.Product;
+
 import java.sql.SQLOutput;
 import java.util.List;
 
@@ -33,42 +35,42 @@ public class SelectView {
         printLineOfFrame();
     }
 
-    public void printProductDetails(List<Object> detailsToPrint) {
+    public void printProductDetails(Product product) {
         int numberOfRestSpaces;
         printLineOfFrame();
         String str = "|| ";
 
         StringBuilder sB = new StringBuilder(str);
-        sB.append(String.format("Product id: %d",detailsToPrint.get(0)));
-        numberOfRestSpaces = NUMBER_SPACES - 32 - String.valueOf(detailsToPrint.get(0)).length() - String.valueOf(detailsToPrint.get(7)).length();
+        sB.append(String.format("Product id: %d",product.getId()));
+        numberOfRestSpaces = NUMBER_SPACES - 32 - String.valueOf(product.getId()).length() - String.valueOf(product.getQuantity()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("Pieces available: %d", detailsToPrint.get(7)));
+        sB.append(String.format("Pieces available: %d", product.getQuantity()));
         sB.append(" || \n");
 
         sB.append("|| ");
-        numberOfRestSpaces = NUMBER_SPACES - 11 - String.valueOf(detailsToPrint.get(6)).length();
+        numberOfRestSpaces = NUMBER_SPACES - 11 - String.valueOf(product.getPrices()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("Price: %d $", detailsToPrint.get(6)));
+        sB.append(String.format("Price: %d $", product.getPrices()));
         sB.append(" ||\n");
 
         sB.append(getEmptyLine());
 
         sB.append("|| ");
-        sB.append(String.format("Product name: %s", detailsToPrint.get(1)));
-        numberOfRestSpaces = NUMBER_SPACES - 16 - String.valueOf(detailsToPrint.get(1)).length();
+        sB.append(String.format("Product name: %s", product.getName()));
+        numberOfRestSpaces = NUMBER_SPACES - 16 - String.valueOf(product.getName()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 
         sB.append("|| ");
-        sB.append(String.format("Product type: %s", detailsToPrint.get(3)));
-        numberOfRestSpaces = NUMBER_SPACES - 22 - String.valueOf(detailsToPrint.get(3)).length() - String.valueOf(detailsToPrint.get(5)).length();
+        sB.append(String.format("Product type: %s", product.getType()));
+        numberOfRestSpaces = NUMBER_SPACES - 22 - String.valueOf(product.getType()).length() - String.valueOf(product.getSizes()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("SIZE: %s", detailsToPrint.get(5)));
+        sB.append(String.format("SIZE: %s", product.getSizes()));
         sB.append(" ||\n");
 
         sB.append("|| ");
-        sB.append(String.format("Colour: %s", detailsToPrint.get(4)));
-        numberOfRestSpaces = NUMBER_SPACES - 10 - String.valueOf(detailsToPrint.get(4)).length();
+        sB.append(String.format("Colour: %s", product.getColour()));
+        numberOfRestSpaces = NUMBER_SPACES - 10 - String.valueOf(product.getColour()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 

@@ -1,17 +1,19 @@
 package com.codecool.select;
 
+import com.codecool.dao.Product;
+
 import java.util.List;
 
 public class SelectIteratorPostgres implements SelectIteratorDAO {
-    private List<List<Object>> productsList;
+    private List<Product> productsList;
     private int position = 0;
 
-    public SelectIteratorPostgres(List<List<Object>> productsList) {
+    public SelectIteratorPostgres(List<Product> productsList) {
         this.productsList = productsList;
     }
 
     @Override
-    public List<Object> getNext() {
+    public Product getNext() {
         this.position++;
 
         if (position == this.productsList.size()) {
@@ -22,7 +24,7 @@ public class SelectIteratorPostgres implements SelectIteratorDAO {
     }
 
     @Override
-    public List<Object> getPrevious() {
+    public Product getPrevious() {
         this.position--;
 
         if (this.position < 0) {
