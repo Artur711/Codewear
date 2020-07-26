@@ -1,8 +1,7 @@
 package com.codecool.view;
 
-import com.codecool.dao.Product;
+import com.codecool.model.Product;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class SelectView {

@@ -35,6 +35,23 @@ public class PSQLUserDao implements UserDao {
 
     }
 
+    public int addOtherUser(User user) {
+        String sql = "INSERT INTO users (first_name, last_name, email, password, user_role) VALUES (?, ?, ?, ?, ?)";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getEmail());
+            st.setString(4, user.getPassword());
+            st.setInt(5, user.getRoleID());
+            return st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return 0;
+
+    }
+
     @Override
     public User validateUser(User user) {
         String sql = "SELECT id, first_name, last_name, email, password, address, user_role FROM users WHERE email = ? and password = ?";
@@ -55,4 +72,19 @@ public class PSQLUserDao implements UserDao {
         }
         return null;
     }
+
+    @Override
+    public void delete(User user) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, user.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+    }
+
+
 }

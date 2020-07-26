@@ -14,9 +14,9 @@ public class MainView {
 
     private final Scanner scanner = new Scanner(System.in);
     private final String[] fields = {UserInfo.FIRST_NAME.getDisplay(),
-                       UserInfo.LAST_NAME.getDisplay(),
-                       UserInfo.EMAIL.getDisplay(),
-                       UserInfo.PASSWORD.getDisplay()};
+                                     UserInfo.LAST_NAME.getDisplay(),
+                                     UserInfo.EMAIL.getDisplay(),
+                                     UserInfo.PASSWORD.getDisplay()};
 
     public void displayMenuOptions(String[] options) {
         for (int i = 0; i < options.length; i++) {
@@ -31,7 +31,7 @@ public class MainView {
     }
 
     public void displayAdminMenu() {
-        String[] options = {"Add/Edit/Delete user", "Sign out"};
+        String[] options = {"Database management", "Sign out"};
         print("Welcome to Admin dashboard\n");
         displayMenuOptions(options);
     }
@@ -85,7 +85,7 @@ public class MainView {
         clearScreen();
         System.out.println("Please enter your " + field);
         for (int i = 0; i < fields.length; i++) {
-            System.out.println(fields[i] + ": " + answers[i]);
+            System.out.println(fields[i].toUpperCase() + ": " + answers[i]);
         }
 
     }
@@ -113,7 +113,6 @@ public class MainView {
 
     public void displayAccountCreationMessage() {
         System.out.print("\nYour account has been created!\n");
-
         pressEnterToContinue("\nPress enter to return to main menu");
 
     }
@@ -122,4 +121,5 @@ public class MainView {
         System.out.print("\nIncorrect email or password\n");
         pressEnterToContinue("\nPress enter to return to main menu");
     }
+
 }

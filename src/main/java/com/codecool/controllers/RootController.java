@@ -2,10 +2,8 @@
 package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
-import com.codecool.dao.PSQLCartDao;
 import com.codecool.dao.UserDao;
 import com.codecool.enums.Role;
-import com.codecool.model.Cart;
 
 import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
@@ -19,13 +17,16 @@ public class RootController {
     private final SelectDAO selectDao;
     private final CartDao cartDao;
     private final CustomerController customerController;
+    private final AdminController adminController;
 
     public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao) {
         this.userDao = userDao;
         this.selectDao = selectDao;
+        this.cartDao = cartDao;
         mainView = new MainView();
         customerController = new CustomerController();
-        this.cartDao = cartDao;
+        adminController = new AdminController(mainView, userDao);
+
     }
 
     public void run() {
@@ -63,9 +64,9 @@ public class RootController {
     public void validateUser() {
         User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
-            new AdminController(mainView, userDao).run();
+            adminController.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
-            mainView.print("\n You have successfully logged in");
+            mainView.print("\nYou have successfully logged in");
             mainView.pressEnterToContinue("");
             customerController.run();
 

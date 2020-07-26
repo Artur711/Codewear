@@ -12,21 +12,26 @@ public class User {
     String address;
     int roleID;
 
-    public User(int id, String firstName, String lastName, String email, String password, String address) {
+    public User(int id, String firstName, String lastName, String email, String password, String address, int roleID) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.address = address;
+        this.roleID = roleID;
     }
 
     public User(String firstName, String lastName, String email, String password) {
-        this(9999, firstName, lastName, email, password, null);
+        this(9999, firstName, lastName, email, password, null, Role.CUSTOMER.getRoleID());
+    }
+
+    public User(String firstName, String lastName, String email, String password, int roleID) {
+        this(9999, firstName, lastName, email, password, null, roleID);
     }
 
     public User(String email, String password) {
-        this(9999, null, null, email, password, null);
+        this(9999, null, null, email, password, null, Role.CUSTOMER.getRoleID());
     }
 
     public int getId() {
@@ -83,5 +88,16 @@ public class User {
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + id + "\n" +
+                "firstName: " + firstName + '\n' +
+                "lastName: '" + lastName + '\n' +
+                "email: " + email + '\n' +
+                "password: " + password + '\n' +
+                "address: " + address + '\n' +
+                "roleID: " + roleID;
     }
 }

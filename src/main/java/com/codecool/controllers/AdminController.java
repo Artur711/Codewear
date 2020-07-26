@@ -8,10 +8,12 @@ public class AdminController {
 
     private final MainView mainView;
     private final UserDao userDao;
+    private final DatabaseManager dbmanager;
 
     public AdminController(MainView mainView, UserDao userDao) {
         this.mainView = mainView;
         this.userDao = userDao;
+        this.dbmanager = new DatabaseManager(mainView, userDao);
     }
 
     public void run() {
@@ -22,11 +24,11 @@ public class AdminController {
 
             mainView.clearScreen();
             mainView.displayAdminMenu();
-            int input = mainView.getIntegerInput();
 
-            switch(input) {
+            switch(mainView.getIntegerInput()) {
                 case 1:
-                    //do something
+                    mainView.clearScreen();
+                    dbmanager.run();
                     break;
                 case 2:
                     isRunning = false;
