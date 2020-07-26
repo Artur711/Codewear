@@ -17,15 +17,15 @@ public class RootController {
     private final MainView mainView;
     private final UserDao userDao;
     private final SelectDAO selectDao;
-    private final CustomerController customerController;
     private final CartDao cartDao;
+    private final CustomerController customerController;
 
     public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao) {
         this.userDao = userDao;
         this.selectDao = selectDao;
         mainView = new MainView();
-        this.cartDao = cartDao;
         customerController = new CustomerController();
+        this.cartDao = cartDao;
     }
 
     public void run() {
@@ -46,9 +46,6 @@ public class RootController {
                     validateUser();
                     break;
                 case 3:
-                    customerController.run();
-                    break;
-                case 4:
                     isRunning = false;
                 default:
             }
@@ -70,6 +67,8 @@ public class RootController {
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             mainView.print("\n You have successfully logged in");
             mainView.pressEnterToContinue("");
+            customerController.run();
+
         } else {
             mainView.displayErrorWhileLoggingMessage();
 
