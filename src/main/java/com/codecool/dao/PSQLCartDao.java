@@ -90,4 +90,8 @@ public class PSQLCartDao implements CartDao{
         }
         return 0;
     }
+
+    public boolean checkQuantityOnStock(int quantityInOrder){
+        return true;
+    }
 }
