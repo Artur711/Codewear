@@ -1,6 +1,6 @@
 package com.codecool.select;
 
-import com.codecool.dao.Product;
+import com.codecool.model.Product;
 
 import java.util.List;
 
