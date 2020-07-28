@@ -38,8 +38,7 @@ public class SelectPostgres implements SelectDAO {
 
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         productList = tableProd.getTableFromDatabase(command);
-//        view.printList(objectList);
-//        view.printProductDetails(objectList.get(0));
+//        view.printList(productList);
         viewTheResults(productList);
     }
 
@@ -69,8 +68,7 @@ public class SelectPostgres implements SelectDAO {
         command = generateSelectQuery(String.format("SELECT %s FROM products", selectBY), this.mapOptionToSelect);
         Boolean isRun = true;
 
-        List<List<Object>> detailsList = tableProd.getTableAllDetails(command);
-        List<Object> optionList= getOptions(detailsList);
+        List<Object> optionList = tableProd.getOptions(command);
         view.printSelectOption(optionList);
         view.provideOption();
 
@@ -84,18 +82,6 @@ public class SelectPostgres implements SelectDAO {
                 scan.next();
             }
         }
-    }
-
-    private List<Object> getOptions(List<List<Object>> detailsList) {
-        List<Object> optionList = new ArrayList<>();
-
-        for (int i = 0; i < detailsList.size(); i++) {
-            if (!optionList.contains(detailsList.get(i).get(0))) {
-                optionList.add(detailsList.get(i).get(0));
-            }
-        }
-        optionList.add("All");
-        return optionList;
     }
 
     private void viewTheResults(List<Product> productList) {
