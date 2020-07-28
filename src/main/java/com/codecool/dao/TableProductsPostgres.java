@@ -39,27 +39,22 @@ public class TableProductsPostgres implements TableProductsDAO {
     }
 
     @Override
-    public List<List<Object>> getTableAllDetails(String command) {
-        List<List<Object>> objectList = new ArrayList<>();
+    public List<Object> getOptions(String command) {
+        List<Object> objectList = new ArrayList<>();
 
         try (PreparedStatement st = this.conn.prepareStatement(command);
              ResultSet rs = st.executeQuery()) {
 
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnCount = meta.getColumnCount();
-
             while (rs.next()) {
-                List<Object> oList = new ArrayList<>();
-
-                for (int index = 0; index < columnCount; index++) {
-                    oList.add(rs.getObject(index + 1));
+                if (!objectList.contains(rs.getObject(1))) {
+                    objectList.add(rs.getObject(1));
                 }
-                objectList.add(oList);
             }
 
         } catch (SQLException e) {
             System.out.println("Error executing query");
         }
+        objectList.add("All");
         return objectList;
     }
 

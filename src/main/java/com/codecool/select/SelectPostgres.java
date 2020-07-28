@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 
@@ -31,16 +30,16 @@ public class SelectPostgres implements SelectDAO {
     }
 
     @Override
-    public void run() {
+    public List<Product> run() {
         for (String option : selectOption) {
             getSelect(option);
         }
 
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         productList = tableProd.getTableFromDatabase(command);
-//        view.printList(objectList);
-//        view.printProductDetails(objectList.get(0));
-        viewTheResults(productList);
+//        view.printList(productList);
+//        viewTheResults(productList);
+        return productList;
     }
 
     @Override
@@ -69,8 +68,7 @@ public class SelectPostgres implements SelectDAO {
         command = generateSelectQuery(String.format("SELECT %s FROM products", selectBY), this.mapOptionToSelect);
         Boolean isRun = true;
 
-        List<List<Object>> detailsList = tableProd.getTableAllDetails(command);
-        List<Object> optionList= getOptions(detailsList);
+        List<Object> optionList = tableProd.getOptions(command);
         view.printSelectOption(optionList);
         view.provideOption();
 
@@ -86,19 +84,7 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-    private List<Object> getOptions(List<List<Object>> detailsList) {
-        List<Object> optionList = new ArrayList<>();
-
-        for (int i = 0; i < detailsList.size(); i++) {
-            if (!optionList.contains(detailsList.get(i).get(0))) {
-                optionList.add(detailsList.get(i).get(0));
-            }
-        }
-        optionList.add("All");
-        return optionList;
-    }
-
-    private void viewTheResults(List<Product> productList) {
+    /*private void viewTheResults(List<Product> productList) {
         boolean isRun = true;
         Scanner scan = new Scanner(System.in);
         Product product = productList.get(0);
@@ -120,5 +106,5 @@ public class SelectPostgres implements SelectDAO {
                 isRun = false;
             }
         }
-    }
+    }*/
 }

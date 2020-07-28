@@ -8,5 +8,5 @@ public interface TableProductsDAO {
 
     public List<Product> getTableFromDatabase (String command);
 
-    public List<List<Object>> getTableAllDetails (String command);
+    public List<Object> getOptions(String command);
 }
