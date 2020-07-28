@@ -1,5 +1,7 @@
 package com.codecool.dao;
 
+import com.codecool.model.Product;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.codecool.select;
 
 import com.codecool.dao.PSQLReadImage;
-import com.codecool.dao.Product;
 import com.codecool.dao.TableProductsDAO;
 import com.codecool.dao.TableProductsPostgres;
+import com.codecool.model.Product;
 import com.codecool.view.SelectView;
 
 import java.sql.Connection;
