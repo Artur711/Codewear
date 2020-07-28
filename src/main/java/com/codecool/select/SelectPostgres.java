@@ -1,6 +1,10 @@
 package com.codecool.select;
 
 import com.codecool.dao.PSQLReadImage;
+<<<<<<< Updated upstream
+=======
+import com.codecool.model.Product;
+>>>>>>> Stashed changes
 import com.codecool.dao.TableProductsDAO;
 import com.codecool.dao.TableProductsPostgres;
 import com.codecool.model.Product;

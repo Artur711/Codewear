@@ -1,14 +1,17 @@
 package com.codecool.controllers;
 
+import com.codecool.view.CartView;
 import com.codecool.view.CustomerView;
-
 
 public class CustomerController {
 
     CustomerView view;
+    CartController cartController;
 
     public CustomerController() {
+
         view = new CustomerView();
+        cartController = new CartController(6);
     }
 
     public void run() {
@@ -23,7 +26,7 @@ public class CustomerController {
 
             switch (input) {
                 case 1:
-                    break;
+                    cartController.run();
                 case 2:
                     break;
                 case 3:

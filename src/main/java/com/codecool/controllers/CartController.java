@@ -53,7 +53,6 @@ public class CartController {
 
             cartView.CartMenu();
             int input = mainView.getIntegerInput();
-
             switch (input) {
                 case 1:
                     psqlCartDao.addToUserCart(6, 8323, 2);

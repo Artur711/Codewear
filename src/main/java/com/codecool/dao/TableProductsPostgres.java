@@ -62,4 +62,30 @@ public class TableProductsPostgres implements TableProductsDAO {
         }
         return objectList;
     }
+
+    public Product getProductFromDatabase(int product_id) {
+
+        String sql = "select * from products where id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, product_id);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()) {
+                Object id = rs.getObject(1);
+                Object name = rs.getObject(2);
+                Object gender = rs.getObject(3);
+                Object type = rs.getObject(4);
+                Object color = rs.getObject(5);
+                Object size = rs.getObject(6);
+                Object price = rs.getObject(7);
+                Object quantity = rs.getObject(8);
+                Product product = new Product(id, name, gender, type, color, size, price, quantity);
+
+                return product;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return null;
+    }
 }
