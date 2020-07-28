@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 
@@ -31,7 +30,7 @@ public class SelectPostgres implements SelectDAO {
     }
 
     @Override
-    public void run() {
+    public List<Product> run() {
         for (String option : selectOption) {
             getSelect(option);
         }
@@ -39,7 +38,8 @@ public class SelectPostgres implements SelectDAO {
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         productList = tableProd.getTableFromDatabase(command);
 //        view.printList(productList);
-        viewTheResults(productList);
+//        viewTheResults(productList);
+        return productList;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-    private void viewTheResults(List<Product> productList) {
+    /*private void viewTheResults(List<Product> productList) {
         boolean isRun = true;
         Scanner scan = new Scanner(System.in);
         Product product = productList.get(0);
@@ -106,5 +106,5 @@ public class SelectPostgres implements SelectDAO {
                 isRun = false;
             }
         }
-    }
+    }*/
 }
