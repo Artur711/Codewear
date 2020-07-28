@@ -1,5 +1,6 @@
 package com.codecool.controllers;
 
+import com.codecool.dao.CartDao;
 import com.codecool.view.CartView;
 import com.codecool.view.CustomerView;
 
@@ -8,10 +9,10 @@ public class CustomerController {
     CustomerView view;
     CartController cartController;
 
-    public CustomerController() {
+    public CustomerController(CartDao cartDao) {
 
         view = new CustomerView();
-        cartController = new CartController(6);
+        cartController = new CartController(6, cartDao);
     }
 
     public void run() {

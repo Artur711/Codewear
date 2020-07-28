@@ -2,6 +2,7 @@ package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
 import com.codecool.datasource.PostgresSQLDataSource;
+import com.codecool.model.Cart;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
 import com.codecool.dao.PSQLCartDao;
@@ -23,20 +24,21 @@ public class CartController {
     MainView mainView;
 
     TableProductsPostgres tableProductsPostgres;
-    PSQLCartDao psqlCartDao;
+    CartDao cartDao;
 
     final int user_id;
 
 
-    public CartController(int user_id) {
+    public CartController(int user_id, CartDao cartDao) {
 
-        this.user_id = user_id;
+        this.user_id = 6;
+        this.cartDao = cartDao;
 
         cartView = new CartView();
         mainView = new MainView();
 
         tableProductsPostgres = new TableProductsPostgres(conn);
-        psqlCartDao = new PSQLCartDao(conn);
+
     }
 
     public void run() {
@@ -46,7 +48,7 @@ public class CartController {
         while (isRunning) {
 
             mainView.clearScreen();
-            Map<Integer, Integer> cartIdItems = psqlCartDao.getCartOfItems(6);
+            Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(6);
             for (int keyName : cartIdItems.keySet()) {
                 cartView.printProduct(tableProductsPostgres.getProductFromDatabase(keyName), cartIdItems.get(keyName));
             }
@@ -55,22 +57,22 @@ public class CartController {
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    psqlCartDao.addToUserCart(6, 8323, 2);
+                    cartDao.addToUserCart(6, 8323, 2);
                     break;
                 case 2:
                     System.out.println("Type product id to delte: ");
                     int propduct_id = mainView.getIntegerInput();
-                    psqlCartDao.deleteItemFromUserCart(getUser_id(), propduct_id);
+                    cartDao.deleteItemFromUserCart(this.user_id, propduct_id);
                     break;
                 case 3:
-                    psqlCartDao.deleteAllFromUserCart(getUser_id());
+                    cartDao.deleteAllFromUserCart(getUser_id());
                     break;
                 case 4:
                     System.out.println("Choose product id to change: ");
                     int product_idd = mainView.getIntegerInput();
                     System.out.println("Choose new quantity of product: ");
                     int new_quantity = mainView.getIntegerInput();
-                    psqlCartDao.changeQuantityOfProduct(getUser_id(), product_idd, new_quantity);
+                    cartDao.changeQuantityOfProduct(getUser_id(), product_idd, new_quantity);
                     break;
                 case 5:
                     isRunning = false;

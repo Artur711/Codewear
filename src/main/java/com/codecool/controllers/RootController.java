@@ -24,7 +24,7 @@ public class RootController {
         this.selectDao = selectDao;
         this.cartDao = cartDao;
         mainView = new MainView();
-        customerController = new CustomerController();
+        customerController = new CustomerController(cartDao);
         adminController = new AdminController(mainView, userDao);
 
     }
