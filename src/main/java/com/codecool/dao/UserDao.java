@@ -12,5 +12,8 @@ public interface UserDao {
 
     void delete(User user);
 
+    User getUserWithUserID(int userID);
+
+    int getNumberOfRecords();
 
 }

@@ -33,6 +33,9 @@ public class User {
     public User(String email, String password) {
         this(9999, null, null, email, password, null, Role.CUSTOMER.getRoleID());
     }
+    public User(int id) {
+        this(id, null, null, null, null, null, 0);
+    }
 
     public int getId() {
         return id;

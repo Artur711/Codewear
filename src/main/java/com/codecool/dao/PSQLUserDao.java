@@ -86,5 +86,39 @@ public class PSQLUserDao implements UserDao {
         }
     }
 
+    @Override
+    public User getUserWithUserID(int id) {
+        String sql = "SELECT id, first_name, last_name, email, password, address, user_role FROM users WHERE id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User user = new User(id);
+                user.setFirstName(rs.getString(UserTable.FIRST_NAME.getIndex()));
+                user.setLastName(rs.getString(UserTable.LAST_NAME.getIndex()));
+                user.setPassword(rs.getString(UserTable.PASSWORD.getIndex()));
+                user.setAddress(rs.getString(UserTable.ADDRESS.getIndex()));
+                user.setRoleID(rs.getInt(UserTable.USER_ROLE.getIndex()));
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public int getNumberOfRecords() {
+        String sql = "SELECT count(*) FROM users";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return 0;
+    }
+
 
 }

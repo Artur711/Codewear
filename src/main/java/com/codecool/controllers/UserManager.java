@@ -31,7 +31,7 @@ public class UserManager extends Manager {
                     add();
                     break;
                 case 2:
-                    //do something
+                    delete();
                     break;
                 case 3:
                     //do something
@@ -49,6 +49,17 @@ public class UserManager extends Manager {
 
     @Override
     protected void delete() {
+        mainView.println("Enter id of user to be removed:");
+        User user = userDao.getUserWithUserID(mainView.getIntegerInput());
+        System.out.printf("Current number of records: %d%n", userDao.getNumberOfRecords());
+        System.out.printf("Are you sure you really want to remove user: %s, %s? [Y/N]%n",
+                                                    user.getFirstName(), user.getLastName());
+        if (mainView.getStringInput().equalsIgnoreCase("y")) {
+            userDao.delete(user);
+            mainView.println("\nUser has been removed from database");
+            System.out.printf("Current number of records: %d%n", userDao.getNumberOfRecords());
+            mainView.pressEnterToContinue("Press enter to go back");
+        }
 
     }
 
