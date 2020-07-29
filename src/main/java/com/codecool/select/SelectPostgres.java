@@ -30,7 +30,7 @@ public class SelectPostgres implements SelectDAO {
     }
 
     @Override
-    public List<Product> runSearch() {
+    public Product runSearch() {
         for (String option : selectOption) {
             getSelect(option);
         }
@@ -38,8 +38,8 @@ public class SelectPostgres implements SelectDAO {
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         productList = tableProd.getTableFromDatabase(command);
 //        view.printList(productList);
-//        viewTheResults(productList);
-        return productList;
+        Product product = getSpecyficProduct(productList);
+        return product;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-    private void viewTheResults(List<Product> productList) {
+    private Product getSpecyficProduct(List<Product> productList) {
         boolean isRun = true;
         Scanner scan = new Scanner(System.in);
         Product product = productList.get(0);
@@ -102,9 +102,13 @@ public class SelectPostgres implements SelectDAO {
             } else if (result.equals("v")) {
                 PSQLReadImage readImage = new PSQLReadImage(this.conn);
                 readImage.run(String.valueOf(product.getName()));
+            } else if (result.equals("a")) {
+                isRun = false;
             } else if (result.equals("q")) {
                 isRun = false;
+                return null;
             }
         }
+        return product;
     }
 }
