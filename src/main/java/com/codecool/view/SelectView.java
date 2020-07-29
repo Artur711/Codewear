@@ -81,6 +81,10 @@ public class SelectView {
         sB.append("|| Previous Product (P)");
         sB.append(getRestSpaces(NUMBER_SPACES - 21 - 17));
         sB.append("Next Product (N) ||\n");
+
+        sB.append("|| Go back (Q)");
+        sB.append(getRestSpaces(NUMBER_SPACES - 13));
+        sB.append(" ||\n");
         System.out.print(sB.toString());
         printLineOfFrame();
     }

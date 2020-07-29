@@ -2,7 +2,7 @@
 package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
-import com.codecool.dao.ProductDAO;
+import com.codecool.dao.ProductDao;
 import com.codecool.dao.UserDao;
 import com.codecool.enums.Role;
 
@@ -15,17 +15,14 @@ public class RootController {
 
     private final MainView mainView;
     private final UserDao userDao;
-    private final SelectDAO selectDao;
-    private final CartDao cartDao;
     private final CustomerController customerController;
     private final AdminController adminController;
 
-    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDAO productDao) {
+
+    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao) {
         this.userDao = userDao;
-        this.selectDao = selectDao;
-        this.cartDao = cartDao;
         mainView = new MainView();
-        customerController = new CustomerController(cartDao);
+        customerController = new CustomerController(cartDao, productDao);
         adminController = new AdminController(mainView, userDao, productDao);
     }
 
@@ -68,13 +65,11 @@ public class RootController {
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             mainView.print("\nYou have successfully logged in");
             mainView.pressEnterToContinue("");
-            customerController.run();
+            customerController.run(user);
 
         } else {
             mainView.displayErrorWhileLoggingMessage();
 
         }
-
     }
-
 }

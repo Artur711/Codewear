@@ -4,7 +4,7 @@ import com.codecool.model.Product;
 
 import java.util.List;
 
-public interface ProductDAO {
+public interface ProductDao {
 
     List<Product> getTableFromDatabase (String command);
 
@@ -19,5 +19,7 @@ public interface ProductDAO {
     int addProduct(Product product);
 
     void update(Product product);
+
+    boolean checkIfProductExist(int productIdToCheck);
 
 }

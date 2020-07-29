@@ -14,5 +14,5 @@ public interface CartDao {
 
     int changeQuantityOfProduct(int user_id, int product_id, int quantity);
 
-    boolean checkQuantityOnStock(int quantityInOrder);
+    boolean availableQuantityOnStock(int quantityInOrder, int userQuantityOrder);
 }

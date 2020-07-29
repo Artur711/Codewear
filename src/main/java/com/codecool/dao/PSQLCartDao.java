@@ -92,7 +92,11 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public boolean checkQuantityOnStock(int quantityInOrder){
-        return true;
+    public boolean availableQuantityOnStock(int quantityInOrder, int userQuantityOrder){
+        if(quantityInOrder > userQuantityOrder){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

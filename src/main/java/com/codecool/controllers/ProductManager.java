@@ -1,15 +1,15 @@
 package com.codecool.controllers;
 
-import com.codecool.dao.ProductDAO;
+import com.codecool.dao.ProductDao;
 import com.codecool.model.Manager;
 import com.codecool.model.Product;
 import com.codecool.view.MainView;
 
 public class ProductManager extends Manager {
 
-    private final ProductDAO productDAO;
+    private final ProductDao productDAO;
 
-    public ProductManager(MainView mainView, ProductDAO productDAO) {
+    public ProductManager(MainView mainView, ProductDao productDAO) {
         super(mainView);
         this.productDAO = productDAO;
     }

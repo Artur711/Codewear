@@ -22,7 +22,7 @@ public class ApplicationController {
         UserDao userDao = new PSQLUserDao(conn);
         SelectDAO selectDao = new SelectPostgres(conn);
         CartDao cartDao = new PSQLCartDao(conn);
-        ProductDAO productDao = new PSQLProductDao(conn);
+        ProductDao productDao = new PSQLProductDao(conn);
 
         new RootController(userDao, selectDao, cartDao, productDao).run();
 

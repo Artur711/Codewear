@@ -1,21 +1,17 @@
 package com.codecool.controllers;
 
-import com.codecool.dao.ProductDAO;
+import com.codecool.dao.ProductDao;
 import com.codecool.dao.UserDao;
 import com.codecool.view.MainView;
 
 public class DatabaseManager {
 
     private final MainView mainView;
-    private final UserDao userDao;
-    private final ProductDAO productDAO;
     private final ProductManager productManager;
     private final UserManager userManager;
 
-    public DatabaseManager(MainView mainView, UserDao userDao, ProductDAO productDAO) {
+    public DatabaseManager(MainView mainView, UserDao userDao, ProductDao productDAO) {
         this.mainView = mainView;
-        this.userDao = userDao;
-        this.productDAO = productDAO;
         this.productManager = new ProductManager(mainView, productDAO);
         this.userManager = new UserManager(mainView, userDao);
     }

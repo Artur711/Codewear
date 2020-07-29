@@ -1,14 +1,12 @@
 package com.codecool.dao;
 
-import com.codecool.enums.UserTable;
 import com.codecool.model.Product;
-import com.codecool.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PSQLProductDao implements ProductDAO {
+public class PSQLProductDao implements ProductDao {
     private Connection conn;
 
     public PSQLProductDao(Connection conn) {
@@ -60,6 +58,7 @@ public class PSQLProductDao implements ProductDAO {
         return objectList;
     }
 
+    @Override
     public Product getProductFromDatabase(int product_id) {
 
         String sql = "select * from products where id = ?";
@@ -87,16 +86,32 @@ public class PSQLProductDao implements ProductDAO {
     }
 
     @Override
+
     public int getNumberOfRecords() {
         String sql = "SELECT count(*) FROM products";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             ResultSet rs = st.executeQuery();
             if (rs.next()) return rs.getInt(1);
-
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
         return 0;
+    }
+
+    @Override
+    public boolean checkIfProductExist(int productIdToCheck) {
+        String sql = "select exists(select 1 from products where id=?)";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, productIdToCheck);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getBoolean(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return false;
     }
 
     @Override
