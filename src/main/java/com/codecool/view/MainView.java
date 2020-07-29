@@ -122,4 +122,13 @@ public class MainView {
         pressEnterToContinue("\nPress enter to return to main menu");
     }
 
+    public String readInput(String prompt, String defaultValue) {
+        showPrompt(prompt, defaultValue);
+        String input = scanner.nextLine();
+        return input.isEmpty() ? defaultValue : input;
+    }
+
+    private void showPrompt(String prompt, Object defaultValue) {
+        System.out.println(prompt + " (Current value: " + defaultValue + "): ");
+    }
 }

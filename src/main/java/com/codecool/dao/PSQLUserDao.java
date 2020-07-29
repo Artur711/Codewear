@@ -18,31 +18,14 @@ public class PSQLUserDao implements UserDao {
     }
 
     @Override
-    public int addCustomerUser(User user) {
+    public int addUser(User user, int userRole) {
         String sql = "INSERT INTO users (first_name, last_name, email, password, user_role) VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, user.getFirstName());
             st.setString(2, user.getLastName());
             st.setString(3, user.getEmail());
             st.setString(4, user.getPassword());
-            st.setInt(5, Role.CUSTOMER.getRoleID());
-            return st.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("Error executing query: " + e.getMessage());
-        }
-        return 0;
-
-    }
-
-    public int addOtherUser(User user) {
-        String sql = "INSERT INTO users (first_name, last_name, email, password, user_role) VALUES (?, ?, ?, ?, ?)";
-        try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setString(1, user.getFirstName());
-            st.setString(2, user.getLastName());
-            st.setString(3, user.getEmail());
-            st.setString(4, user.getPassword());
-            st.setInt(5, user.getRoleID());
+            st.setInt(5, userRole);
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -96,6 +79,7 @@ public class PSQLUserDao implements UserDao {
                 User user = new User(id);
                 user.setFirstName(rs.getString(UserTable.FIRST_NAME.getIndex()));
                 user.setLastName(rs.getString(UserTable.LAST_NAME.getIndex()));
+                user.setEmail(rs.getString(UserTable.EMAIL.getIndex()));
                 user.setPassword(rs.getString(UserTable.PASSWORD.getIndex()));
                 user.setAddress(rs.getString(UserTable.ADDRESS.getIndex()));
                 user.setRoleID(rs.getInt(UserTable.USER_ROLE.getIndex()));
@@ -120,5 +104,23 @@ public class PSQLUserDao implements UserDao {
         return 0;
     }
 
+    @Override
+    public void update(User user) {
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, address = ?, user_role = ? WHERE id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getEmail());
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getAddress());
+            st.setInt(6, user.getRoleID());
+            st.setInt(7,user.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+    }
 
 }

@@ -58,6 +58,7 @@ public class TableProductsPostgres implements TableProductsDAO {
         return objectList;
     }
 
+    @Override
     public Product getProductFromDatabase(int product_id) {
 
         String sql = "select * from products where id = ?";
@@ -82,5 +83,21 @@ public class TableProductsPostgres implements TableProductsDAO {
             System.out.println("Error executing query: " + e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public boolean checkIfProductExist(int productIdToCheck) {
+        String sql = "select exists(select 1 from products where id=?)";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, productIdToCheck);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getBoolean(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return false;
     }
 }

@@ -4,9 +4,7 @@ import com.codecool.model.User;
 
 public interface UserDao {
 
-    int addCustomerUser(User user);
-
-    int addOtherUser(User user);
+    int addUser(User user, int userRole);
 
     User validateUser(User user);
 
@@ -15,5 +13,7 @@ public interface UserDao {
     User getUserWithUserID(int userID);
 
     int getNumberOfRecords();
+
+    void update(User user);
 
 }
