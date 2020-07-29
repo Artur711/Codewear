@@ -16,8 +16,8 @@ import java.util.InputMismatchException;
 
 
 public class SelectPostgres implements SelectDAO {
-    private SelectView view = new SelectView();
-    private Connection conn;
+    private final SelectView view = new SelectView();
+    private final Connection conn;
     private List<Product> productList;
     private String command;
     private Map<String, String> mapOptionToSelect = new HashMap<>();
@@ -30,7 +30,7 @@ public class SelectPostgres implements SelectDAO {
     }
 
     @Override
-    public List<Product> run() {
+    public List<Product> runSearch() {
         for (String option : selectOption) {
             getSelect(option);
         }
@@ -84,7 +84,7 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-    /*private void viewTheResults(List<Product> productList) {
+    private void viewTheResults(List<Product> productList) {
         boolean isRun = true;
         Scanner scan = new Scanner(System.in);
         Product product = productList.get(0);
@@ -106,5 +106,5 @@ public class SelectPostgres implements SelectDAO {
                 isRun = false;
             }
         }
-    }*/
+    }
 }

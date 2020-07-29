@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface SelectDAO {
 
-    public List<Product> run();
+    public List<Product> runSearch();
 
     public String generateSelectQuery(String query, Map<String, String> mapOptionToSelect);
 }

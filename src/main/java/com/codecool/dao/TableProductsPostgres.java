@@ -21,14 +21,14 @@ public class TableProductsPostgres implements TableProductsDAO {
              ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
-                Object id = rs.getObject(1);
-                Object name = rs.getObject(2);
-                Object gender = rs.getObject(3);
-                Object type = rs.getObject(4);
-                Object color = rs.getObject(5);
-                Object size = rs.getObject(6);
-                Object price = rs.getObject(7);
-                Object quantity = rs.getObject(8);
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String gender = rs.getString(3);
+                String type = rs.getString(4);
+                String color = rs.getString(5);
+                String size = rs.getString(6);
+                int price = rs.getInt(7);
+                int quantity = rs.getInt(8);
                 productsList.add(new Product(id, name, gender, type, color, size, price, quantity));
             }
 
@@ -65,14 +65,14 @@ public class TableProductsPostgres implements TableProductsDAO {
             st.setInt(1, product_id);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
-                Object id = rs.getObject(1);
-                Object name = rs.getObject(2);
-                Object gender = rs.getObject(3);
-                Object type = rs.getObject(4);
-                Object color = rs.getObject(5);
-                Object size = rs.getObject(6);
-                Object price = rs.getObject(7);
-                Object quantity = rs.getObject(8);
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String gender = rs.getString(3);
+                String type = rs.getString(4);
+                String color = rs.getString(5);
+                String size = rs.getString(6);
+                int price = rs.getInt(7);
+                int quantity = rs.getInt(8);
                 Product product = new Product(id, name, gender, type, color, size, price, quantity);
 
                 return product;

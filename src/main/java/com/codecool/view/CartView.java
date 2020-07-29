@@ -16,7 +16,7 @@ public class CartView {
     }
 
     public void printProduct(Product product, int quantity) {
-        System.out.println(product.getId().toString() + " " + product.getName().toString() + " " + quantity);
+        System.out.println(String.format("%d %s %s",product.getId(), product.getName(), quantity));
     }
 
     public void printCartItems(Map<Integer, Integer> cartItems){

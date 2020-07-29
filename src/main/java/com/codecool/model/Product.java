@@ -1,16 +1,16 @@
 package com.codecool.model;
 
 public class Product {
-    private Object id;
-    private Object name;
-    private Object gender;
-    private Object type;
-    private Object colour;
-    private Object sizes;
-    private Object prices;
-    private Object quantity;
+    private int id;
+    private String name;
+    private String gender;
+    private String type;
+    private String colour;
+    private String sizes;
+    private int prices;
+    private int quantity;
 
-    public Product(Object id, Object name, Object gender, Object type, Object colour, Object sizes, Object prices, Object quantity) {
+    public Product(int id, String name, String gender, String type, String colour, String sizes, int prices, int quantity) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -21,35 +21,31 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Object getId() {
+    public int getId() {
         return id;
     }
 
-    public Object getName() {
+    public String getName() {
         return name;
     }
 
-    public Object getGender() {
-        return gender;
-    }
-
-    public Object getType() {
+    public String getType() {
         return type;
     }
 
-    public Object getColour() {
+    public String getColour() {
         return colour;
     }
 
-    public Object getSizes() {
+    public String getSizes() {
         return sizes;
     }
 
-    public Object getPrices() {
+    public int getPrices() {
         return prices;
     }
 
-    public Object getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 }

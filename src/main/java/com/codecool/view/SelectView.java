@@ -56,20 +56,20 @@ public class SelectView {
 
         sB.append("|| ");
         sB.append(String.format("Product name: %s", product.getName()));
-        numberOfRestSpaces = NUMBER_SPACES - 16 - String.valueOf(product.getName()).length();
+        numberOfRestSpaces = NUMBER_SPACES - 16 - product.getName().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 
         sB.append("|| ");
         sB.append(String.format("Product type: %s", product.getType()));
-        numberOfRestSpaces = NUMBER_SPACES - 22 - String.valueOf(product.getType()).length() - String.valueOf(product.getSizes()).length();
+        numberOfRestSpaces = NUMBER_SPACES - 22 - product.getType().length() - product.getSizes().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(String.format("SIZE: %s", product.getSizes()));
         sB.append(" ||\n");
 
         sB.append("|| ");
         sB.append(String.format("Colour: %s", product.getColour()));
-        numberOfRestSpaces = NUMBER_SPACES - 10 - String.valueOf(product.getColour()).length();
+        numberOfRestSpaces = NUMBER_SPACES - 10 - product.getColour().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 
