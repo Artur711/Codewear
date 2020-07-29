@@ -56,7 +56,7 @@ public class RootController {
 
     public void createUserAccount() {
         User user = mainView.getUserData();
-        if (userDao.addCustomerUser(user) == 1) {
+        if (userDao.addUser(user, Role.CUSTOMER.getRoleID()) == 1) {
             mainView.displayAccountCreationMessage();
         }
     }
