@@ -2,10 +2,8 @@ package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
 import com.codecool.datasource.PostgresSQLDataSource;
-import com.codecool.model.Cart;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
-import com.codecool.dao.PSQLCartDao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +12,7 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Properties;
 
-import com.codecool.dao.TableProductsPostgres;
+import com.codecool.dao.PSQLProductDao;
 
 public class CartController {
 
@@ -23,7 +21,7 @@ public class CartController {
     CartView cartView;
     MainView mainView;
 
-    TableProductsPostgres tableProductsPostgres;
+    PSQLProductDao PSQLProductDao;
     CartDao cartDao;
 
     final int user_id;
@@ -37,7 +35,7 @@ public class CartController {
         cartView = new CartView();
         mainView = new MainView();
 
-        tableProductsPostgres = new TableProductsPostgres(conn);
+        PSQLProductDao = new PSQLProductDao(conn);
 
     }
 
@@ -50,7 +48,7 @@ public class CartController {
             mainView.clearScreen();
             Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(6);
             for (int keyName : cartIdItems.keySet()) {
-                cartView.printProduct(tableProductsPostgres.getProductFromDatabase(keyName), cartIdItems.get(keyName));
+                cartView.printProduct(PSQLProductDao.getProductFromDatabase(keyName), cartIdItems.get(keyName));
             }
 
             cartView.CartMenu();

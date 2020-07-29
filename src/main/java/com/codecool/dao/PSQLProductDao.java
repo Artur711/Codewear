@@ -1,15 +1,17 @@
 package com.codecool.dao;
 
+import com.codecool.enums.UserTable;
 import com.codecool.model.Product;
+import com.codecool.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableProductsPostgres implements TableProductsDAO {
+public class PSQLProductDao implements ProductDAO {
     private Connection conn;
 
-    public TableProductsPostgres(Connection conn) {
+    public PSQLProductDao(Connection conn) {
         this.conn = conn;
     }
 
@@ -83,4 +85,71 @@ public class TableProductsPostgres implements TableProductsDAO {
         }
         return null;
     }
+
+    @Override
+    public int getNumberOfRecords() {
+        String sql = "SELECT count(*) FROM products";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
+    public void delete(Product product) {
+        String sql = "DELETE FROM products WHERE id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, product.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public int addProduct(Product product) {
+        String sql = "INSERT INTO products (product_name, gender, type, colour, sizes, prices, quantity_on_stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, product.getName());
+            st.setString(2, product.getGender());
+            st.setString(3, product.getType());
+            st.setString(4, product.getColour());
+            st.setString(5, product.getSizes());
+            st.setInt(6, product.getPrices());
+            st.setInt(7, product.getQuantity());
+            return st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return 0;
+
+    }
+
+    @Override
+    public void update(Product product) {
+        String sql = "UPDATE products SET product_name = ?, gender = ?, type = ?, colour = ?, sizes = ?, prices = ?, quantity_on_stock = ? WHERE id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, product.getName());
+            st.setString(2, product.getGender());
+            st.setString(3, product.getType());
+            st.setString(4, product.getColour());
+            st.setString(5, product.getSizes());
+            st.setInt(6, product.getPrices());
+            st.setInt(7,product.getQuantity());
+            st.setInt(8,product.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+    }
+
 }

@@ -11,8 +11,7 @@ import java.util.Random;
 
 public class UserManager extends Manager {
 
-    UserDao userDao;
-
+    private final UserDao userDao;
 
     public UserManager(MainView mainView, UserDao userDao) {
         super(mainView);
@@ -40,11 +39,11 @@ public class UserManager extends Manager {
                 case 4:
                     isRunning = false;
                     break;
-
+                default:
+                    System.out.println("There is no such choice");
             }
 
         }
-
 
     }
 
@@ -100,6 +99,7 @@ public class UserManager extends Manager {
         userDao.update(user);
         System.out.println("\nUser has been updated\n");
         System.out.println(userDao.getUserWithUserID(user.getId()));
+        mainView.pressEnterToContinue("\nPress enter to go back");
     }
 
     public User enterUserData() {

@@ -67,10 +67,7 @@ public class MainView {
 
     public User getUserData() {
         String[] answers = new String[] {"", "", "", ""};
-        String[] fields = {UserInfo.LAST_NAME.getDisplay(),
-                UserInfo.EMAIL.getDisplay(),
-                UserInfo.PASSWORD.getDisplay(),
-                UserInfo.PASSWORD.getDisplay()};
+        String[] fields = {"last name", "email", "password", "password"};
 
         displayRegistrationScreen(UserInfo.FIRST_NAME.getDisplay(), answers);
         for (int i = 0; i < fields.length ; i++) {
@@ -129,6 +126,6 @@ public class MainView {
     }
 
     private void showPrompt(String prompt, Object defaultValue) {
-        System.out.println(prompt + " (Current value: " + defaultValue + "): ");
+        System.out.print(prompt + " (current value -> " + defaultValue + "): ");
     }
 }

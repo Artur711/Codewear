@@ -1,5 +1,6 @@
 package com.codecool.controllers;
 
+import com.codecool.dao.ProductDAO;
 import com.codecool.dao.UserDao;
 import com.codecool.view.MainView;
 
@@ -7,13 +8,11 @@ import com.codecool.view.MainView;
 public class AdminController {
 
     private final MainView mainView;
-    private final UserDao userDao;
     private final DatabaseManager dbmanager;
 
-    public AdminController(MainView mainView, UserDao userDao) {
+    public AdminController(MainView mainView, UserDao userDao, ProductDAO productDAO) {
         this.mainView = mainView;
-        this.userDao = userDao;
-        this.dbmanager = new DatabaseManager(mainView, userDao);
+        this.dbmanager = new DatabaseManager(mainView, userDao, productDAO);
     }
 
     public void run() {

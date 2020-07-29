@@ -3,8 +3,8 @@ package com.codecool.select;
 import com.codecool.dao.PSQLReadImage;
 
 import com.codecool.model.Product;
-import com.codecool.dao.TableProductsDAO;
-import com.codecool.dao.TableProductsPostgres;
+import com.codecool.dao.ProductDAO;
+import com.codecool.dao.PSQLProductDao;
 import com.codecool.view.SelectView;
 
 import java.sql.Connection;
@@ -21,12 +21,12 @@ public class SelectPostgres implements SelectDAO {
     private List<Product> productList;
     private String command;
     private Map<String, String> mapOptionToSelect = new HashMap<>();
-    private TableProductsDAO tableProd;
+    private ProductDAO tableProd;
     private String [] selectOption = {"gender", "type", "colour", "sizes"};
 
     public SelectPostgres(Connection conn) {
         this.conn = conn;
-        this.tableProd = new TableProductsPostgres(conn);
+        this.tableProd = new PSQLProductDao(conn);
     }
 
     @Override
