@@ -22,7 +22,8 @@ public class ApplicationController {
         UserDao userDao = new PSQLUserDao(conn);
         SelectDAO selectDao = new SelectPostgres(conn);
         CartDao cartDao = new PSQLCartDao(conn);
-        new RootController(userDao, selectDao, cartDao).run();
+        TableProductsDAO tableProductsDAO = new TableProductsPostgres(conn);
+        new RootController(userDao, selectDao, cartDao, tableProductsDAO).run();
 
         try {
             conn.close();

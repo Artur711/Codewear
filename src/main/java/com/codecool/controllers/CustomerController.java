@@ -1,7 +1,8 @@
 package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
-import com.codecool.view.CartView;
+import com.codecool.dao.TableProductsDAO;
+import com.codecool.model.User;
 import com.codecool.view.CustomerView;
 
 public class CustomerController {
@@ -9,13 +10,14 @@ public class CustomerController {
     CustomerView view;
     CartController cartController;
 
-    public CustomerController(CartDao cartDao) {
+
+    public CustomerController(CartDao cartDao, TableProductsDAO tableProductsDAO) {
 
         view = new CustomerView();
-        cartController = new CartController(6, cartDao);
+        cartController = new CartController(cartDao, tableProductsDAO);
     }
 
-    public void run() {
+    public void run(User user) {
         view.clearScreen();
         boolean isRunning = true;
 
@@ -27,7 +29,7 @@ public class CustomerController {
 
             switch (input) {
                 case 1:
-                    cartController.run();
+                    cartController.run(user);
                 case 2:
                     break;
                 case 3:

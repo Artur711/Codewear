@@ -1,78 +1,87 @@
 package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
-import com.codecool.datasource.PostgresSQLDataSource;
-import com.codecool.model.Cart;
+import com.codecool.dao.TableProductsDAO;
+
+import com.codecool.model.User;
+
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
-import com.codecool.dao.PSQLCartDao;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
+
+import java.sql.SQLOutput;
 import java.util.Map;
-import java.util.Properties;
 
-import com.codecool.dao.TableProductsPostgres;
 
 public class CartController {
 
-    Connection conn = setup();
 
     CartView cartView;
     MainView mainView;
 
-    TableProductsPostgres tableProductsPostgres;
+    TableProductsDAO tableProductsDAO;
     CartDao cartDao;
 
-    final int user_id;
 
+    public CartController(CartDao cartDao, TableProductsDAO tableProductsDAO) {
 
-    public CartController(int user_id, CartDao cartDao) {
-
-        this.user_id = 6;
         this.cartDao = cartDao;
+        this.tableProductsDAO = tableProductsDAO;
 
         cartView = new CartView();
         mainView = new MainView();
 
-        tableProductsPostgres = new TableProductsPostgres(conn);
-
     }
 
-    public void run() {
+    public void run(User user) {
         mainView.clearScreen();
         boolean isRunning = true;
 
         while (isRunning) {
 
             mainView.clearScreen();
-            Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(6);
+            Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(user.getId());
             for (int keyName : cartIdItems.keySet()) {
-                cartView.printProduct(tableProductsPostgres.getProductFromDatabase(keyName), cartIdItems.get(keyName));
+                cartView.printProduct(tableProductsDAO.getProductFromDatabase(keyName), cartIdItems.get(keyName));
             }
 
+            int product_id = 0;
+            int quantity = 0;
             cartView.CartMenu();
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    cartDao.addToUserCart(6, 8323, 2);
+                    System.out.println("Choose product id: ");
+                    product_id = mainView.getIntegerInput();
+                    if(tableProductsDAO.checkIfProductExist(product_id)) {
+                        System.out.println("Choose quantity of product: ");
+                        quantity = mainView.getIntegerInput();
+                        if(cartDao.availableQuantityOnStock(getProductQuantityOnStock(product_id), quantity) && quantity > 0){
+                            cartDao.addToUserCart(user.getId(), product_id, quantity);
+                        }else{
+                            System.out.println("Quantity available in stock: " + getProductQuantityOnStock(product_id));
+                        }
+                    }
                     break;
                 case 2:
                     System.out.println("Type product id to delte: ");
-                    int propduct_id = mainView.getIntegerInput();
-                    cartDao.deleteItemFromUserCart(this.user_id, propduct_id);
+                    product_id = mainView.getIntegerInput();
+                    cartDao.deleteItemFromUserCart(user.getId(), product_id);
                     break;
                 case 3:
-                    cartDao.deleteAllFromUserCart(getUser_id());
+                    cartDao.deleteAllFromUserCart(user.getId());
                     break;
                 case 4:
                     System.out.println("Choose product id to change: ");
-                    int product_idd = mainView.getIntegerInput();
+                    product_id = mainView.getIntegerInput();
                     System.out.println("Choose new quantity of product: ");
-                    int new_quantity = mainView.getIntegerInput();
-                    cartDao.changeQuantityOfProduct(getUser_id(), product_idd, new_quantity);
+                    quantity = mainView.getIntegerInput();
+                    if(cartDao.availableQuantityOnStock(getProductQuantityOnStock(product_id), quantity) && quantity > 0){
+                        cartDao.addToUserCart(user.getId(), product_id, quantity);
+                    }else{
+                        System.out.println("Quantity available in stock: " + getProductQuantityOnStock(product_id));
+                    }
+                    cartDao.changeQuantityOfProduct(user.getId(), product_id, quantity);
                     break;
                 case 5:
                     isRunning = false;
@@ -81,21 +90,7 @@ public class CartController {
         }
     }
 
-    public Connection setup() {
-        try (InputStream input = new FileInputStream("./src/main/resources/database.properties")) {
-            Properties prop = new Properties();
-            prop.load(input);
-            String databaseName = prop.getProperty("db.database");
-            String user = prop.getProperty("db.user");
-            String password = prop.getProperty("db.passwd");
-            return new PostgresSQLDataSource(databaseName, user, password).connect();
-        } catch (IOException e) {
-            System.out.println("The file doesn't exist!!!");
-        }
-        return null;
-    }
-
-    public int getUser_id() {
-        return user_id;
+    public int getProductQuantityOnStock(int product_id){
+        return (int)tableProductsDAO.getProductFromDatabase(product_id).getQuantity();
     }
 }
