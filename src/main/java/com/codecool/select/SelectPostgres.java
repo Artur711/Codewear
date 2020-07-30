@@ -18,11 +18,10 @@ import java.util.InputMismatchException;
 public class SelectPostgres implements SelectDAO {
     private final SelectView view = new SelectView();
     private final Connection conn;
-    private List<Product> productList;
     private String command;
-    private Map<String, String> mapOptionToSelect = new HashMap<>();
-    private ProductDao tableProd;
-    private String [] selectOption = {"gender", "type", "colour", "sizes"};
+    private final Map<String, String> mapOptionToSelect = new HashMap<>();
+    private final ProductDao tableProd;
+    private final String [] selectOption = {"gender", "type", "colour", "sizes"};
 
     public SelectPostgres(Connection conn) {
         this.conn = conn;
@@ -36,27 +35,25 @@ public class SelectPostgres implements SelectDAO {
         }
 
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
-        productList = tableProd.getTableFromDatabase(command);
+        List<Product> productList = tableProd.getTableFromDatabase(command);
 //        view.printList(productList);
-        Product product = getSpecyficProduct(productList);
-        return product;
+        return getSpecificProduct(productList);
     }
 
     @Override
     public String generateSelectQuery(String query, Map<String, String> mapOptionToSelect) {
-        Boolean isWhereStatement = false;
+        boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
-        for (int index = 0; index < selectOption.length; index++) {
-            String vauleOfMap = mapOptionToSelect.get(selectOption[index]);
+        for (String s : selectOption) {
+            String valueOfMap = mapOptionToSelect.get(s);
 
-            if (!(vauleOfMap == null)) {
-                if (!vauleOfMap.equals("All") && !isWhereStatement) {
-                    sb.append(String.format(" where %s = '%s'", selectOption[index], vauleOfMap));
+            if (!(valueOfMap == null)) {
+                if (!valueOfMap.equals("All") && !isWhereStatement) {
+                    sb.append(String.format(" where %s = '%s'", s, valueOfMap));
                     isWhereStatement = true;
-                }
-                else if (!vauleOfMap.equals("All")) {
-                    sb.append(String.format(" and %s = '%s'", selectOption[index], vauleOfMap));
+                } else if (!valueOfMap.equals("All")) {
+                    sb.append(String.format(" and %s = '%s'", s, valueOfMap));
                 }
             }
         }
@@ -66,7 +63,7 @@ public class SelectPostgres implements SelectDAO {
 
     private void getSelect(String selectBY) {
         command = generateSelectQuery(String.format("SELECT %s FROM products", selectBY), this.mapOptionToSelect);
-        Boolean isRun = true;
+        boolean isRun = true;
 
         List<Object> optionList = tableProd.getOptions(command);
         view.printSelectOption(optionList);
@@ -84,7 +81,7 @@ public class SelectPostgres implements SelectDAO {
         }
     }
 
-    private Product getSpecyficProduct(List<Product> productList) {
+    private Product getSpecificProduct(List<Product> productList) {
         boolean isRun = true;
         Scanner scan = new Scanner(System.in);
         Product product = productList.get(0);
@@ -95,18 +92,22 @@ public class SelectPostgres implements SelectDAO {
             view.printProductDetails(product);
             String result = scan.nextLine().toLowerCase();
 
-            if (result.equals("n")) {
-                product = selectIteratorDAO.getNext();
-            } else if (result.equals("p")) {
-                product = selectIteratorDAO.getPrevious();
-            } else if (result.equals("v")) {
-                PSQLReadImage readImage = new PSQLReadImage(this.conn);
-                readImage.run(String.valueOf(product.getName()));
-            } else if (result.equals("a")) {
-                isRun = false;
-            } else if (result.equals("q")) {
-                isRun = false;
-                return null;
+            switch (result) {
+                case "n":
+                    product = selectIteratorDAO.getNext();
+                    break;
+                case "p":
+                    product = selectIteratorDAO.getPrevious();
+                    break;
+                case "v":
+                    PSQLReadImage readImage = new PSQLReadImage(this.conn);
+                    readImage.run(String.valueOf(product.getName()));
+                    break;
+                case "a":
+                    isRun = false;
+                    break;
+                case "q":
+                    return null;
             }
         }
         return product;

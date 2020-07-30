@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PSQLProductDao implements ProductDao {
-    private Connection conn;
+    private final Connection conn;
 
     public PSQLProductDao(Connection conn) {
         this.conn = conn;
@@ -65,7 +65,8 @@ public class PSQLProductDao implements ProductDao {
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, product_id);
             ResultSet rs = st.executeQuery();
-            while(rs.next()) {
+
+            if (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 String gender = rs.getString(3);
@@ -74,9 +75,8 @@ public class PSQLProductDao implements ProductDao {
                 String size = rs.getString(6);
                 int price = rs.getInt(7);
                 int quantity = rs.getInt(8);
-                Product product = new Product(id, name, gender, type, color, size, price, quantity);
 
-                return product;
+                return new Product(id, name, gender, type, color, size, price, quantity);
             }
 
         } catch (SQLException e) {

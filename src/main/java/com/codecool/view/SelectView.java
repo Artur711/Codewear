@@ -7,7 +7,7 @@ import java.util.List;
 public class SelectView {
     private final int NUMBER_SPACES = 46;
 
-    public void printList (List<List<Object>> listToPrint) {
+    /*public void printList (List<List<Object>> listToPrint) {
         for (List<Object> row : listToPrint) {
             for (Object element : row) {
                 System.out.print(element);
@@ -15,7 +15,7 @@ public class SelectView {
             }
             System.out.println();
         }
-    }
+    }*/
 
     public void printSelectOption (List<Object> optionList) {
         printLineOfFrame();
@@ -36,18 +36,23 @@ public class SelectView {
 
     public void printProductDetails(Product product) {
         int numberOfRestSpaces;
+        int quantitySignsInRigidText;
         printLineOfFrame();
         String str = "|| ";
 
         StringBuilder sB = new StringBuilder(str);
         sB.append(String.format("Product id: %d",product.getId()));
-        numberOfRestSpaces = NUMBER_SPACES - 32 - String.valueOf(product.getId()).length() - String.valueOf(product.getQuantity()).length();
+        quantitySignsInRigidText = 32;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText
+                                           - String.valueOf(product.getId()).length()
+                                           - String.valueOf(product.getQuantity()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(String.format("Pieces available: %d", product.getQuantity()));
         sB.append(" || \n");
 
         sB.append("|| ");
-        numberOfRestSpaces = NUMBER_SPACES - 11 - String.valueOf(product.getPrices()).length();
+        quantitySignsInRigidText = 11;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - String.valueOf(product.getPrices()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(String.format("Price: %d $", product.getPrices()));
         sB.append(" ||\n");
@@ -56,34 +61,40 @@ public class SelectView {
 
         sB.append("|| ");
         sB.append(String.format("Product name: %s", product.getName()));
-        numberOfRestSpaces = NUMBER_SPACES - 16 - product.getName().length();
+        quantitySignsInRigidText = 16;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getName().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 
         sB.append("|| ");
         sB.append(String.format("Product type: %s", product.getType()));
-        numberOfRestSpaces = NUMBER_SPACES - 22 - product.getType().length() - product.getSizes().length();
+        quantitySignsInRigidText = 22;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getType().length() - product.getSizes().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(String.format("SIZE: %s", product.getSizes()));
         sB.append(" ||\n");
 
         sB.append("|| ");
         sB.append(String.format("Colour: %s", product.getColour()));
-        numberOfRestSpaces = NUMBER_SPACES - 10 - product.getColour().length();
+        quantitySignsInRigidText = 10;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getColour().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
         sB.append(" ||\n");
 
         sB.append(getEmptyLine());
         sB.append("|| Add to cart (A)");
-        sB.append(getRestSpaces(NUMBER_SPACES - 16 - 20));
+        quantitySignsInRigidText = 36;
+        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
         sB.append("Product Preview (V) ||\n");
 
         sB.append("|| Previous Product (P)");
-        sB.append(getRestSpaces(NUMBER_SPACES - 21 - 17));
+        quantitySignsInRigidText = 38;
+        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
         sB.append("Next Product (N) ||\n");
 
         sB.append("|| Go back (Q)");
-        sB.append(getRestSpaces(NUMBER_SPACES - 13));
+        quantitySignsInRigidText = 13;
+        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
         sB.append(" ||\n");
         System.out.print(sB.toString());
         printLineOfFrame();

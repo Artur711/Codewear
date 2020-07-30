@@ -23,7 +23,7 @@ public class RootController {
     public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao) {
         this.userDao = userDao;
         mainView = new MainView();
-        customerController = new CustomerController(cartDao, productDao);
+        customerController = new CustomerController(cartDao, productDao, selectDao);
         adminController = new AdminController(mainView, userDao, productDao, orderDao);
     }
 

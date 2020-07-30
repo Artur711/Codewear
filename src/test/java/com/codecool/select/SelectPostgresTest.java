@@ -10,12 +10,11 @@ import java.util.HashMap;
 
 
 public class SelectPostgresTest {
+    private final ApplicationController ac = new ApplicationController();
+    private final Connection conn = ac.setup();
+    private final SelectDAO selectObject = new SelectPostgres(conn);
+    private final String query = "SELECT * FROM products";
     private Map<String, String> optionToSelect;
-    private String [] selectOption = {"gender", "type", "colour", "sizes"};
-    private ApplicationController ac = new ApplicationController();
-    private Connection conn = ac.setup();
-    private SelectDAO selectObject = new SelectPostgres(conn);
-    private String query = "SELECT * FROM products";
 
     @Test
     void runTest() {

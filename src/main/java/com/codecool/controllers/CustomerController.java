@@ -3,15 +3,17 @@ package com.codecool.controllers;
 import com.codecool.dao.CartDao;
 import com.codecool.dao.ProductDao;
 import com.codecool.model.User;
+import com.codecool.select.SelectDAO;
 import com.codecool.view.CustomerView;
 
 public class CustomerController {
-
+    private SelectDAO selectDAO;
     CustomerView view;
     CartController cartController;
 
 
-    public CustomerController(CartDao cartDao, ProductDao productDao) {
+    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO) {
+        this.selectDAO = selectDAO;
 
         view = new CustomerView();
         cartController = new CartController(cartDao, productDao);
@@ -30,6 +32,7 @@ public class CustomerController {
             switch (input) {
                 case 1:
                     cartController.run(user);
+                    break;
                 case 2:
                     break;
                 case 3:
