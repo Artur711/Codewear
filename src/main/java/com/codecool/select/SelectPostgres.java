@@ -36,6 +36,7 @@ public class SelectPostgres implements SelectDAO {
 
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         List<Product> productList = tableProd.getTableFromDatabase(command);
+        mapOptionToSelect.clear();
 //        view.printList(productList);
         return getSpecificProduct(productList);
     }
@@ -45,15 +46,16 @@ public class SelectPostgres implements SelectDAO {
         boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
-        for (String s : selectOption) {
-            String valueOfMap = mapOptionToSelect.get(s);
+        for (int index = 0; index < selectOption.length; index++) {
+            String valueOfMap = mapOptionToSelect.get(selectOption[index]);
 
             if (!(valueOfMap == null)) {
                 if (!valueOfMap.equals("All") && !isWhereStatement) {
-                    sb.append(String.format(" where %s = '%s'", s, valueOfMap));
+                    sb.append(String.format(" where %s = '%s'", selectOption[index], valueOfMap));
                     isWhereStatement = true;
-                } else if (!valueOfMap.equals("All")) {
-                    sb.append(String.format(" and %s = '%s'", s, valueOfMap));
+                }
+                else if (!valueOfMap.equals("All")) {
+                    sb.append(String.format(" and %s = '%s'", selectOption[index], valueOfMap));
                 }
             }
         }
