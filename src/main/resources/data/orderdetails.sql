@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS orderdetails;
 
 CREATE TABLE orderdetails
 (
+    sales_order_detail_id SERIAL PRIMARY KEY,
     sales_order_id integer NOT NULL,
-    sales_order_detail_id integer NOT NULL,
     qty integer NOT NULL,
     product_id integer NOT NULL,
     unit_price integer NOT NULL,

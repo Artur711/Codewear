@@ -77,13 +77,13 @@ public class ProductManager extends Manager {
             System.out.println("\nProduct not found in the database\n");
             return;
         }
-        String name = mainView.readInput("PRODUCT_NAME", product.getName());
-        String gender = mainView.readInput("GENDER", product.getGender());
-        String type = mainView.readInput("TYPE", product.getType());
-        String colour = mainView.readInput("COLOUR", product.getColour());
-        String size = mainView.readInput("SIZE", product.getSizes());
-        String price = mainView.readInput("PRICE", String.valueOf(product.getPrices()));
-        String quantity = mainView.readInput("QUANTITY_ON_STOCK", String.valueOf(product.getQuantity()));
+        String name = mainView.readInput("PRODUCT_NAME (varchar, ", product.getName());
+        String gender = mainView.readInput("GENDER (varchar, ", product.getGender());
+        String type = mainView.readInput("TYPE (varchar, ", product.getType());
+        String colour = mainView.readInput("COLOUR (varchar, ", product.getColour());
+        String size = mainView.readInput("SIZE (varchar, ", product.getSizes());
+        String price = mainView.readInput("PRICE (int, ", String.valueOf(product.getPrices()));
+        String quantity = mainView.readInput("QUANTITY_ON_STOCK (int, ", String.valueOf(product.getQuantity()));
         product.setName(name);
         product.setGender(gender);
         product.setType(type);
@@ -115,7 +115,7 @@ public class ProductManager extends Manager {
         mainView.clearScreen();
         System.out.println("Please enter product " + field + "\n");
         for (int i = 0; i < answers.length - 1; i++) {
-            System.out.println(new String[] {"PRODUCT_NAME", "GENDER", "TYPE", "COLOUR", "SIZE", "PRICE", "QUANTITY_ON_STOCK"}[i] + ": " + answers[i]);
+            System.out.println(new String[] {"PRODUCT_NAME (varchar)", "GENDER (varchar)", "TYPE (varchar)", "COLOUR (varchar)", "SIZE (varchar)", "PRICE (int)", "QUANTITY_ON_STOCK (int)"}[i] + ": " + answers[i]);
         }
 
     }

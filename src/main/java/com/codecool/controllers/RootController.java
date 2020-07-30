@@ -2,6 +2,7 @@
 package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
+import com.codecool.dao.OrderDao;
 import com.codecool.dao.ProductDao;
 import com.codecool.dao.UserDao;
 import com.codecool.enums.Role;
@@ -19,11 +20,11 @@ public class RootController {
     private final AdminController adminController;
 
 
-    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao) {
+    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao) {
         this.userDao = userDao;
         mainView = new MainView();
         customerController = new CustomerController(cartDao, productDao);
-        adminController = new AdminController(mainView, userDao, productDao);
+        adminController = new AdminController(mainView, userDao, productDao, orderDao);
     }
 
     public void run() {

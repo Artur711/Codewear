@@ -84,12 +84,12 @@ public class UserManager extends Manager {
             System.out.println("\nUser not found in the database\n");
             return;
         }
-        String firstName = mainView.readInput("FIRST_NAME", user.getFirstName());
-        String lastName = mainView.readInput("LAST_NAME", user.getLastName());
-        String email = mainView.readInput("EMAIL", user.getEmail());
-        String password = mainView.readInput("PASSWORD", user.getPassword());
-        String address = mainView.readInput("ADDRESS", user.getAddress());
-        String roleID = mainView.readInput("ROLE_ID", String.valueOf(user.getRoleID()));
+        String firstName = mainView.readInput("FIRST_NAME (varchar, ", user.getFirstName());
+        String lastName = mainView.readInput("LAST_NAME (varchar, ", user.getLastName());
+        String email = mainView.readInput("EMAIL (varchar, ", user.getEmail());
+        String password = mainView.readInput("PASSWORD (varchar, ", user.getPassword());
+        String address = mainView.readInput("ADDRESS (varchar, ", user.getAddress());
+        String roleID = mainView.readInput("ROLE_ID (2 - Employee, 3 - Customer, ", String.valueOf(user.getRoleID()));
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
@@ -122,7 +122,7 @@ public class UserManager extends Manager {
         mainView.clearScreen();
         System.out.println("Please enter user's " + field);
         for (int i = 0; i < UserInfo.values().length - 1; i++) {
-            System.out.println(new String[] {"FIRST_NAME", "LAST_NAME", "EMAIL", "ROLE_ID" }[i] + ": " + answers[i]);
+            System.out.println(new String[] {"FIRST_NAME (varchar)", "LAST_NAME (varchar)", "EMAIL (varchar)", "ROLE_ID (2 - Employee, 3 - Customer)" }[i] + ": " + answers[i]);
         }
 
     }

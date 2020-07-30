@@ -95,12 +95,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "id -> " + id + "\n" +
-                "firstName -> " + firstName + "\n" +
-                "lastName -> " + lastName + "\n" +
-                "email -> " + email + "\n" +
-                "password -> " + password + "\n" +
-                "address -> " + address + "\n" +
-                "roleID -> " + roleID;
+        return  "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", roleID=" + roleID;
     }
+
 }

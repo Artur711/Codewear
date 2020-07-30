@@ -91,13 +91,14 @@ public class Product {
 
     @Override
     public String toString() {
-        return "id -> " + id + "\n" +
-                "name -> " + name + "\n" +
-                "gender -> " + gender + "\n" +
-                "type -> " + type + "\n" +
-                "colour -> " + colour + "\n" +
-                "sizes -> " + sizes + "\n" +
-                "prices -> " + prices + "\n" +
-                "quantity -> " + quantity;
+        return  "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", type='" + type + '\'' +
+                ", colour='" + colour + '\'' +
+                ", size='" + sizes + '\'' +
+                ", price=" + prices +
+                ", quantity=" + quantity;
     }
+
 }

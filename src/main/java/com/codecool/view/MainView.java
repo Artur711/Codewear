@@ -1,10 +1,12 @@
 package com.codecool.view;
 import com.codecool.enums.UserInfo;
+import com.codecool.model.Order;
 import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 import com.diogonunes.jcolor.Attribute;
 
 import java.lang.reflect.Member;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
@@ -31,7 +33,7 @@ public class MainView {
     }
 
     public void displayAdminMenu() {
-        String[] options = {"Database management", "Sign out"};
+        String[] options = {"Database management", "Show all orders by customer", "Show past due orders", "Sign out"};
         print("Welcome to Admin dashboard\n");
         displayMenuOptions(options);
     }
@@ -54,6 +56,11 @@ public class MainView {
         System.out.println(message);
     }
 
+    public void displayOrders(List<Order> orders) {
+        for (Order order : orders) {
+            System.out.println(order);
+        }
+    }
 
     public void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -126,6 +133,6 @@ public class MainView {
     }
 
     private void showPrompt(String prompt, Object defaultValue) {
-        System.out.print(prompt + " (current value -> " + defaultValue + "): ");
+        System.out.print(prompt + "current value -> " + defaultValue + "): ");
     }
 }
