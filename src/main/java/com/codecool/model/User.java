@@ -103,5 +103,4 @@ public class User {
                 ", address='" + address + '\'' +
                 ", roleID=" + roleID;
     }
-
 }

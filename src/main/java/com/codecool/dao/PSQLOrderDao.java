@@ -35,8 +35,8 @@ public class PSQLOrderDao implements OrderDao {
                 order.setUserID(rs.getInt(3));
                 order.setCustomerFirstName(rs.getString(4));
                 order.setCustomerLastName(rs.getString(5));
-                order.setOrderDate(rs.getString(6));
-                order.setDueDate(rs.getString(7));
+                order.setOrderDate(rs.getDate(6));
+                order.setDueDate(rs.getDate(7));
                 order.setTotalDue(rs.getInt(8));
                 orders.add(order);
             }
@@ -63,8 +63,8 @@ public class PSQLOrderDao implements OrderDao {
                 order.setUserID(rs.getInt(3));
                 order.setCustomerFirstName(rs.getString(4));
                 order.setCustomerLastName(rs.getString(5));
-                order.setOrderDate(rs.getString(6));
-                order.setDueDate(rs.getString(7));
+                order.setOrderDate(rs.getDate(6));
+                order.setDueDate(rs.getDate(7));
                 order.setTotalDue(rs.getInt(8));
                 orders.add(order);
             }
@@ -72,5 +72,22 @@ public class PSQLOrderDao implements OrderDao {
             System.out.println("Error executing query: " + e.getMessage());
         }
         return orders;
+    }
+
+    @Override
+    public void add(Order order) {
+        String sql = "INSERT INTO orders (order_date, due_date, status, sales_order_number, user_id, total_due) VALUES (?, ?, ?, ?, ?, ?)";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setDate(1, order.getOrderDate());
+            st.setDate(2, order.getDueDate());
+            st.setString(3, order.getStatus());
+            st.setString(4, order.getOrderNumber());
+            st.setInt(5, order.getUserID());
+            st.setFloat(6, order.getTotalDue());
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
     }
 }

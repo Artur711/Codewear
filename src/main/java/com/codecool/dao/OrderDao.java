@@ -9,4 +9,6 @@ public interface OrderDao {
     List<Order> showOrdersByCustomerID(int id);
 
     List<Order> showPastDueDateOrders();
+
+    void add(Order order);
 }

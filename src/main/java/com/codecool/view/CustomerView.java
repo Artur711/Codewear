@@ -7,7 +7,7 @@ public class CustomerView {
     private Scanner scanner = new Scanner(System.in);
 
     public void CustomerMenu() {
-        String[] options = {"My cart", "My orders", "My personal details", "Help", "Back to Main Menu"};
+        String[] options = {"Search", "My cart", "Confirm cart", "My personal details", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
             System.out.format("%d. %s\n", i + 1, options[i]);
         }
@@ -32,4 +32,10 @@ public class CustomerView {
         }
     }
 
+    public void orderMenu() {
+        String[] options = {" "};
+        for (int i = 0; i < options.length; i++) {
+            System.out.format("%d. %s\n", i + 1, options[i]);
+        }
+    }
 }
