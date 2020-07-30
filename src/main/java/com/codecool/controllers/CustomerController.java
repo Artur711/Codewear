@@ -36,7 +36,7 @@ public class CustomerController {
                 case 2:
                     break;
                 case 3:
-                    break;
+                    System.out.println(user.toString());
                 case 4:
                     view.clearScreen();
                     view.CustomerHelp();

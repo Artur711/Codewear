@@ -35,10 +35,12 @@ public class CartController {
 
             mainView.clearScreen();
             Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(user.getId());
+            cartView.printStartLine();
             for (int keyName : cartIdItems.keySet()) {
                 cartView.printProduct(productDao.getProductFromDatabase(keyName), cartIdItems.get(keyName));
 
             }
+            cartView.printEndLinie();
 
             int product_id = 0;
             int quantity = 0;

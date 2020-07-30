@@ -19,18 +19,13 @@ public class CartView {
         System.out.println(String.format("%d %s %d",product.getId(), product.getName(), quantity));
     }
 
-    public void printCartItems(Map<Integer, Integer> cartItems){
-        if(cartItems.size() == 0) {
-            System.out.println("Empty cart");
-        }else {
-            for (int keyName : cartItems.keySet()) {
-                System.out.println(keyName + " " + cartItems.get(keyName));
-            }
-
-                //getProductFromDatabase(command);
-                //SelectView.printProductDetails(new Product(id, name, gender, type, color, size, price, quantity));
-        }
+    public void printStartLine(){
+        System.out.println("---------------------------");
+        System.out.println("| ID | NAME/MODEL | QUANTITY |");
+        System.out.println("---------------------------");
     }
 
-
+    public void printEndLinie(){
+        System.out.println("---------------------------");
+    }
 }
