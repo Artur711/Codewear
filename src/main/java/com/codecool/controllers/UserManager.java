@@ -9,12 +9,14 @@ import com.codecool.view.MainView;
 
 import java.util.Random;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 public class UserManager extends Manager {
 
     private final UserDao userDao;
 
-    public UserManager(MainView mainView, UserDao userDao) {
-        super(mainView);
+    public UserManager(User currentUser, MainView mainView, UserDao userDao) {
+        super(currentUser, mainView);
         this.userDao = userDao;
     }
 
@@ -71,9 +73,9 @@ public class UserManager extends Manager {
         User user = enterUserData();
         userDao.addUser(user, user.getRoleID());
         user = userDao.validateUser(user);
-        System.out.println("\nUser has been created:\n");
+        System.out.println(colorize("\nUser has been created:\n", mainView.MENU_FORMAT));
         System.out.println(user);
-        mainView.pressEnterToContinue("\nPress enter to go back");
+        mainView.pressEnterToContinue(colorize("\nPress enter to go back", mainView.MENU_FORMAT));
     }
 
     @Override
@@ -120,11 +122,14 @@ public class UserManager extends Manager {
 
     public void displayUserCreationScreen(String field, String[] answers) {
         mainView.clearScreen();
-        System.out.println("Please enter user's " + field);
+        System.out.println(colorize("\n  Please enter user's " + field + "\n", mainView.HEADER_FORMAT));
         for (int i = 0; i < UserInfo.values().length - 1; i++) {
-            System.out.println(new String[] {"FIRST_NAME (varchar)", "LAST_NAME (varchar)", "EMAIL (varchar)", "ROLE_ID (2 - Employee, 3 - Customer)" }[i] + ": " + answers[i]);
+            System.out.println(new String[] {colorize("  FIRST_NAME (varchar)", mainView.MENU_FORMAT),
+                                             colorize("  LAST_NAME (varchar)", mainView.MENU_FORMAT),
+                                             colorize("  EMAIL (varchar)",mainView.MENU_FORMAT),
+                                             colorize("  ROLE_ID (2 - Employee, 3 - Customer)",mainView.MENU_FORMAT) }[i] + ": " + answers[i]);
         }
-
+        mainView.displayPrompt(9,3, currentUser.getFirstName());
     }
 
     private String autoGeneratePassword() {

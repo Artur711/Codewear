@@ -4,6 +4,7 @@ import com.codecool.dao.OrderDao;
 import com.codecool.dao.ProductDao;
 import com.codecool.dao.UserDao;
 import com.codecool.model.Order;
+import com.codecool.model.User;
 import com.codecool.view.MainView;
 
 import java.util.List;
@@ -11,14 +12,17 @@ import java.util.List;
 
 public class AdminController {
 
+    private final User currentUser;
     private final MainView mainView;
     private final DatabaseManager dbmanager;
     private final OrderDao orderDao;
 
-    public AdminController(MainView mainView, UserDao userDao, ProductDao productDAO, OrderDao orderDao) {
+
+    public AdminController(User currentUser, MainView mainView, UserDao userDao, ProductDao productDAO, OrderDao orderDao) {
+        this.currentUser = currentUser;
         this.mainView = mainView;
         this.orderDao = orderDao;
-        this.dbmanager = new DatabaseManager(mainView, userDao, productDAO);
+        this.dbmanager = new DatabaseManager(currentUser, mainView, userDao, productDAO);
     }
 
     public void run() {
@@ -28,7 +32,7 @@ public class AdminController {
         while (isRunning) {
 
             mainView.clearScreen();
-            mainView.displayAdminMenu();
+            mainView.displayAdminMenu(currentUser);
 
             switch(mainView.getIntegerInput()) {
                 case 1:

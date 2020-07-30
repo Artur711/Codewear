@@ -4,7 +4,7 @@ public enum UserInfo {
 
     FIRST_NAME("first name"),
     LAST_NAME("last name"),
-    EMAIL("email"),
+    EMAIL("login/email"),
     PASSWORD("password"),
     ROLE("roleID");
 

@@ -2,11 +2,15 @@ package com.codecool.model;
 
 import com.codecool.view.MainView;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 public abstract class Manager {
 
+    protected User currentUser;
     protected MainView mainView;
 
-    public Manager(MainView mainView) {
+    public Manager(User currentUser, MainView mainView) {
+        this.currentUser = currentUser;
         this.mainView = mainView;
     }
 
@@ -17,7 +21,8 @@ public abstract class Manager {
 
     protected void showAvailableOptions() {
         String[] options = {"Add", "Delete", "Update", "Go back"};
-        mainView.println("Choose action to be performed:");
+        mainView.println(colorize("\n  Choose action to be performed\n", mainView.HEADER_FORMAT));
         mainView.displayMenuOptions(options);
+        mainView.displayPrompt(9, 3, currentUser.getFirstName());
     }
 }

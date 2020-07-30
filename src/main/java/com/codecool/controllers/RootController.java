@@ -16,15 +16,17 @@ public class RootController {
 
     private final MainView mainView;
     private final UserDao userDao;
+    private final ProductDao productDao;
+    private final OrderDao orderDao;
     private final CustomerController customerController;
-    private final AdminController adminController;
-
 
     public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao) {
         this.userDao = userDao;
+        this.productDao = productDao;
+        this.orderDao = orderDao;
         mainView = new MainView();
         customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView);
-        adminController = new AdminController(mainView, userDao, productDao, orderDao);
+
     }
 
     public void run() {
@@ -62,7 +64,8 @@ public class RootController {
     public void validateUser() {
         User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
-            adminController.run();
+            AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);
+            admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             mainView.print("\nYou have successfully logged in");
             mainView.pressEnterToContinue("");
