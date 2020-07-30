@@ -20,12 +20,12 @@ public class CartView {
     }
 
     public void printStartLine(){
-        System.out.println("---------------------------");
+        System.out.println("------------------------------");
         System.out.println("| ID | NAME/MODEL | QUANTITY |");
-        System.out.println("---------------------------");
+        System.out.println("------------------------------");
     }
 
     public void printEndLinie(){
-        System.out.println("---------------------------");
+        System.out.println("------------------------------");
     }
 }
