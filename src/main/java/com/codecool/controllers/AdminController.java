@@ -55,7 +55,7 @@ public class AdminController {
 
     public void showOrdersBYCustomerID() {
         mainView.clearScreen();
-        mainView.println("Enter customerID:");
+        System.out.println("Enter customerID:");
         List<Order> orders = orderDao.showOrdersByCustomerID(mainView.getIntegerInput());
         mainView.displayOrders(orders);
         mainView.pressEnterToContinue("\nPress enter to go back");

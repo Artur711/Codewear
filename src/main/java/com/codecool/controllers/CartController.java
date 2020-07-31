@@ -40,7 +40,7 @@ public class CartController {
                 cartView.printProduct(productDao.getProductFromDatabase(keyName), cartIdItems.get(keyName));
 
             }
-            cartView.printEndLinie();
+            cartView.printEndLine();
 
             int product_id = 0;
             int quantity = 0;

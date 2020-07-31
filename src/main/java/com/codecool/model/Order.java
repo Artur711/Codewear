@@ -98,13 +98,13 @@ public class Order {
 
     @Override
     public String toString() {
-        return  "orderID=" + orderID +
-                ", status='" + status.trim() + '\'' +
-                ", userID=" + userID +
-                ", customerFirstName='" + customerFirstName + '\'' +
-                ", customerLastName='" + customerLastName + '\'' +
-                ", orderDate='" + orderDate + '\'' +
-                ", dueDate='" + dueDate + '\'' +
-                ", totalDue=" + totalDue;
+        return  " | " + orderID +
+                " | " + status.trim() +
+                " | " + userID +
+                " | " + customerFirstName +
+                " | " + customerLastName +
+                " | " + orderDate +
+                " | " + dueDate +
+                " | " + totalDue + " |";
     }
 }

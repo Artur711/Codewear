@@ -8,7 +8,7 @@ import java.util.Map;
 public class CartView {
 
     public void CartMenu() {
-        String[] options = {"Add product", "Delete product", "Clear cart", "Change quantity of product", "Back to Cusomer Menu"};
+        String[] options = {"Add product", "Delete product", "Clear cart", "Change quantity of product", "Back to Customer Menu"};
         for (int i = 0; i < options.length; i++) {
             System.out.format("%d. %s\n", i + 1, options[i]);
         }
@@ -25,7 +25,7 @@ public class CartView {
         System.out.println("------------------------------");
     }
 
-    public void printEndLinie(){
+    public void printEndLine(){
         System.out.println("------------------------------");
     }
 }

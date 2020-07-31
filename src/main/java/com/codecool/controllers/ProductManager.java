@@ -45,14 +45,14 @@ public class ProductManager extends Manager {
 
     @Override
     protected void delete() {
-        mainView.println("Enter id of product to be removed:");
+        System.out.println("Enter id of product to be removed:");
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product != null) {
             System.out.printf("Current number of records: %d%n", productDAO.getNumberOfRecords());
             System.out.printf("Are you sure you want to remove product: %s? [Y/N]%n", product.getName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 productDAO.delete(product);
-                mainView.println("\nProduct has been removed from database");
+                System.out.println("\nProduct has been removed from database");
                 System.out.printf("%nCurrent number of records: %d%n", productDAO.getNumberOfRecords());
                 mainView.pressEnterToContinue("\nPress enter to go back");
             }
@@ -72,7 +72,7 @@ public class ProductManager extends Manager {
 
     @Override
     protected void update() {
-        mainView.println("Enter id of the product to be updated:");
+        System.out.println("Enter id of the product to be updated:");
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product == null) {
             System.out.println("\nProduct not found in the database\n");

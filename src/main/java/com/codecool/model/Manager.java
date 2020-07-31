@@ -15,13 +15,16 @@ public abstract class Manager {
     }
 
     protected abstract void run();
+
     protected abstract void delete();
+
     protected abstract void add();
+
     protected abstract void update();
 
     protected void showAvailableOptions() {
         String[] options = {"Add", "Delete", "Update", "Go back"};
-        mainView.println(colorize("\n  Choose action to be performed\n", mainView.HEADER_FORMAT));
+        System.out.println(colorize("\n  Choose action to be performed\n", mainView.HEADER_FORMAT));
         mainView.displayMenuOptions(options);
         mainView.displayPrompt(9, 3, currentUser.getFirstName());
     }

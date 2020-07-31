@@ -46,7 +46,7 @@ public class DatabaseManager {
 
     protected void listAvailableOptions(User user) {
         String[] options = {"Users", "Products", "Go back"};
-        mainView.println(colorize("\n  Choose table to perform action or go back to previous menu\n", mainView.HEADER_FORMAT));
+        System.out.println(colorize("\n  Choose table to perform action or go back to previous menu\n", mainView.HEADER_FORMAT));
         mainView.displayMenuOptions(options);
         mainView.displayPrompt(8, 3, user.getFirstName());
     }

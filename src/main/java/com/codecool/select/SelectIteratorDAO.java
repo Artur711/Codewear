@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SelectIteratorDAO {
 
-    public Product getNext();
+    Product getNext();
 
-    public Product getPrevious();
+    Product getPrevious();
 }

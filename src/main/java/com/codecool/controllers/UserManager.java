@@ -51,14 +51,14 @@ public class UserManager extends Manager {
 
     @Override
     protected void delete() {
-        mainView.println("Enter id of user to be removed:");
+        System.out.println("Enter id of user to be removed:");
         User user = userDao.getUserWithUserID(mainView.getIntegerInput());
         if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
             System.out.printf("Current number of records: %d%n", userDao.getNumberOfRecords());
             System.out.printf("Are you sure you want to remove user: %s, %s? [Y/N]%n", user.getLastName(), user.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 userDao.delete(user);
-                mainView.println("\nUser has been removed from database");
+                System.out.println("\nUser has been removed from database");
                 System.out.printf("%nCurrent number of records: %d%n", userDao.getNumberOfRecords());
                 mainView.pressEnterToContinue("\nPress enter to go back");
             }
@@ -80,7 +80,7 @@ public class UserManager extends Manager {
 
     @Override
     protected void update() {
-        mainView.println("Enter id of user to be updated:");
+        System.out.println("Enter id of user to be updated:");
         User user = userDao.getUserWithUserID(mainView.getIntegerInput());
         if (user == null) {
             System.out.println("\nUser not found in the database\n");

@@ -40,7 +40,7 @@ public class MainView {
 
     public void displayAdminMenu(User user) {
         String[] options = {"Database management", "Show all orders by customer", "Show past due orders", "Sign out"};
-        System.out.println(colorize("\n  WELCOME TO ADMIN DASHBOARD\n", HEADER_FORMAT));
+        System.out.println(colorize("\n  W E L C O M E  T O  A D M I N  D A S H B O A R D\n", HEADER_FORMAT));
         displayMenuOptions(options);
         displayPrompt(9, 3, user.getFirstName());
     }
@@ -58,14 +58,6 @@ public class MainView {
 
     public String getStringInput() {
         return scanner.nextLine();
-    }
-
-    public void print(String message) {
-        System.out.print(message);
-    }
-
-    public void println(String message) {
-        System.out.println(message);
     }
 
     public void displayOrders(List<Order> orders) {
@@ -137,7 +129,7 @@ public class MainView {
     }
 
     public void displayErrorWhileLoggingMessage() {
-        System.out.print("\nIncorrect email or password\n");
+        System.out.println("\nIncorrect email or password\n");
         pressEnterToContinue("\nPress enter to return to main menu");
     }
 
@@ -147,7 +139,7 @@ public class MainView {
         return input.isEmpty() ? defaultValue : input;
     }
 
-    private void showPrompt(String prompt, Object defaultValue) {
+    private void showPrompt(String prompt, String defaultValue) {
         System.out.print(prompt + "current value -> " + defaultValue + "): ");
     }
 }
