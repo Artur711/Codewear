@@ -7,6 +7,7 @@ import com.codecool.model.Manager;
 import com.codecool.model.User;
 import com.codecool.view.MainView;
 
+import java.util.List;
 import java.util.Random;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
@@ -51,19 +52,24 @@ public class UserManager extends Manager {
 
     @Override
     protected void delete() {
-        System.out.println("Enter id of user to be removed:");
-        User user = userDao.getUserWithUserID(mainView.getIntegerInput());
+        mainView.clearScreen();
+        System.out.println("\n" + colorize("  Enter id of user to be removed:", mainView.HEADER_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
+        List<User> users = userDao.getUserWithUserID(mainView.getIntegerInput());
+        User user = users.get(0);
         if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
-            System.out.printf("Current number of records: %d%n", userDao.getNumberOfRecords());
-            System.out.printf("Are you sure you want to remove user: %s, %s? [Y/N]%n", user.getLastName(), user.getFirstName());
+            mainView.clearScreen();
+            System.out.printf("\n" + colorize("  Are you sure you want to remove user: %s, %s? [Y/N]%n",mainView.MENU_FORMAT), user.getLastName(), user.getFirstName());
+            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
+            mainView.displayPrompt(6, 3, currentUser.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 userDao.delete(user);
-                System.out.println("\nUser has been removed from database");
-                System.out.printf("%nCurrent number of records: %d%n", userDao.getNumberOfRecords());
-                mainView.pressEnterToContinue("\nPress enter to go back");
+                System.out.println("\n" + colorize("  User has been removed from database", mainView.MENU_FORMAT));
+                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
+                mainView.pressEnterToContinue("\n" + colorize("  Press enter to go back", mainView.MENU_FORMAT));
             }
         } else {
-            System.out.println("\nYou cannot delete this user or user doesn't exist\n");
+            System.out.println("\n" + colorize("  You cannot delete this user or user doesn't exist\n", mainView.MENU_FORMAT));
         }
 
     }
@@ -73,19 +79,21 @@ public class UserManager extends Manager {
         User user = enterUserData();
         userDao.addUser(user, user.getRoleID());
         user = userDao.validateUser(user);
-        System.out.println(colorize("\nUser has been created:\n", mainView.MENU_FORMAT));
-        System.out.println(user);
-        mainView.pressEnterToContinue(colorize("\nPress enter to go back", mainView.MENU_FORMAT));
+        List<User> users = userDao.getUserWithUserID(user.getId());
+        System.out.println("\n" + colorize("  User has been created:\n", mainView.MENU_FORMAT));
+        mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue("\n" + colorize("  Press enter to go back", mainView.MENU_FORMAT));
     }
 
     @Override
     protected void update() {
         System.out.println("Enter id of user to be updated:");
-        User user = userDao.getUserWithUserID(mainView.getIntegerInput());
-        if (user == null) {
+        List<User> users = userDao.getUserWithUserID(mainView.getIntegerInput());
+        if (users.size() == 0) {
             System.out.println("\nUser not found in the database\n");
             return;
         }
+        User user = users.get(0);
         String firstName = mainView.readInput("FIRST_NAME (varchar, ", user.getFirstName());
         String lastName = mainView.readInput("LAST_NAME (varchar, ", user.getLastName());
         String email = mainView.readInput("EMAIL (varchar, ", user.getEmail());
@@ -106,16 +114,16 @@ public class UserManager extends Manager {
 
     public User enterUserData() {
         String[] answers = new String[] {"", "", "", ""};
-        String[] fields = {UserInfo.LAST_NAME.getDisplay(),
+        String[] fields = {
+                UserInfo.FIRST_NAME.getDisplay(),
+                UserInfo.LAST_NAME.getDisplay(),
                 UserInfo.EMAIL.getDisplay(),
                 UserInfo.ROLE.getDisplay(),
-                UserInfo.ROLE.getDisplay()};
+                };
 
-        displayUserCreationScreen(UserInfo.FIRST_NAME.getDisplay(), answers);
         for (int i = 0; i < fields.length ; i++) {
-            answers[i] = mainView.getStringInput();
             displayUserCreationScreen(fields[i], answers);
-
+            answers[i] = mainView.getStringInput();
         }
         return new User(answers[0], answers[1], answers[2], autoGeneratePassword(), Integer.parseInt(answers[3]));
     }
@@ -126,8 +134,8 @@ public class UserManager extends Manager {
         for (int i = 0; i < UserInfo.values().length - 1; i++) {
             System.out.println(new String[] {colorize("  FIRST_NAME (varchar)", mainView.MENU_FORMAT),
                                              colorize("  LAST_NAME (varchar)", mainView.MENU_FORMAT),
-                                             colorize("  EMAIL (varchar)",mainView.MENU_FORMAT),
-                                             colorize("  ROLE_ID (2 - Employee, 3 - Customer)",mainView.MENU_FORMAT) }[i] + ": " + answers[i]);
+                                             colorize("  LOGIN/EMAIL (varchar)",mainView.MENU_FORMAT),
+                                             colorize("  ROLE_ID (int) [2 - Employee, 3 - Customer]",mainView.MENU_FORMAT) }[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
         }
         mainView.displayPrompt(9,3, currentUser.getFirstName());
     }

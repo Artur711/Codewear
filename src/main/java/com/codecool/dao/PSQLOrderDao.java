@@ -18,7 +18,7 @@ public class PSQLOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> showOrdersByCustomerID(int id) {
+    public List<Order> getOrdersByCustomerID(int id) {
 
         String sql = "SELECT sales_order_id, status, user_id, first_name, last_name, order_date, due_date, total_due FROM orders " +
                      "JOIN users on users.id = orders.user_id " +
@@ -47,9 +47,10 @@ public class PSQLOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> showPastDueDateOrders() {
+    public List<Order> getPastDueDateOrders() {
 
-        String sql = "SELECT sales_order_id, status, user_id, first_name, last_name, order_date, due_date, total_due FROM orders " +
+        String sql = "SELECT sales_order_id, status, user_id, first_name, last_name, order_date, due_date, total_due " +
+                     "FROM orders " +
                      "JOIN users on users.id = orders.user_id " +
                      "WHERE CURRENT_DATE > due_date and status = 'shipped'";
 
@@ -76,7 +77,8 @@ public class PSQLOrderDao implements OrderDao {
 
     @Override
     public void add(Order order) {
-        String sql = "INSERT INTO orders (order_date, due_date, status, sales_order_number, user_id, total_due) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (order_date, due_date, status, sales_order_number, user_id, total_due) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setDate(1, order.getOrderDate());
             st.setDate(2, order.getDueDate());
@@ -89,5 +91,33 @@ public class PSQLOrderDao implements OrderDao {
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
+    }
+
+    @Override
+    public int[] findMaxNumberOfCharsPerColumn() {
+        int numberOfColumns = 8;
+        int[] maxLengths = new int[numberOfColumns];
+        String sql = "SELECT " +
+                        "max(length(cast(sales_order_id as varchar(20)))) ," +
+                        "max(length(status)) ," +
+                        "max(length(cast(user_id as varchar(20)))) ," +
+                        "max(length(first_name)), " +
+                        "max(length(last_name)), " +
+                        "max(length(cast(order_date as varchar(20)))), " +
+                        "max(length(cast(due_date as varchar(20)))), " +
+                        "max(length(cast(total_due as varchar(10)))) " +
+                     "FROM orders " +
+                     "JOIN users on users.id = orders.user_id";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            for (int i = 0; i < maxLengths.length; i++) {
+                maxLengths[i] = rs.getInt(i + 1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return maxLengths;
     }
 }

@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface OrderDao {
 
-    List<Order> showOrdersByCustomerID(int id);
+    List<Order> getOrdersByCustomerID(int id);
 
-    List<Order> showPastDueDateOrders();
+    List<Order> getPastDueDateOrders();
 
     void add(Order order);
+
+    int[] findMaxNumberOfCharsPerColumn();
 }

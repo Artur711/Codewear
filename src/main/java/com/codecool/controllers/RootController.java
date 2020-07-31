@@ -11,6 +11,8 @@ import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.MainView;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 
 public class RootController {
 
@@ -48,6 +50,7 @@ public class RootController {
                     break;
                 case 3:
                     isRunning = false;
+                    System.out.println("\n" + colorize("  Bye!", mainView.HEADER_FORMAT));
                 default:
             }
         }
@@ -57,6 +60,7 @@ public class RootController {
     public void createUserAccount() {
         User user = mainView.getUserData();
         if (userDao.addUser(user, Role.CUSTOMER.getRoleID()) == 1) {
+            mainView.clearScreen();
             mainView.displayAccountCreationMessage();
         }
     }
