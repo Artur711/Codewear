@@ -20,6 +20,7 @@ public class SelectView extends MainView {
     }*/
 
     public void printSelectOption (List<Object> optionList) {
+        clearScreen();
         printLineOfFrame();
         String str = "";
         StringBuilder sB = new StringBuilder(str);
@@ -36,7 +37,8 @@ public class SelectView extends MainView {
         printLineOfFrame();
     }
 
-    public void printProductDetails(Product product) {
+    public void printProductDetails(Product product, int numberOfAllSearch, int indexOfProduct) {
+        clearScreen();
         int numberOfRestSpaces;
         int quantitySignsInRigidText;
         printLineOfFrame();
@@ -97,11 +99,14 @@ public class SelectView extends MainView {
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
         sB.append("Next Product (N)");
         sB.append(colorize(" || \n", HEADER_FORMAT));
+        sB.append(getEmptyLine());
 
         sB.append(colorize("|| ", HEADER_FORMAT));
         sB.append("Go back (Q)");
         quantitySignsInRigidText = 13;
-        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
+        String strSearch = String.format("Number of results: %d/%d", indexOfProduct, numberOfAllSearch);
+        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText - strSearch.length()));
+        sB.append(strSearch);
         sB.append(colorize(" || \n", HEADER_FORMAT));
         System.out.print(sB.toString());
         printLineOfFrame();

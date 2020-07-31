@@ -91,7 +91,8 @@ public class SelectPostgres implements SelectDAO {
         SelectIteratorDAO selectIteratorDAO = new SelectIteratorPostgres(productList);
 
         while (isRun) {
-            view.printProductDetails(product);
+            int searchNumber = productList.indexOf(product) + 1;
+            view.printProductDetails(product, productList.size(), searchNumber);
             String result = scan.nextLine().toLowerCase();
 
             switch (result) {

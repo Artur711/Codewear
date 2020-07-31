@@ -6,6 +6,7 @@ import com.codecool.model.Order;
 import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -57,6 +58,7 @@ public class MainView {
         }
         int input = scanner.nextInt();
         scanner.nextLine();
+
         return input;
     }
 
