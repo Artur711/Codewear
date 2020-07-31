@@ -1,5 +1,6 @@
 package com.codecool.view;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CustomerView {
@@ -15,8 +16,11 @@ public class CustomerView {
     }
 
     public int getIntegerInput() {
-        int input = scanner.nextInt();
-        scanner.nextLine();
+        int input = 0;
+        try {
+            input = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) { scanner.next(); }
         return input;
     }
 

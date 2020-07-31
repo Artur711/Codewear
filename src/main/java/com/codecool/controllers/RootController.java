@@ -37,6 +37,7 @@ public class RootController {
 
             mainView.clearScreen();
             mainView.displayMainMenu();
+
             int input = mainView.getIntegerInput();
 
             switch(input) {

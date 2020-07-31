@@ -81,9 +81,11 @@ public class CustomerController {
                     break;
                 case 4:
                     System.out.println(user.toString());
+                    break;
                 case 5:
                     view.clearScreen();
                     view.CustomerHelp();
+                    break;
                 case 6:
                     isRunning = false;
                     break;

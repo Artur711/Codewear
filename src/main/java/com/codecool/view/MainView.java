@@ -6,6 +6,7 @@ import com.codecool.model.Order;
 import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -51,8 +52,14 @@ public class MainView {
 
 
     public int getIntegerInput() {
-        int input = scanner.nextInt();
-        scanner.nextLine();
+        int input = 0;
+
+        try {
+            input = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            scanner.next();
+        }
         return input;
     }
 
