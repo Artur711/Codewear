@@ -72,7 +72,7 @@ public class RootController {
             AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);
             admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
-            System.out.print("\nYou have successfully logged in");
+            System.out.print(colorize("\nYou have successfully logged in", mainView.HEADER_FORMAT));
             mainView.pressEnterToContinue("");
             customerController.run(user);
 
