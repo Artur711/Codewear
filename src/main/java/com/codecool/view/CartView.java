@@ -42,15 +42,15 @@ public class CartView {
     }
 
     public int getProductIdFromCustomer(String userName){
-        System.out.println(colorize("  Choose product by id: ", MENU_FORMAT));
-        mainView.displayPrompt(16, 3, userName);
+        System.out.println("\n" + colorize("  Choose product by id: ", MENU_FORMAT));
+        mainView.displayPrompt(18, 3, userName);
         return mainView.getIntegerInput();
     }
 
     public int getQuantityFromCustomer(String userName){
-        System.out.println(colorize("  Choose new quantity of product: ", MENU_FORMAT));
+        System.out.println("\n" + colorize("  Choose new quantity of product: ", MENU_FORMAT));
 
-        mainView.displayPrompt(19, 3, userName);
+        mainView.displayPrompt(22, 3, userName);
         return mainView.getIntegerInput();
     }
 
