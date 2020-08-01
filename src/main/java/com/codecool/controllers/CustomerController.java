@@ -71,6 +71,7 @@ public class CustomerController {
                             //int quantity = scanner.nextInt();
                             if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                                 cartDao.add(user.getId(), product.getId(), quantity);
+                                System.out.println(colorize("  Added to cart " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }else{
                                 System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }
