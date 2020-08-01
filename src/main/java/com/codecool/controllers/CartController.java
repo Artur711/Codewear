@@ -38,11 +38,11 @@ public class CartController {
         while (isRunning) {
 
             mainView.clearScreen();
-            Map<Integer, Integer> cartIdItems = cartDao.getCartMap(user.getId());
+            Map<Integer, Integer> cartMap = cartDao.getCartMap(user.getId());
             cartView.printStartLine();
 
-            for (int keyName : cartIdItems.keySet()) {
-                cartView.printProduct(productDao.getProductFromDatabase(keyName), cartIdItems.get(keyName));
+            for (int keyName : cartMap.keySet()) {
+                cartView.printProduct(productDao.getProductFromDatabase(keyName), cartMap.get(keyName));
             }
 
             cartView.printEndLine();
@@ -50,14 +50,14 @@ public class CartController {
             int productId = 0;
             int quantity = 0;
             cartView.CartMenu();
+            mainView.displayPrompt(13 + cartMap.size(), 3, user.getFirstName());
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    System.out.println("Choose product id: ");
+                    //System.out.println("Choose product id: ");
                     productId = mainView.getIntegerInput();
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId));
-                    mainView.pressEnterToContinue(user.getFirstName());
-                    System.out.println("Press enter to continue");
+                    mainView.pressEnterToContinue("Press enter to continue");
                     break;
                 case 2:
                     System.out.println("Type product id to delete: ");
@@ -68,10 +68,8 @@ public class CartController {
                     cartDao.clear(user.getId());
                     break;
                 case 4:
-                    System.out.println("Choose product id to change: ");
-                    productId = mainView.getIntegerInput();
-                    System.out.println("Choose new quantity of product: ");
-                    quantity = mainView.getIntegerInput();
+                    productId = cartView.getProductIdFromCustomer();
+                    quantity = cartView.getQuantityFromCustomer();
                     if(cartDao.isAvailableOnStock(getProductQuantityOnStock(productId), quantity) && quantity > 0){
                         cartDao.add(user.getId(), productId, quantity);
                     }else{
