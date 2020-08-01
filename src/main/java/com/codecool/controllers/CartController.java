@@ -3,9 +3,11 @@ package com.codecool.controllers;
 import com.codecool.dao.CartDao;
 
 import com.codecool.dao.ProductDao;
+import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
+import com.codecool.view.SelectView;
 
 import java.util.Map;
 
@@ -15,13 +17,17 @@ public class CartController {
 
     CartView cartView;
     MainView mainView;
+
     ProductDao productDao;
     CartDao cartDao;
+    SelectView selectView;
 
 
-    public CartController(CartDao cartDao, ProductDao productDao) {
+    public CartController(CartDao cartDao, ProductDao productDao, SelectView selectView) {
         this.cartDao = cartDao;
         this.productDao = productDao;
+        this.selectView = selectView;
+
         cartView = new CartView();
         mainView = new MainView();
 
@@ -48,17 +54,11 @@ public class CartController {
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
+
                     System.out.println("Choose product id: ");
                     product_id = mainView.getIntegerInput();
-                    if(productDao.checkIfProductExist(product_id)) {
-                        System.out.println("Choose quantity of product: ");
-                        quantity = mainView.getIntegerInput();
-                        if(cartDao.availableQuantityOnStock(getProductQuantityOnStock(product_id), quantity) && quantity > 0){
-                            cartDao.addToUserCart(user.getId(), product_id, quantity);
-                        }else{
-                            System.out.println("Quantity available in stock: " + getProductQuantityOnStock(product_id));
-                        }
-                    }
+                    selectView.printProductDetails2(productDao.getProductFromDatabase(product_id), 1, 1);
+
                     break;
                 case 2:
                     System.out.println("Type product id to delte: ");

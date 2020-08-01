@@ -29,7 +29,7 @@ public class ApplicationController {
         try {
             conn.close();
         } catch (SQLException e) {
-            System.out.println("Error closing connection: " + e.getMessage());
+            System.out.println("  Error closing connection: " + e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class ApplicationController {
             String password = prop.getProperty("db.passwd");
             return new PostgresSQLDataSource(databaseName, user, password).connect();
         } catch (IOException e) {
-            System.out.println("The file doesn't exist!!!");
+            System.out.println("  The file doesn't exist!!!");
         }
         return null;
     }

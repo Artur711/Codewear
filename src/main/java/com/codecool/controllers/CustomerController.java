@@ -9,6 +9,8 @@ import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.CustomerView;
 import com.codecool.view.MainView;
+import com.codecool.view.SelectView;
+
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
 
@@ -20,24 +22,30 @@ import java.util.Scanner;
 
 public class CustomerController {
     private SelectDAO selectDAO;
-    CustomerView view;
-    MainView mainView;
-    CartController cartController;
     private CartDao cartDao;
     private ProductDao productDao;
     private OrderDao orderDao;
 
+    CustomerView view;
+    SelectView selectView;
+    MainView mainView;
+
+    CartController cartController;
 
 
-    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView) {
+
+    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView) {
         this.selectDAO = selectDAO;
         this.cartDao = cartDao;
         this.productDao = productDao;
         this.orderDao = orderDao;
         this.mainView = mainView;
 
+        this.selectView = selectView;
+
+
         view = new CustomerView();
-        cartController = new CartController(cartDao, productDao);
+        cartController = new CartController(cartDao, productDao, selectView);
     }
 
     public void run(User user) {
@@ -55,14 +63,14 @@ public class CustomerController {
                     Product product = selectDAO.runSearch();
                     if (product != null) {
                         if(productDao.checkIfProductExist(product.getId())) {
-                            System.out.println(colorize("Choose quantity of product: ", mainView.HEADER_FORMAT));
+                            System.out.println(colorize("  Choose quantity of product: ", mainView.HEADER_FORMAT));
                             int quantity = mainView.getIntegerInput();
                             //Scanner scanner = new Scanner(System.in);
                             //int quantity = scanner.nextInt();
                             if(cartDao.availableQuantityOnStock(product.getQuantity(), quantity) && quantity > 0){
                                 cartDao.addToUserCart(user.getId(), product.getId(), quantity);
                             }else{
-                                System.out.println(colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
+                                System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }
                         }
                     }
@@ -77,9 +85,9 @@ public class CustomerController {
                         float totalPrice = getTotalPrice(mapOrders);
                         Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
                         orderDao.add(order);
-                        System.out.println(colorize("Order submitted.", mainView.PROMPT_FORMAT));
+                        System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
                     }
-                    System.out.println(colorize("Your cart is empty.", mainView.HEADER_FORMAT));
+                    System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
                     break;
                 case 4:
                     System.out.println(colorize("My personal details: ", mainView.HEADER_FORMAT));
