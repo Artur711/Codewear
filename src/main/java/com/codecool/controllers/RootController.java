@@ -84,7 +84,7 @@ public class RootController {
             admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             SelectDAO selectDao = new SelectPostgres(conn, user.getFirstName());
-            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView, conn);
+            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView, conn, userDao);
             customerController.run(user);
         } else {
             mainView.displayErrorWhileLoggingMessage();
