@@ -54,15 +54,15 @@ public class CartController {
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    //System.out.println("Choose product id: ");
-                    productId = mainView.getIntegerInput();
+                    productId = cartView.getProductIdFromCustomer();
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId));
-                    mainView.pressEnterToContinue("Press enter to continue");
+                    mainView.pressEnterToContinue("  Press enter to continue");
                     break;
                 case 2:
-                    System.out.println("Type product id to delete: ");
-                    productId = mainView.getIntegerInput();
+                    System.out.println("  Type product id to delete: ");
+                    productId = cartView.getProductIdFromCustomer();
                     cartDao.delete(user.getId(), productId);
+                    mainView.pressEnterToContinue("  Product removed. Press enter to continue");
                     break;
                 case 3:
                     cartDao.clear(user.getId());
@@ -73,9 +73,10 @@ public class CartController {
                     if(cartDao.isAvailableOnStock(getProductQuantityOnStock(productId), quantity) && quantity > 0){
                         cartDao.add(user.getId(), productId, quantity);
                     }else{
-                        System.out.println("Quantity available in stock: " + getProductQuantityOnStock(productId));
+                        System.out.println("  Quantity available in stock: " + getProductQuantityOnStock(productId));
                     }
                     cartDao.changeQuantityOfProduct(user.getId(), productId, quantity);
+                    mainView.pressEnterToContinue("  Quantity changed. Press enter to continue");
                     break;
                 case 5:
                     isRunning = false;

@@ -30,14 +30,14 @@ public class CartView {
 
     public void printStartLine(){
         System.out.println();
-        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
-        System.out.println(colorize("  | ID | TYPE/MODEL | QUANTITY |", PROMPT_FORMAT));
-        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
+        System.out.println(colorize("  -----------------------------------", MENU_FORMAT));
+        System.out.println(colorize("  |  ID  |  TYPE/MODEL  |  QUANTITY  |", PROMPT_FORMAT));
+        System.out.println(colorize("  -----------------------------------", MENU_FORMAT));
     }
 
     public void printEndLine(){
 
-        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
+        System.out.println(colorize("  -----------------------------------", MENU_FORMAT));
         System.out.println();
     }
 
