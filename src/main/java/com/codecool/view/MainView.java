@@ -3,10 +3,10 @@ package com.codecool.view;
 
 import com.codecool.enums.UserInfo;
 import com.codecool.model.Order;
+import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -67,17 +67,70 @@ public class MainView {
     }
 
     public void displayUsersTable(List<User> users, int[] maxLengths) {
-        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getUsersTableHeadersLengths());
+        String[] headers = {"id", "first_name", "last_name", "email", "password", "user_role"};
+        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getHeadersLengths(headers));
         StringBuilder sb;
         System.out.println();
-        String[] headers = {"id", "first_name", "last_name", "password", "user_role"};
 
         displayHeaders(maxLengthsIncludingHeaders, headers);
         sb = new StringBuilder();
         for (User user : users) {
 
             String[] fields = {String.valueOf(user.getId()), user.getFirstName(), user.getLastName(),
-                               user.getPassword(), String.valueOf(user.getRoleID())};
+                               user.getEmail(), user.getPassword(), String.valueOf(user.getRoleID())};
+
+            sb.append("  ");
+            for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
+                sb.append("| ")
+                  .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], fields[i].trim()))
+                  .append(" ");
+            }
+            sb.append("|\n");
+        }
+        System.out.println(sb.toString());
+    }
+
+    public void displayOrdersTable(List<Order> orders, int[] maxLengths) {
+        String[] headers = {"sales_order_id", "status", "user_id", "first_name", "last_name", "order_date", "due_date", "total_due"};
+        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getHeadersLengths(headers));
+        StringBuilder sb;
+        System.out.println();
+
+
+        displayHeaders(maxLengthsIncludingHeaders, headers);
+        sb = new StringBuilder();
+
+        for (Order order : orders) {
+
+            String[] fields = {String.valueOf(order.getId()), order.getStatus(), String.valueOf(order.getUserID()),
+                               order.getCustomerFirstName(), order.getCustomerLastName(), order.getOrderDate().toString(),
+                               order.getDueDate().toString(), String.valueOf(order.getTotalDue())};
+
+            sb.append("  ");
+            for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
+                sb.append("| ")
+                  .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], fields[i].trim()))
+                  .append(" ");
+            }
+            sb.append("|\n");
+        }
+        System.out.println(sb.toString());
+    }
+
+    public void displayProductsTable(List<Product> products, int[] maxLengths) {
+        String[] headers = {"id", "product_name", "gender", "type", "colour", "sizes", "prices", "quantity_on_stock"};
+        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getHeadersLengths(headers));
+        StringBuilder sb;
+        System.out.println();
+
+        displayHeaders(maxLengthsIncludingHeaders, headers);
+        sb = new StringBuilder();
+
+        for (Product product : products) {
+
+            String[] fields = {String.valueOf(product.getId()), product.getName(), product.getGender(),
+                    product.getType(), product.getColour(), product.getSizes(), String.valueOf(product.getPrices()),
+                    String.valueOf(product.getQuantity())};
 
             sb.append("  ");
             for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
@@ -106,32 +159,6 @@ public class MainView {
         drawHorizontalLine(calculateSum(maxLengthsIncludingHeaders) + (maxLengthsIncludingHeaders.length * 2) + maxLengthsIncludingHeaders.length);
     }
 
-    public void displayOrdersTable(List<Order> orders, int[] maxLengths) {
-        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getOrdersTableHeadersLengths());
-        StringBuilder sb;
-        System.out.println();
-        String[] headers = {"sales_order_id", "status", "user_id", "first_name", "last_name", "order_date", "due_date", "total_due"};
-
-        displayHeaders(maxLengthsIncludingHeaders, headers);
-        sb = new StringBuilder();
-
-        for (Order order : orders) {
-
-            String[] fields = {String.valueOf(order.getId()), order.getStatus(), String.valueOf(order.getUserID()),
-                               order.getCustomerFirstName(), order.getCustomerLastName(), order.getOrderDate().toString(),
-                               order.getDueDate().toString(), String.valueOf(order.getTotalDue())};
-
-            sb.append("  ");
-            for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
-                sb.append("| ")
-                  .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], fields[i].trim()))
-                  .append(" ");
-            }
-            sb.append("|\n");
-        }
-        System.out.println(sb.toString());
-    }
-
     private int[] findLongestCharacterPerColumn(int[] maxLengths, int[] headers) {
         for (int i = 0; i < headers.length; i++) {
             maxLengths[i] = Math.max(maxLengths[i], headers[i]);
@@ -153,15 +180,6 @@ public class MainView {
         System.out.println("-".repeat(length));
     }
 
-    public int[] getUsersTableHeadersLengths() {
-        String[] headers = {"id", "first_name", "last_name", "password", "user_role"};
-        return getHeadersLengths(headers);
-    }
-
-    public int[] getOrdersTableHeadersLengths() {
-        String[] headers = {"sales_order_id", "status", "user_id", "first_name", "last_name", "order_date", "due_date", "total_due"};
-        return getHeadersLengths(headers);
-    }
 
     public int[] getHeadersLengths(String[] headers) {
         int[] headersLengths = new int[headers.length];
@@ -178,7 +196,7 @@ public class MainView {
     }
 
     public void pressEnterToContinue(String prompt) {
-        System.out.print(prompt);
+        System.out.print("\n" + colorize(prompt, MENU_FORMAT));
         scanner.nextLine();
     }
 
@@ -189,15 +207,14 @@ public class MainView {
             displayRegistrationScreen(fields[i], answers);
             answers[i] = getStringInput();
         }
-
         return new User(answers[0], answers[1], answers[2], answers[3]);
     }
 
     public void displayRegistrationScreen(String field, String[] answers) {
         clearScreen();
-        System.out.println("\n  Please enter your " + field);
+        System.out.println("\n" + colorize("  Please enter your " + field, HEADER_FORMAT));
         for (int i = 0; i < fields.length; i++) {
-            System.out.println(fields[i].toUpperCase() + ": " + answers[i]);
+            System.out.println(colorize("  " + fields[i].toUpperCase() + ": ", MENU_FORMAT) + colorize(answers[i], HEADER_FORMAT));
         }
     }
 
@@ -225,24 +242,26 @@ public class MainView {
     }
 
     public void displayAccountCreationMessage() {
-        System.out.print("\nYour account has been created!\n");
-        pressEnterToContinue("\nPress enter to return to main menu");
+        System.out.println("\n" + colorize("  Your account has been created!", HEADER_FORMAT));
+        pressEnterToContinue("  Press enter to return to main menu");
 
     }
 
     public void displayErrorWhileLoggingMessage() {
-        System.out.println("\nIncorrect email or password\n");
-        pressEnterToContinue("\nPress enter to return to main menu");
+        System.out.println("\n" + colorize("  Incorrect email or password", HEADER_FORMAT));
+        pressEnterToContinue("  Press enter to return to main menu");
     }
 
-    public String readInput(String prompt, String defaultValue) {
-        showPrompt(prompt, defaultValue);
+    public String readInput(String prompt, String defaultValue, User currentUser) {
+        askToUpdateRecords(prompt, defaultValue, currentUser);
         String input = scanner.nextLine();
         return input.isEmpty() ? defaultValue : input;
     }
 
-    private void showPrompt(String prompt, String defaultValue) {
-        System.out.print(prompt + "current value -> " + defaultValue + "): ");
+    private void askToUpdateRecords(String prompt, String defaultValue, User currentUser) {
+        clearScreen();
+        System.out.print("\n" + colorize("  " + prompt + "current value -> " + "'"+ defaultValue + "'" + "): ", MENU_FORMAT));
+        displayPrompt(4, 3, currentUser.getFirstName());
     }
 
     private int calculateSum(int[] array) {

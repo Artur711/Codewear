@@ -167,4 +167,58 @@ public class PSQLProductDao implements ProductDao {
         }
     }
 
+    @Override
+    public int[] findMaxNumberOfCharsPerColumn() {
+        int numberOfColumns = 8;
+        int[] maxLengths = new int[numberOfColumns];
+        String sql = "SELECT " +
+                "max(length(cast(id as varchar(20)))) ," +
+                "max(length(product_name)) ," +
+                "max(length(gender)) ," +
+                "max(length(type)), " +
+                "max(length(colour)), " +
+                "max(length(sizes)), " +
+                "max(length(cast(prices as varchar(20)))), " +
+                "max(length(cast(quantity_on_stock as varchar(20)))) " +
+                "FROM products";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            for (int i = 0; i < maxLengths.length; i++) {
+                maxLengths[i] = rs.getInt(i + 1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return maxLengths;
+    }
+
+    @Override
+    public List<Product> getProductWithProductName(String name) {
+        String sql = "select id, product_name, gender, type, colour, sizes, prices, quantity_on_stock FROM products " +
+                     "WHERE product_name = ?";
+        List<Product> products = new ArrayList<>();
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setString(1, name);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Product product = new Product();
+                product.setId(rs.getInt(1));
+                product.setName(rs.getString(2));
+                product.setGender(rs.getString(3));
+                product.setType(rs.getString(4));
+                product.setColour(rs.getString(5));
+                product.setSizes(rs.getString(6));
+                product.setPrices(rs.getInt(7));
+                product.setQuantity(rs.getInt(8));
+                products.add(product);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return products;
+    }
+
 }

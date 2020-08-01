@@ -25,6 +25,8 @@ public class Product {
         this(9999, name, gender, type, colour, sizes, prices, quantity);
     }
 
+    public Product() {}
+
     public int getId() {
         return id;
     }

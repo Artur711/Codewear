@@ -127,12 +127,13 @@ public class PSQLUserDao implements UserDao {
 
     @Override
     public int[] findMaxNumberOfCharsPerColumn() {
-        int numberOfColumns = 5;
+        int numberOfColumns = 6;
         int[] maxLengths = new int[numberOfColumns];
         String sql = "SELECT " +
                 "max(length(cast(id as varchar(20)))), " +
                 "max(length(first_name)), " +
                 "max(length(last_name)), " +
+                "max(length(email)), " +
                 "max(length(password)), " +
                 "max(length(cast(user_role as varchar(20)))) " +
                 "FROM users";
