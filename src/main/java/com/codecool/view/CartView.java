@@ -1,11 +1,19 @@
 package com.codecool.view;
 
 import com.codecool.model.Product;
+import com.diogonunes.jcolor.AnsiFormat;
 
-import java.util.Map;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
+
+
+import static com.diogonunes.jcolor.Attribute.BOLD;
+import static com.diogonunes.jcolor.Attribute.BRIGHT_YELLOW_TEXT;
 
 
 public class CartView {
+
+    public final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT());
 
     public void CartMenu() {
         String[] options = {"Add product", "Delete product", "Clear cart", "Change quantity of product", "Back to Customer Menu"};
@@ -16,7 +24,7 @@ public class CartView {
     }
 
     public void printProduct(Product product, int quantity) {
-        System.out.println(String.format("%d %s %d",product.getId(), product.getName(), quantity));
+        System.out.println(colorize(String.format("%d %s %d",product.getId(), product.getName(), quantity), HEADER_FORMAT));
     }
 
     public void printStartLine(){
