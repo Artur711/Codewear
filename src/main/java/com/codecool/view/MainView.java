@@ -40,7 +40,7 @@ public class MainView {
     }
 
     public void displayAdminMenu(User user) {
-        String[] options = {"Database management", "Show all customer orders with customerID", "Show past due orders", "Sign out"};
+        String[] options = {"Database management", "Show all orders of a customer", "Show past due orders", "Sign out"};
         System.out.println(colorize("\n  W E L C O M E  T O  A D M I N  D A S H B O A R D\n", HEADER_FORMAT));
         displayMenuOptions(options);
         displayPrompt(9, 3, user.getFirstName());

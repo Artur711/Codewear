@@ -6,6 +6,8 @@ import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.codecool.view.MainView;
 
+import java.util.List;
+
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class ProductManager extends Manager {
@@ -47,14 +49,18 @@ public class ProductManager extends Manager {
 
     @Override
     protected void delete() {
+        mainView.clearScreen();
         System.out.println("\n" + colorize("  Enter id of product to be removed:", mainView.HEADER_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product != null) {
+            mainView.clearScreen();
             System.out.printf("\n" + colorize("  Are you sure you want to remove product: %s? [Y/N]%n", mainView.MENU_FORMAT), product.getName());
-            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.MENU_FORMAT), productDAO.getNumberOfRecords());
+            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
+            mainView.displayPrompt(6, 3, currentUser.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 productDAO.delete(product);
-                System.out.println("\n" + colorize("  Product has been removed from database", mainView.HEADER_FORMAT));
+                System.out.println("\n" + colorize("  Product has been removed from database", mainView.MENU_FORMAT));
                 System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
                 mainView.pressEnterToContinue("  Press enter to go back");
             }
@@ -68,13 +74,17 @@ public class ProductManager extends Manager {
     protected void add() {
         Product product = enterProductData();
         productDAO.addProduct(product);
-        System.out.println("\n" + colorize("  Product has been added", mainView.MENU_FORMAT));
+        List<Product> products = productDAO.getProductWithProductName(product.getName());
+        System.out.println(colorize("  Product has been added", mainView.MENU_FORMAT));
+        mainView.displayProductsTable(products, productDAO.findMaxNumberOfCharsPerColumn());
         mainView.pressEnterToContinue("  Press enter to go back");
     }
 
     @Override
     protected void update() {
-        System.out.println("Enter id of the product to be updated:");
+        mainView.clearScreen();
+        System.out.println("\n" + colorize("Enter id of the product to be updated:", mainView.HEADER_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product == null) {
             System.out.println("\nProduct not found in the database\n");
@@ -94,10 +104,10 @@ public class ProductManager extends Manager {
         product.setSizes(size);
         product.setPrices(Integer.parseInt(price));
         product.setQuantity(Integer.parseInt(quantity));
-
         productDAO.update(product);
+        List<Product> products = productDAO.getProductWithProductName(product.getName());
         System.out.println("\n" + colorize("  Product has been updated", mainView.HEADER_FORMAT));
-        System.out.println(productDAO.getProductFromDatabase(product.getId()));
+        mainView.displayProductsTable(products, productDAO.findMaxNumberOfCharsPerColumn());
         mainView.pressEnterToContinue("  Press enter to go back");
     }
 
@@ -116,13 +126,13 @@ public class ProductManager extends Manager {
         mainView.clearScreen();
         System.out.println(colorize("\n  Please enter product " + field + "\n", mainView.HEADER_FORMAT));
         for (int i = 0; i < answers.length; i++) {
-            System.out.println(new String[] {colorize("  PRODUCT_NAME (varchar(30))", mainView.MENU_FORMAT),
-                    colorize("  GENDER (varchar(6))", mainView.MENU_FORMAT),
-                    colorize("  TYPE (varchar(15))", mainView.MENU_FORMAT),
-                    colorize("  COLOUR (varchar(25))", mainView.MENU_FORMAT),
-                    colorize("  SIZE (varchar(3))", mainView.MENU_FORMAT),
-                    colorize("  PRICE (int)", mainView.MENU_FORMAT),
-                    colorize("  QUANTITY_ON_STOCK (int)", mainView.MENU_FORMAT)}[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
+            System.out.println(new String[] {colorize("  PRODUCT_NAME varchar(30)", mainView.MENU_FORMAT),
+                    colorize("  GENDER varchar(6)", mainView.MENU_FORMAT),
+                    colorize("  TYPE varchar(15)", mainView.MENU_FORMAT),
+                    colorize("  COLOUR varchar(25)", mainView.MENU_FORMAT),
+                    colorize("  SIZE varchar(3)", mainView.MENU_FORMAT),
+                    colorize("  PRICE int", mainView.MENU_FORMAT),
+                    colorize("  QUANTITY_ON_STOCK int", mainView.MENU_FORMAT)}[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
         }
         mainView.displayPrompt(12,3, currentUser.getFirstName());
 

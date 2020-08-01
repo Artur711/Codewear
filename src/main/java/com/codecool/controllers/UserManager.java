@@ -80,7 +80,7 @@ public class UserManager extends Manager {
         userDao.addUser(user, user.getRoleID());
         user = userDao.validateUser(user);
         List<User> users = userDao.getUserWithUserID(user.getId());
-        System.out.println("\n" + colorize("  User has been created:\n", mainView.MENU_FORMAT));
+        System.out.println(colorize("  User has been created:\n", mainView.MENU_FORMAT));
         mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
         mainView.pressEnterToContinue("  Press enter to go back");
     }
@@ -98,10 +98,10 @@ public class UserManager extends Manager {
         }
         User user = users.get(0);
         System.out.println();
-        String firstName = mainView.readInput("FIRST_NAME (varchar, ", user.getFirstName(), currentUser);
-        String lastName = mainView.readInput("LAST_NAME (varchar, ", user.getLastName(), currentUser);
-        String email = mainView.readInput("EMAIL (varchar, ", user.getEmail(), currentUser);
-        String password = mainView.readInput("PASSWORD (varchar, ", user.getPassword(), currentUser);
+        String firstName = mainView.readInput("FIRST_NAME (varchar(255), ", user.getFirstName(), currentUser);
+        String lastName = mainView.readInput("LAST_NAME (varchar(255), ", user.getLastName(), currentUser);
+        String email = mainView.readInput("EMAIL (varchar(255), ", user.getEmail(), currentUser);
+        String password = mainView.readInput("PASSWORD (varchar(255), ", user.getPassword(), currentUser);
         String roleID = mainView.readInput("ROLE_ID (int) (2 - Employee, 3 - Customer, ", String.valueOf(user.getRoleID()), currentUser);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -111,7 +111,7 @@ public class UserManager extends Manager {
         userDao.update(user);
         System.out.println("\n" + colorize("  User has been updated", mainView.HEADER_FORMAT));
         mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
-        mainView.pressEnterToContinue("\n" + colorize("  Press enter to go back", mainView.MENU_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 
     public User enterUserData() {
@@ -134,10 +134,10 @@ public class UserManager extends Manager {
         mainView.clearScreen();
         System.out.println(colorize("\n  Please enter user's " + field + "\n", mainView.HEADER_FORMAT));
         for (int i = 0; i < UserInfo.values().length - 1; i++) {
-            System.out.println(new String[] {colorize("  FIRST_NAME (varchar)", mainView.MENU_FORMAT),
-                                             colorize("  LAST_NAME (varchar)", mainView.MENU_FORMAT),
-                                             colorize("  LOGIN/EMAIL (varchar)",mainView.MENU_FORMAT),
-                                             colorize("  ROLE_ID (int) (2 - Employee, 3 - Customer)",mainView.MENU_FORMAT) }[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
+            System.out.println(new String[] {colorize("  FIRST_NAME varchar(255)", mainView.MENU_FORMAT),
+                                             colorize("  LAST_NAME varchar(255)", mainView.MENU_FORMAT),
+                                             colorize("  LOGIN/EMAIL varchar(255)", mainView.MENU_FORMAT),
+                                             colorize("  ROLE_ID int (2 - Employee, 3 - Customer)", mainView.MENU_FORMAT) }[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
         }
         mainView.displayPrompt(9,3, currentUser.getFirstName());
     }
