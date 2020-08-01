@@ -13,26 +13,20 @@ import static com.diogonunes.jcolor.Attribute.*;
 public class CustomerView {
 
     private Scanner scanner = new Scanner(System.in);
-    MainView mainView;
-    User user;
+
     public final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT());
     public final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), WHITE_TEXT());
     public final AnsiFormat PROMPT_FORMAT = new AnsiFormat(BOLD(), BLUE_TEXT());
 
-
-
     public void CustomerMenu(User user, MainView mainView) {
-        System.out.println(colorize("  Customer menu", mainView.HEADER_FORMAT));
+        System.out.println(colorize("  Welcome, " + user.getFirstName() + "!", mainView.HEADER_FORMAT));
         System.out.println(" ");
-        System.out.println(colorize("  Welcome, " + user.getFirstName(), mainView.HEADER_FORMAT));
-        System.out.println(" ");
-        String[] options = {"Search", "My cart", "Confirm cart", "My personal details", "Help", "Logout"};
+        String[] options = {"Search", "My cart", "Confirm cart", "Personal details", "Update personal details", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
             System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
         System.out.println(" ");
-        System.out.print(colorize("  Choose one of the options: ", PROMPT_FORMAT));
-        mainView.displayPrompt(13, 2, "  " + user.getFirstName());
+        mainView.displayPrompt(11, 2, " " + user.getFirstName());
     }
 
     public int getIntegerInput() {
@@ -49,13 +43,14 @@ public class CustomerView {
         System.out.flush();
     }
 
-    public void CustomerHelp() {
-        String[] options = {"If you need any help, don't hesitate and contact us codewear@codecool.com.", "Products overview is available after registration.", "Orders are execute in maximum 30 days. \n"};
+    public void CustomerHelp(MainView mainView) {
+        String[] options = {"If you need any help, don't hesitate and contact us codewear@codecool.com.", "Products overview is available after registration.", "For all orders payment policy is: Pay on Arrival", "Orders are execute in maximum 30 days. \n"};
         System.out.println(colorize("  Help:", HEADER_FORMAT));
         System.out.println(" ");
         for (int i = 0; i < options.length; i++) {
             System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
     }
 
     public void userDetails(User user, MainView mainView) {

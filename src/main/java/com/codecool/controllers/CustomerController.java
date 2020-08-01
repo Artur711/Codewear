@@ -62,47 +62,25 @@ public class CustomerController {
 
             switch (input) {
                 case 1:
-                    Product product = selectDAO.runSearch();
-                    if (product != null) {
-                        if(productDao.checkIfProductExist(product.getId())) {
-                            System.out.println(colorize("  Choose quantity of product: ", mainView.HEADER_FORMAT));
-                            int quantity = mainView.getIntegerInput();
-                            //Scanner scanner = new Scanner(System.in);
-                            //int quantity = scanner.nextInt();
-                            if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
-                                cartDao.add(user.getId(), product.getId(), quantity);
-                            }else{
-                                System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
-                            }
-                        }
-                    }
+                    customerCart(user);
                     break;
                 case 2:
                     cartController.run(user);
                     break;
                 case 3:
-                    Map<Integer, Integer> mapOrders = cartDao.getCartMap(user.getId());
-                    if (mapOrders.size() > 0) {
-                        cartDao.clear(user.getId());
-                        float totalPrice = getTotalPrice(mapOrders);
-                        Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", generateOrderNumber(), user.getId(), totalPrice);
-                        orderDao.add(order);
-                        new PSQLSaveOrderDetails(conn, productDao, mapOrders, user.getId()).run();
-                        System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
-                    }
-                    System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
-                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+                    customerOrder(user);
                     break;
                 case 4:
                     view.clearScreen();
                     view.userDetails(user, mainView);
                     break;
                 case 5:
-                    view.clearScreen();
-                    view.CustomerHelp();
-                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
                     break;
                 case 6:
+                    view.clearScreen();
+                    view.CustomerHelp(mainView);
+                    break;
+                case 7:
                     isRunning = false;
                     break;
             }
@@ -128,5 +106,35 @@ public class CustomerController {
             sb.append(random.nextInt(10));
         }
         return sb.toString();
+    }
+
+    private void customerCart(User user) {
+        Product product = selectDAO.runSearch();
+        if (product != null) {
+            if(productDao.checkIfProductExist(product.getId())) {
+                System.out.println(colorize("  Choose quantity of product: ", mainView.HEADER_FORMAT));
+                int quantity = mainView.getIntegerInput();
+                if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
+                    cartDao.add(user.getId(), product.getId(), quantity);
+                }else{
+                    System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
+                }
+            }
+        }
+    }
+
+    private void customerOrder(User user) {
+        Map<Integer, Integer> mapOrders = cartDao.getCartMap(user.getId());
+        if (mapOrders.size() > 0) {
+            cartDao.clear(user.getId());
+            float totalPrice = getTotalPrice(mapOrders);
+            Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", generateOrderNumber(), user.getId(), totalPrice);
+            orderDao.add(order);
+            new PSQLSaveOrderDetails(conn, productDao, mapOrders, user.getId()).run();
+            view.clearScreen();
+            System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
+        }
+        System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
     }
 }
