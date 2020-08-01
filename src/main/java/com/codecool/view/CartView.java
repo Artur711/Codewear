@@ -55,6 +55,6 @@ public class CartView {
     }
 
     public void msgProductNotExist(){
-        System.out.println("  Product by this id not exist in your cart.");
+        System.out.println(colorize("  Product by this id not exist in your cart.", MENU_FORMAT));
     }
 }
