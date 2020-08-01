@@ -24,6 +24,7 @@ public class SelectPostgres implements SelectDAO {
     private final ProductDao tableProd;
     private final String [] selectOption = {"gender", "type", "colour", "sizes"};
 
+
     public SelectPostgres(Connection conn, String userName) {
         this.conn = conn;
         this.tableProd = new PSQLProductDao(conn);
@@ -39,7 +40,6 @@ public class SelectPostgres implements SelectDAO {
         command = generateSelectQuery("SELECT * FROM products", this.mapOptionToSelect);
         List<Product> productList = tableProd.getTableFromDatabase(command);
         mapOptionToSelect.clear();
-//        view.printList(productList);
         return getSpecificProduct(productList);
     }
 

@@ -2,8 +2,6 @@ package com.codecool.controllers;
 
 import com.codecool.dao.*;
 import com.codecool.datasource.PostgresSQLDataSource;
-import com.codecool.select.SelectDAO;
-import com.codecool.select.SelectPostgres;
 
 import java.io.FileInputStream;
 import java.io.IOException;

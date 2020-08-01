@@ -7,21 +7,13 @@ import java.util.List;
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 public class SelectView extends MainView {
-    private final int NUMBER_SPACES = 46;
+    private final int NUMBER_SPACES = 45;
     private int numberOfRestSpaces;
-    private int quantitySignsInRigidText;
     private StringBuilder sB;
     private final String str = colorize("|| ", HEADER_FORMAT);
+    private String leftString;
+    private String rightString;
 
-    /*public void printList (List<List<Object>> listToPrint) {
-        for (List<Object> row : listToPrint) {
-            for (Object element : row) {
-                System.out.print(element);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-    }*/
 
     public void printSelectOption (List<Object> optionList) {
         clearScreen();
@@ -46,13 +38,23 @@ public class SelectView extends MainView {
         clearScreen();
         printLineOfFrame();
 
-        printLineWithProductIDAndQuntity(product);
-        printLineWithPrice(product);
+        leftString = String.format("Product id: %d",product.getId());
+        rightString = String.format("Pieces available: %d", product.getQuantity());
+        printLineWithWhiteText(leftString, rightString);
+
+        rightString = String.format("Price: %d $", product.getPrices());
+        printLineWithWhiteText("", rightString);
         System.out.print(getEmptyLine());
 
-        printLineWithNameOfProduct(product);
-        printLineWithTypeAndSize(product);
-        printLineWithColour(product);
+        leftString = String.format("Product name: %s", product.getName());
+        printLineWithWhiteText(leftString, "");
+
+        leftString = String.format("Product type: %s", product.getType());
+        rightString = String.format("SIZE: %s", product.getSizes());
+        printLineWithWhiteText(leftString, rightString);
+
+        leftString = String.format("Colour: %s", product.getColour());
+        printLineWithWhiteText(leftString, "");
         System.out.print(getEmptyLine());
 
         printLineOfFrame();
@@ -62,110 +64,65 @@ public class SelectView extends MainView {
         clearScreen();
         printLineOfFrame();
 
-        printLineWithProductIDAndQuntity(product);
-        printLineWithPrice(product);
+        leftString = String.format("Product id: %d",product.getId());
+        rightString = String.format("Pieces available: %d", product.getQuantity());
+        printLineWithWhiteText(leftString, rightString);
 
+        rightString = String.format("Price: %d $", product.getPrices());
+        printLineWithWhiteText("", rightString);
         System.out.print(getEmptyLine());
 
-        printLineWithNameOfProduct(product);
-        printLineWithTypeAndSize(product);
-        printLineWithColour(product);
+        leftString = String.format("Product name: %s", product.getName());
+        printLineWithWhiteText(leftString, "");
 
+        leftString = String.format("Product type: %s", product.getType());
+        rightString = String.format("SIZE: %s", product.getSizes());
+        printLineWithWhiteText(leftString, rightString);
+
+        leftString = String.format("Colour: %s", product.getColour());
+        printLineWithWhiteText(leftString, "");
         System.out.print(getEmptyLine());
-        printLineWithOptionAddAndView();
-        printLineWithOptionNextAndPrevious();
+
+        printLineWithBlueText("Add to cart (A)", "Product Preview (V)");
+        printLineWithBlueText("Previous Product (P)", "Next Product (N)");
         System.out.print(getEmptyLine());
-        printLineWithOptionQuitAndNumberOfSearch(indexOfProduct, numberOfAllSearch);
+
+        rightString = String.format("Number of results: %d/%d", indexOfProduct, numberOfAllSearch);
+        printLineWithBlueAndWhiteText("Go back (Q)", rightString);
 
         printLineOfFrame();
         displayPrompt(14, 1, userName);
     }
 
-    private void printLineWithProductIDAndQuntity(Product product) {
+    private void printLineWithWhiteText(String leftString, String rightString) {
         sB = new StringBuilder(str);
-        sB.append(colorize(String.format("Product id: %d",product.getId()), MENU_FORMAT));
-        quantitySignsInRigidText = 32;
-        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText
-                - String.valueOf(product.getId()).length()
-                - String.valueOf(product.getQuantity()).length();
+        sB.append(colorize(leftString, MENU_FORMAT));
+        numberOfRestSpaces = NUMBER_SPACES - leftString.length() - rightString.length() - 2;
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(colorize(String.format("Pieces available: %d", product.getQuantity()), MENU_FORMAT));
+        sB.append(colorize(rightString, MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
 
-    private void printLineWithPrice(Product product) {
+    private void printLineWithBlueText(String leftString, String rightString) {
         sB = new StringBuilder(str);
-        quantitySignsInRigidText = 11;
-        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - String.valueOf(product.getPrices()).length();
+        sB.append(colorize(leftString, PROMPT_FORMAT));
+        numberOfRestSpaces = NUMBER_SPACES - leftString.length() - rightString.length() - 2;
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(colorize(String.format("Price: %d $", product.getPrices()), MENU_FORMAT));
+        sB.append(colorize(rightString, PROMPT_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
 
-    private void printLineWithNameOfProduct(Product product) {
+    private void printLineWithBlueAndWhiteText(String leftString, String rightString) {
         sB = new StringBuilder(str);
-        sB.append(colorize(String.format("Product name: %s", product.getName()), MENU_FORMAT));
-        quantitySignsInRigidText = 16;
-        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getName().length();
+        sB.append(colorize(leftString, PROMPT_FORMAT));
+        numberOfRestSpaces = NUMBER_SPACES - leftString.length() - rightString.length() - 2;
         sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(colorize(rightString, MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
-
-    private void printLineWithTypeAndSize(Product product) {
-        sB = new StringBuilder(str);
-        sB.append(colorize(String.format("Product type: %s", product.getType()), MENU_FORMAT));
-        quantitySignsInRigidText = 22;
-        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getType().length() - product.getSizes().length();
-        sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(colorize(String.format("SIZE: %s", product.getSizes()), MENU_FORMAT));
-        sB.append(colorize(" ||", HEADER_FORMAT));
-        System.out.println(sB.toString());
-    }
-
-    private void printLineWithColour(Product product) {
-        sB = new StringBuilder(str);
-        sB.append(colorize(String.format("Colour: %s", product.getColour()), MENU_FORMAT));
-        quantitySignsInRigidText = 10;
-        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getColour().length();
-        sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(colorize(" ||", HEADER_FORMAT));
-        System.out.println(sB.toString());
-    }
-
-    private void printLineWithOptionAddAndView() {
-        sB = new StringBuilder(str);
-        sB.append(colorize("Add to cart (A)", PROMPT_FORMAT));
-        quantitySignsInRigidText = 36;
-        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
-        sB.append(colorize("Product Preview (V)", PROMPT_FORMAT));
-        sB.append(colorize(" ||", HEADER_FORMAT));
-        System.out.println(sB);
-    }
-
-    private void printLineWithOptionNextAndPrevious() {
-        sB = new StringBuilder(str);
-        sB.append(colorize("Previous Product (P)", PROMPT_FORMAT));
-        quantitySignsInRigidText = 38;
-        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
-        sB.append(colorize("Next Product (N)", PROMPT_FORMAT));
-        sB.append(colorize(" ||", HEADER_FORMAT));
-        System.out.println(sB.toString());
-    }
-
-    private void printLineWithOptionQuitAndNumberOfSearch(int indexOfProduct, int numberOfAllSearch) {
-        sB = new StringBuilder(str);
-        sB.append(colorize("Go back (Q)", PROMPT_FORMAT));
-        quantitySignsInRigidText = 13;
-        String strSearch = String.format("Number of results: %d/%d", indexOfProduct, numberOfAllSearch);
-        sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText - strSearch.length()));
-        sB.append(colorize(strSearch, MENU_FORMAT));
-        sB.append(colorize(" ||", HEADER_FORMAT));
-        System.out.println(sB.toString());
-    }
-
 
     private void printLineOfFrame() {
         System.out.print(colorize("##", HEADER_FORMAT));
@@ -198,6 +155,5 @@ public class SelectView extends MainView {
 
     public void provideOption(String userName) {
         System.out.print(colorize(String.format("%s:$ ", userName), PROMPT_FORMAT));
-//        System.out.print(colorize("Provide your option number: ", PROMPT_FORMAT));
     }
 }

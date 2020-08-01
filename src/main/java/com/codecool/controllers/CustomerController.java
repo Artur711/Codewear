@@ -121,10 +121,12 @@ public class CustomerController {
                 int quantity = mainView.getIntegerInput();
                 if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                     cartDao.add(user.getId(), product.getId(), quantity);
+                    System.out.println("\n" + colorize("Added to cart!", mainView.PROMPT_FORMAT));
                 }else{
                     System.out.println("\n" + colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }
             }
+            mainView.pressEnterToContinue("  Press enter to continue");
         }
     }
 
