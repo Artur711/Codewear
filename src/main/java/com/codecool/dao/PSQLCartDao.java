@@ -17,7 +17,7 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int addToUserCart(int user_id, int product_id, int quantity) {
+    public int add(int user_id, int product_id, int quantity) {
         String sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, user_id);
@@ -32,7 +32,7 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int deleteAllFromUserCart(int user_id) {
+    public int clear(int user_id) {
         String sql = "DELETE FROM cart WHERE user_id = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, user_id);
@@ -45,7 +45,7 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int deleteItemFromUserCart(int user_id, int product_id) {
+    public int delete(int user_id, int product_id) {
         String sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, user_id);
@@ -59,7 +59,7 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public Map<Integer, Integer> getCartOfItems(int user_id) {
+    public Map<Integer, Integer> getCartMap(int user_id) {
         Map<Integer, Integer> cartOfItems = new HashMap<Integer, Integer>();
         String sql = "SELECT * FROM cart WHERE user_id = ?;";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
@@ -92,8 +92,8 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public boolean availableQuantityOnStock(int quantityInOrder, int userQuantityOrder){
-        if(quantityInOrder > userQuantityOrder){
+    public boolean isAvailableOnStock(int quantityInOrder, int userQuantityOrder){
+        if(quantityInOrder >= userQuantityOrder){
             return true;
         }else{
             return false;

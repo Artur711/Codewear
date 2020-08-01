@@ -114,7 +114,7 @@ public class SelectView extends MainView {
     }
 
 
-    public void printProductDetails2(Product product, int numberOfAllSearch, int indexOfProduct) {
+    public void printProductDetails(Product product, int numberOfAllSearch, int indexOfProduct) {
         clearScreen();
         int numberOfRestSpaces;
         int quantitySignsInRigidText;
