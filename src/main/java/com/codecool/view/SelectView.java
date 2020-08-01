@@ -137,27 +137,27 @@ public class SelectView extends MainView {
 
     private void printLineWithOptionAddAndView() {
         sB = new StringBuilder(str);
-        sB.append("Add to cart (A)");
+        sB.append(colorize("Add to cart (A)", PROMPT_FORMAT)));
         quantitySignsInRigidText = 36;
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
-        sB.append("Product Preview (V)");
+        sB.append(colorize("Product Preview (V)", PROMPT_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB);
     }
 
     private void printLineWithOptionNextAndPrevious() {
         sB = new StringBuilder(str);
-        sB.append("Previous Product (P)");
+        sB.append(colorize("Previous Product (P)", PROMPT_FORMAT));
         quantitySignsInRigidText = 38;
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
-        sB.append("Next Product (N)");
+        sB.append(colorize("Next Product (N)", PROMPT_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
 
     private void printLineWithOptionQuitAndNumberOfSearch(int indexOfProduct, int numberOfAllSearch) {
         sB = new StringBuilder(str);
-        sB.append("Go back (Q)");
+        sB.append(colorize("Go back (Q)", PROMPT_FORMAT));
         quantitySignsInRigidText = 13;
         String strSearch = String.format("Number of results: %d/%d", indexOfProduct, numberOfAllSearch);
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText - strSearch.length()));
