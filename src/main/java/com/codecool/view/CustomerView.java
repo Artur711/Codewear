@@ -64,11 +64,4 @@ public class CustomerView {
         mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 
-
-    public void orderMenu() {
-        String[] options = {" "};
-        for (int i = 0; i < options.length; i++) {
-            System.out.format("%d. %s\n", i + 1, options[i]);
-        }
-    }
 }
