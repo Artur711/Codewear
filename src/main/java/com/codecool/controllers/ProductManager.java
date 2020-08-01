@@ -83,11 +83,12 @@ public class ProductManager extends Manager {
     @Override
     protected void update() {
         mainView.clearScreen();
-        System.out.println("\n" + colorize("Enter id of the product to be updated:", mainView.HEADER_FORMAT));
+        System.out.println("\n" + colorize("  Enter id of the product to be updated:", mainView.HEADER_FORMAT));
         mainView.displayPrompt(4, 3, currentUser.getFirstName());
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product == null) {
-            System.out.println("\nProduct not found in the database\n");
+            System.out.println("\n" + colorize("  Product not found in the database\n", mainView.MENU_FORMAT));
+            mainView.pressEnterToContinue("  Press enter to go back");
             return;
         }
         String name = mainView.readInput("PRODUCT_NAME (varchar(30), ", product.getName(), currentUser);

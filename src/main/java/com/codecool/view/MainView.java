@@ -213,9 +213,11 @@ public class MainView {
     public void displayRegistrationScreen(String field, String[] answers) {
         clearScreen();
         System.out.println("\n" + colorize("  Please enter your " + field, HEADER_FORMAT));
+        System.out.println();
         for (int i = 0; i < fields.length; i++) {
             System.out.println(colorize("  " + fields[i].toUpperCase() + ": ", MENU_FORMAT) + colorize(answers[i], HEADER_FORMAT));
         }
+        displayPrompt(9, 3, "Guest");
     }
 
     public User getUserCredentials() {
