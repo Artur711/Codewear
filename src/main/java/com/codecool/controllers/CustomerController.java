@@ -12,13 +12,11 @@ import com.codecool.view.MainView;
 import com.codecool.view.SelectView;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
-import static com.diogonunes.jcolor.Attribute.*;
 
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Scanner;
 
 public class CustomerController {
     private SelectDAO selectDAO;
@@ -67,8 +65,8 @@ public class CustomerController {
                             int quantity = mainView.getIntegerInput();
                             //Scanner scanner = new Scanner(System.in);
                             //int quantity = scanner.nextInt();
-                            if(cartDao.availableQuantityOnStock(product.getQuantity(), quantity) && quantity > 0){
-                                cartDao.addToUserCart(user.getId(), product.getId(), quantity);
+                            if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
+                                cartDao.add(user.getId(), product.getId(), quantity);
                             }else{
                                 System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }
@@ -79,9 +77,9 @@ public class CustomerController {
                     cartController.run(user);
                     break;
                 case 3:
-                    Map<Integer, Integer> mapOrders = cartDao.getCartOfItems(user.getId());
+                    Map<Integer, Integer> mapOrders = cartDao.getCartMap(user.getId());
                     if (mapOrders.size() > 0) {
-                        cartDao.deleteAllFromUserCart(user.getId());
+                        cartDao.clear(user.getId());
                         float totalPrice = getTotalPrice(mapOrders);
                         Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
                         orderDao.add(order);

@@ -3,7 +3,6 @@ package com.codecool.controllers;
 import com.codecool.dao.CartDao;
 
 import com.codecool.dao.ProductDao;
-import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
@@ -40,7 +39,7 @@ public class CartController {
         while (isRunning) {
 
             mainView.clearScreen();
-            Map<Integer, Integer> cartIdItems = cartDao.getCartOfItems(user.getId());
+            Map<Integer, Integer> cartIdItems = cartDao.getCartMap(user.getId());
             cartView.printStartLine();
             for (int keyName : cartIdItems.keySet()) {
                 cartView.printProduct(productDao.getProductFromDatabase(keyName), cartIdItems.get(keyName));
@@ -54,27 +53,25 @@ public class CartController {
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-
                     System.out.println("Choose product id: ");
                     product_id = mainView.getIntegerInput();
-                    selectView.printProductDetails2(productDao.getProductFromDatabase(product_id), 1, 1);
-
+                    selectView.printProductDetails(productDao.getProductFromDatabase(product_id), 1, 1);
                     break;
                 case 2:
                     System.out.println("Type product id to delte: ");
                     product_id = mainView.getIntegerInput();
-                    cartDao.deleteItemFromUserCart(user.getId(), product_id);
+                    cartDao.delete(user.getId(), product_id);
                     break;
                 case 3:
-                    cartDao.deleteAllFromUserCart(user.getId());
+                    cartDao.clear(user.getId());
                     break;
                 case 4:
                     System.out.println("Choose product id to change: ");
                     product_id = mainView.getIntegerInput();
                     System.out.println("Choose new quantity of product: ");
                     quantity = mainView.getIntegerInput();
-                    if(cartDao.availableQuantityOnStock(getProductQuantityOnStock(product_id), quantity) && quantity > 0){
-                        cartDao.addToUserCart(user.getId(), product_id, quantity);
+                    if(cartDao.isAvailableOnStock(getProductQuantityOnStock(product_id), quantity) && quantity > 0){
+                        cartDao.add(user.getId(), product_id, quantity);
                     }else{
                         System.out.println("Quantity available in stock: " + getProductQuantityOnStock(product_id));
                     }
