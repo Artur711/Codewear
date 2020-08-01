@@ -60,13 +60,13 @@ public class AdminController {
         mainView.displayPrompt(4, 3, currentUser.getFirstName());
         List<Order> orders = orderDao.getOrdersByCustomerID(mainView.getIntegerInput());
         mainView.displayOrdersTable(orders,orderDao.findMaxNumberOfCharsPerColumn());
-        mainView.pressEnterToContinue(colorize("\n  Press enter to go back", mainView.MENU_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 
     public void showPastDueDateOrders() {
         mainView.clearScreen();
         List<Order> orders = orderDao.getPastDueDateOrders();
         mainView.displayOrdersTable(orders, orderDao.findMaxNumberOfCharsPerColumn());
-        mainView.pressEnterToContinue(colorize("\n  Press enter to go back", mainView.MENU_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 }
