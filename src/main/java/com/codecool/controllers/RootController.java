@@ -69,7 +69,7 @@ public class RootController {
 
     }
 
-    public void createUserAccount() {
+    private void createUserAccount() {
         User user = mainView.getUserData();
         if (userDao.addUser(user, Role.CUSTOMER.getRoleID()) == 1) {
             mainView.clearScreen();
@@ -77,14 +77,14 @@ public class RootController {
         }
     }
 
-    public void validateUser() {
+    private void validateUser() {
         User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
             AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);
             admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             SelectDAO selectDao = new SelectPostgres(conn, user.getFirstName());
-            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView);
+            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView, conn);
             customerController.run(user);
         } else {
             mainView.displayErrorWhileLoggingMessage();
