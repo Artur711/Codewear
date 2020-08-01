@@ -3,6 +3,7 @@ package com.codecool.controllers;
 
 import com.codecool.dao.ProductDao;
 import com.codecool.dao.CartDao;
+
 import com.codecool.model.User;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
@@ -18,6 +19,7 @@ public class CartController {
     ProductDao productDao;
     CartDao cartDao;
     SelectView selectView;
+
 
     public CartController(CartDao cartDao, ProductDao productDao, SelectView selectView) {
         this.cartDao = cartDao;
@@ -53,6 +55,7 @@ public class CartController {
                     System.out.println("Choose product id: ");
                     productId = mainView.getIntegerInput();
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId), 1, 1);
+
                     break;
                 case 2:
                     System.out.println("Type product id to delte: ");

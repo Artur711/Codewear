@@ -15,6 +15,7 @@ import com.codecool.view.SelectView;
 
 import java.sql.Connection;
 
+
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 
@@ -22,7 +23,6 @@ public class RootController {
 
     private final MainView mainView;
     private final SelectView selectView;
-
     private final UserDao userDao;
     private final ProductDao productDao;
     private final OrderDao orderDao;
@@ -38,6 +38,7 @@ public class RootController {
         this.conn = conn;
         mainView = new MainView();
         selectView = new SelectView();
+
 
     }
 
