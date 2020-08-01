@@ -21,14 +21,18 @@ public class CustomerView {
 
 
 
-    public void CustomerMenu(User user) {
+    public void CustomerMenu(User user, MainView mainView) {
+        System.out.println(colorize("  Customer menu", mainView.HEADER_FORMAT));
+        System.out.println(" ");
+        System.out.println(colorize("  Welcome, " + user.getFirstName(), mainView.HEADER_FORMAT));
+        System.out.println(" ");
         String[] options = {"Search", "My cart", "Confirm cart", "My personal details", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
             System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
         System.out.println(" ");
         System.out.print(colorize("  Choose one of the options: ", PROMPT_FORMAT));
-        //mainView.displayPrompt(4, 3, user.getFirstName());
+        mainView.displayPrompt(13, 2, "  " + user.getFirstName());
     }
 
     public int getIntegerInput() {
@@ -54,6 +58,16 @@ public class CustomerView {
         }
     }
 
+    public void userDetails(User user, MainView mainView) {
+        System.out.println(colorize("  My personal details: ", mainView.HEADER_FORMAT));
+        System.out.println(" ");
+        System.out.println(colorize("  ID: " + user.getId(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  First name: " + user.getFirstName(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  Last name: " + user.getLastName(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  E-mail: " + user.getEmail(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+    }
 
 
     public void orderMenu() {

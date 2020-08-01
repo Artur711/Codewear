@@ -57,11 +57,7 @@ public class CustomerController {
         while (isRunning) {
 
             view.clearScreen();
-            System.out.println(colorize("  Customer menu", mainView.HEADER_FORMAT));
-            System.out.println(" ");
-            System.out.println(colorize("  Welcome, " + user.getFirstName(), mainView.HEADER_FORMAT));
-            System.out.println(" ");
-            view.CustomerMenu(user);
+            view.CustomerMenu(user, mainView);
             int input = view.getIntegerInput();
 
             switch (input) {
@@ -95,17 +91,11 @@ public class CustomerController {
                         System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
                     }
                     System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
+                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
                     break;
                 case 4:
                     view.clearScreen();
-                    System.out.println(colorize("  My personal details: ", mainView.HEADER_FORMAT));
-                    System.out.println(" ");
-                    System.out.println(colorize("  ID: " + user.getId(), mainView.MENU_FORMAT));
-                    System.out.println(colorize("  First name: " + user.getFirstName(), mainView.MENU_FORMAT));
-                    System.out.println(colorize("  Last name: " + user.getLastName(), mainView.MENU_FORMAT));
-                    System.out.println(colorize("  E-mail: " + user.getEmail(), mainView.MENU_FORMAT));
-                    System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT));
-                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+                    view.userDetails(user, mainView);
                     break;
                 case 5:
                     view.clearScreen();
