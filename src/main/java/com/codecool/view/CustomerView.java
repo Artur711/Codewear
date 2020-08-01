@@ -56,11 +56,12 @@ public class CustomerView {
     public void userDetails(User user, MainView mainView) {
         System.out.println("\n" + colorize("  My personal details: ", mainView.HEADER_FORMAT));
         System.out.println(" ");
-        System.out.println(colorize("  ID: ", mainView.MENU_FORMAT) + colorize(String.valueOf(user.getId()), mainView.HEADER_FORMAT));
-        System.out.println(colorize("  First name: ",mainView.MENU_FORMAT) + colorize(user.getFirstName(), mainView.HEADER_FORMAT));
-        System.out.println(colorize("  Last name: ",mainView.MENU_FORMAT) + colorize(user.getLastName(),mainView.HEADER_FORMAT));
-        System.out.println(colorize("  E-mail: ", mainView.MENU_FORMAT) + colorize(user.getEmail(), mainView.HEADER_FORMAT));
-        System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT)); // Address can be null
+        System.out.println(colorize("  ID: " + user.getId(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  First name: " + user.getFirstName(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  Last name: " + user.getLastName(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  E-mail: " + user.getEmail(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  Password: " + user.getPassword(), mainView.MENU_FORMAT));
+        System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT));
         mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 
