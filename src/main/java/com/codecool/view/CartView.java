@@ -31,7 +31,7 @@ public class CartView {
     public void printStartLine(){
         System.out.println();
         System.out.println(colorize("  -----------------------------------", MENU_FORMAT));
-        System.out.println(colorize("  |  ID  |  TYPE/MODEL  |  QUANTITY  |", PROMPT_FORMAT));
+        System.out.println(colorize("  |  ID  |  TYPE/MODEL  |  QUANTITY |", PROMPT_FORMAT));
         System.out.println(colorize("  -----------------------------------", MENU_FORMAT));
     }
 
@@ -41,13 +41,16 @@ public class CartView {
         System.out.println();
     }
 
-    public int getProductIdFromCustomer(){
+    public int getProductIdFromCustomer(String userName){
         System.out.println(colorize("  Choose product by id: ", MENU_FORMAT));
+        mainView.displayPrompt(16, 3, userName);
         return mainView.getIntegerInput();
     }
 
-    public int getQuantityFromCustomer(){
+    public int getQuantityFromCustomer(String userName){
         System.out.println(colorize("  Choose new quantity of product: ", MENU_FORMAT));
+
+        mainView.displayPrompt(19, 3, userName);
         return mainView.getIntegerInput();
     }
 }

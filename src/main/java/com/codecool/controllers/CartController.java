@@ -54,13 +54,12 @@ public class CartController {
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    productId = cartView.getProductIdFromCustomer();
+                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId));
                     mainView.pressEnterToContinue("  Press enter to continue");
                     break;
                 case 2:
-                    System.out.println("  Type product id to delete: ");
-                    productId = cartView.getProductIdFromCustomer();
+                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
                     cartDao.delete(user.getId(), productId);
                     mainView.pressEnterToContinue("  Product removed. Press enter to continue");
                     break;
@@ -68,12 +67,12 @@ public class CartController {
                     cartDao.clear(user.getId());
                     break;
                 case 4:
-                    productId = cartView.getProductIdFromCustomer();
-                    quantity = cartView.getQuantityFromCustomer();
+                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
+                    quantity = cartView.getQuantityFromCustomer(user.getFirstName());
                     if(cartDao.isAvailableOnStock(getProductQuantityOnStock(productId), quantity) && quantity > 0){
                         cartDao.add(user.getId(), productId, quantity);
                     }else{
-                        System.out.println("  Quantity available in stock: " + getProductQuantityOnStock(productId));
+                        mainView.pressEnterToContinue("    Quantity available in stock: " + getProductQuantityOnStock(productId) + " Press enter to continue");
                     }
                     cartDao.changeQuantityOfProduct(user.getId(), productId, quantity);
                     mainView.pressEnterToContinue("  Quantity changed. Press enter to continue");
