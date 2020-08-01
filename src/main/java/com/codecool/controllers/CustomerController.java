@@ -117,7 +117,7 @@ public class CustomerController {
         Product product = selectDAO.runSearch();
         if (product != null) {
             if(productDao.checkIfProductExist(product.getId())) {
-                System.out.println(colorize("  Choose quantity of product: ", mainView.HEADER_FORMAT));
+                System.out.println("\n" + colorize("Choose quantity of product: ", mainView.HEADER_FORMAT));
                 int quantity = mainView.getIntegerInput();
                 if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                     cartDao.add(user.getId(), product.getId(), quantity);

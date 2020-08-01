@@ -133,7 +133,7 @@ public class UserManager extends Manager {
         try {
             return new User(answers[0], answers[1], answers[2], autoGeneratePassword(), Integer.parseInt(answers[3]));
         } catch (NumberFormatException e) {
-            System.out.println(colorize("  Wrong data type. " + e.getMessage(), mainView.MENU_FORMAT));
+            System.out.println("\n" + colorize("  Wrong data type. " + e.getMessage(), mainView.MENU_FORMAT));
             mainView.pressEnterToContinue("  Press enter to go back");
         }
         return null;
