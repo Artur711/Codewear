@@ -17,11 +17,11 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int addToUserCart(int user_id, int product_id, int quantity) {
+    public int add(int userId, int productId, int quantity) {
         String sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, user_id);
-            st.setInt(2, product_id);
+            st.setInt(1, userId);
+            st.setInt(2, productId);
             st.setInt(3, quantity);
             return st.executeUpdate();
 
@@ -32,10 +32,10 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int deleteAllFromUserCart(int user_id) {
+    public int clear(int userId) {
         String sql = "DELETE FROM cart WHERE user_id = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, user_id);
+            st.setInt(1, userId);
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -45,11 +45,11 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int deleteItemFromUserCart(int user_id, int product_id) {
+    public int delete(int userId, int productId) {
         String sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, user_id);
-            st.setInt(2, product_id);
+            st.setInt(1, userId);
+            st.setInt(2, productId);
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -59,16 +59,16 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public Map<Integer, Integer> getCartOfItems(int user_id) {
+    public Map<Integer, Integer> getCartMap(int userId) {
         Map<Integer, Integer> cartOfItems = new HashMap<Integer, Integer>();
         String sql = "SELECT * FROM cart WHERE user_id = ?;";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, user_id);
+            st.setInt(1, userId);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
-                int product_id = rs.getInt("product_id");
+                int productId = rs.getInt("product_id");
                 int quantity = rs.getInt("quantity");
-                cartOfItems.put(product_id, quantity);
+                cartOfItems.put(productId, quantity);
             }
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
@@ -77,12 +77,12 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public int changeQuantityOfProduct(int user_id, int product_id, int quantity) {
+    public int changeQuantityOfProduct(int userId, int productId, int quantity) {
         String sql = "UPDATE cart SET quantity = ? WHERE user_id = ? and product_id = ?;";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, quantity);
-            st.setInt(2, user_id);
-            st.setInt(3, product_id);
+            st.setInt(2, userId);
+            st.setInt(3, productId);
             return st.executeUpdate();
 
         } catch (SQLException e) {
@@ -92,8 +92,8 @@ public class PSQLCartDao implements CartDao{
     }
 
     @Override
-    public boolean availableQuantityOnStock(int quantityInOrder, int userQuantityOrder){
-        if(quantityInOrder > userQuantityOrder){
+    public boolean isAvailableOnStock(int quantityInOrder, int userQuantityOrder){
+        if(quantityInOrder >= userQuantityOrder){
             return true;
         }else{
             return false;

@@ -11,8 +11,10 @@ import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.select.SelectPostgres;
 import com.codecool.view.MainView;
+import com.codecool.view.SelectView;
 
 import java.sql.Connection;
+
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 
@@ -20,11 +22,13 @@ import static com.diogonunes.jcolor.Ansi.colorize;
 public class RootController {
 
     private final MainView mainView;
+    private final SelectView selectView;
     private final UserDao userDao;
     private final ProductDao productDao;
     private final OrderDao orderDao;
     private final CartDao cartDao;
     private final Connection conn;
+
 
     public RootController(UserDao userDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao, Connection conn) {
         this.userDao = userDao;
@@ -33,6 +37,7 @@ public class RootController {
         this.cartDao = cartDao;
         this.conn = conn;
         mainView = new MainView();
+        selectView = new SelectView();
 
 
     }
@@ -78,15 +83,11 @@ public class RootController {
             AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);
             admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
-            System.out.print(colorize("\nYou have successfully logged in", mainView.HEADER_FORMAT));
-            mainView.pressEnterToContinue("");
             SelectDAO selectDao = new SelectPostgres(conn, user.getFirstName());
-            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView);
+            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView, conn);
             customerController.run(user);
-
         } else {
             mainView.displayErrorWhileLoggingMessage();
-
         }
     }
 }

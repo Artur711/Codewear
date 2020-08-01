@@ -4,15 +4,15 @@ import java.util.Map;
 
 public interface CartDao {
 
-    int addToUserCart(int user_id, int product_id, int quantity);
+    int add(int userId, int productId, int quantity);
 
-    int deleteItemFromUserCart(int user_id, int product_id);
+    int delete(int userId, int productId);
 
-    int deleteAllFromUserCart(int user_id);
+    int clear(int userId);
 
-    Map<Integer, Integer> getCartOfItems(int user_id);
+    Map<Integer, Integer> getCartMap(int userId);
 
-    int changeQuantityOfProduct(int user_id, int product_id, int quantity);
+    int changeQuantityOfProduct(int userId, int productId, int quantity);
 
-    boolean availableQuantityOnStock(int quantityInOrder, int userQuantityOrder);
+    boolean isAvailableOnStock(int quantityInOrder, int userQuantityOrder);
 }

@@ -6,6 +6,10 @@ import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.codecool.view.MainView;
 
+import java.util.List;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 public class ProductManager extends Manager {
 
     private final ProductDao productDAO;
@@ -45,46 +49,55 @@ public class ProductManager extends Manager {
 
     @Override
     protected void delete() {
-        System.out.println("Enter id of product to be removed:");
+        mainView.clearScreen();
+        System.out.println("\n" + colorize("  Enter id of product to be removed:", mainView.HEADER_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product != null) {
-            System.out.printf("Current number of records: %d%n", productDAO.getNumberOfRecords());
-            System.out.printf("Are you sure you want to remove product: %s? [Y/N]%n", product.getName());
+            mainView.clearScreen();
+            System.out.printf("\n" + colorize("  Are you sure you want to remove product: %s? [Y/N]%n", mainView.MENU_FORMAT), product.getName());
+            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
+            mainView.displayPrompt(6, 3, currentUser.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 productDAO.delete(product);
-                System.out.println("\nProduct has been removed from database");
-                System.out.printf("%nCurrent number of records: %d%n", productDAO.getNumberOfRecords());
-                mainView.pressEnterToContinue("\nPress enter to go back");
+                System.out.println("\n" + colorize("  Product has been removed from database", mainView.MENU_FORMAT));
+                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
+                mainView.pressEnterToContinue("  Press enter to go back");
             }
         } else {
-            System.out.println("\nThis product doesn't exist\n");
+            System.out.println("\n" + colorize("  This product doesn't exist\n",mainView.HEADER_FORMAT));
+            mainView.pressEnterToContinue("  Press enter to go back");
         }
-
     }
 
     @Override
     protected void add() {
         Product product = enterProductData();
         productDAO.addProduct(product);
-        System.out.println("\nProduct has been added");
-        mainView.pressEnterToContinue("\nPress enter to go back");
+        List<Product> products = productDAO.getProductWithProductName(product.getName());
+        System.out.println(colorize("  Product has been added", mainView.MENU_FORMAT));
+        mainView.displayProductsTable(products, productDAO.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 
     @Override
     protected void update() {
-        System.out.println("Enter id of the product to be updated:");
+        mainView.clearScreen();
+        System.out.println("\n" + colorize("  Enter id of the product to be updated:", mainView.HEADER_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product == null) {
-            System.out.println("\nProduct not found in the database\n");
+            System.out.println("\n" + colorize("  Product not found in the database\n", mainView.MENU_FORMAT));
+            mainView.pressEnterToContinue("  Press enter to go back");
             return;
         }
-        String name = mainView.readInput("PRODUCT_NAME (varchar, ", product.getName());
-        String gender = mainView.readInput("GENDER (varchar, ", product.getGender());
-        String type = mainView.readInput("TYPE (varchar, ", product.getType());
-        String colour = mainView.readInput("COLOUR (varchar, ", product.getColour());
-        String size = mainView.readInput("SIZE (varchar, ", product.getSizes());
-        String price = mainView.readInput("PRICE (int, ", String.valueOf(product.getPrices()));
-        String quantity = mainView.readInput("QUANTITY_ON_STOCK (int, ", String.valueOf(product.getQuantity()));
+        String name = mainView.readInput("PRODUCT_NAME (varchar(30), ", product.getName(), currentUser);
+        String gender = mainView.readInput("GENDER (varchar(6), ", product.getGender(), currentUser);
+        String type = mainView.readInput("TYPE (varchar(15), ", product.getType(), currentUser);
+        String colour = mainView.readInput("COLOUR (varchar(25), ", product.getColour(), currentUser);
+        String size = mainView.readInput("SIZE (varchar(3), ", product.getSizes(), currentUser);
+        String price = mainView.readInput("PRICE (int, ", String.valueOf(product.getPrices()), currentUser);
+        String quantity = mainView.readInput("QUANTITY_ON_STOCK (int, ", String.valueOf(product.getQuantity()), currentUser);
         product.setName(name);
         product.setGender(gender);
         product.setType(type);
@@ -92,32 +105,37 @@ public class ProductManager extends Manager {
         product.setSizes(size);
         product.setPrices(Integer.parseInt(price));
         product.setQuantity(Integer.parseInt(quantity));
-
         productDAO.update(product);
-        System.out.println("\nProduct has been updated\n");
-        System.out.println(productDAO.getProductFromDatabase(product.getId()));
-        mainView.pressEnterToContinue("\nPress enter to go back");
+        List<Product> products = productDAO.getProductWithProductName(product.getName());
+        System.out.println("\n" + colorize("  Product has been updated", mainView.HEADER_FORMAT));
+        mainView.displayProductsTable(products, productDAO.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 
     public Product enterProductData() {
-        String[] answers = new String[] {"", "", "", "", "", "", "", ""};
-        String[] fields = {"gender", "type", "colour", "size", "price", "quantity on stock", "quantity on stock"};
+        String[] answers = new String[] {"", "", "", "", "", "", ""};
+        String[] fields = {"product_name", "gender", "type", "colour", "size", "price", "quantity on stock"};
 
-        displayProductCreationScreen("name", answers);
         for (int i = 0; i < fields.length ; i++) {
-            answers[i] = mainView.getStringInput();
             displayProductCreationScreen(fields[i], answers);
-
+            answers[i] = mainView.getStringInput();
         }
         return new Product(answers[0], answers[1], answers[2], answers[3], answers[4], Integer.parseInt(answers[5]), Integer.parseInt(answers[6]));
     }
 
     public void displayProductCreationScreen(String field, String[] answers) {
         mainView.clearScreen();
-        System.out.println("Please enter product " + field + "\n");
-        for (int i = 0; i < answers.length - 1; i++) {
-            System.out.println(new String[] {"PRODUCT_NAME (varchar)", "GENDER (varchar)", "TYPE (varchar)", "COLOUR (varchar)", "SIZE (varchar)", "PRICE (int)", "QUANTITY_ON_STOCK (int)"}[i] + ": " + answers[i]);
+        System.out.println(colorize("\n  Please enter product " + field + "\n", mainView.HEADER_FORMAT));
+        for (int i = 0; i < answers.length; i++) {
+            System.out.println(new String[] {colorize("  PRODUCT_NAME varchar(30)", mainView.MENU_FORMAT),
+                    colorize("  GENDER varchar(6)", mainView.MENU_FORMAT),
+                    colorize("  TYPE varchar(15)", mainView.MENU_FORMAT),
+                    colorize("  COLOUR varchar(25)", mainView.MENU_FORMAT),
+                    colorize("  SIZE varchar(3)", mainView.MENU_FORMAT),
+                    colorize("  PRICE int", mainView.MENU_FORMAT),
+                    colorize("  QUANTITY_ON_STOCK int", mainView.MENU_FORMAT)}[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
         }
+        mainView.displayPrompt(12,3, currentUser.getFirstName());
 
     }
 }

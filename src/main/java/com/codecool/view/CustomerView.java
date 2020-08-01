@@ -1,5 +1,6 @@
 package com.codecool.view;
 
+import com.codecool.model.User;
 import com.diogonunes.jcolor.AnsiFormat;
 
 import java.util.InputMismatchException;
@@ -16,12 +17,15 @@ public class CustomerView {
     public final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), WHITE_TEXT());
     public final AnsiFormat PROMPT_FORMAT = new AnsiFormat(BOLD(), BLUE_TEXT());
 
+    User user;
+
+
     public void CustomerMenu() {
         String[] options = {"Search", "My cart", "Confirm cart", "My personal details", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
-            System.out.format(colorize("%d. %s\n", MENU_FORMAT), i + 1, options[i]);
+            System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
-        System.out.print(colorize("\nChoose one of the options: ", PROMPT_FORMAT));
+        System.out.print(colorize("  \nChoose one of the options: ", PROMPT_FORMAT));
     }
 
     public int getIntegerInput() {
@@ -45,6 +49,15 @@ public class CustomerView {
             System.out.format(colorize("%d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
     }
+
+    public void userDetails() {
+        String[] options = {"ID: " + user.getId(), "First name: " + user.getFirstName(), "Last name: " + user.getLastName(), "E-mail: " + user.getEmail(), "Adress :" + user.getAddress()};
+        System.out.println(colorize("My personal details: ", HEADER_FORMAT));
+        for (int i = 0; i < options.length; i++) {
+            System.out.format(colorize("%d. %s\n", MENU_FORMAT), i + 1, options[i]);
+        }
+    }
+
 
     public void orderMenu() {
         String[] options = {" "};

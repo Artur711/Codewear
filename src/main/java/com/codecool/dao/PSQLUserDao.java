@@ -108,15 +108,16 @@ public class PSQLUserDao implements UserDao {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ?, address = ?, user_role = ? WHERE id = ?";
+        String sql = "UPDATE users SET id = ?, first_name = ?, last_name = ?, email = ?, password = ?, address = ?, user_role = ? WHERE id = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setString(1, user.getFirstName());
-            st.setString(2, user.getLastName());
-            st.setString(3, user.getEmail());
-            st.setString(4, user.getPassword());
-            st.setString(5, user.getAddress());
-            st.setInt(6, user.getRoleID());
-            st.setInt(7,user.getId());
+            st.setInt(1, user.getId());
+            st.setString(2, user.getFirstName());
+            st.setString(3, user.getLastName());
+            st.setString(4, user.getEmail());
+            st.setString(5, user.getPassword());
+            st.setString(6, user.getAddress());
+            st.setInt(7, user.getRoleID());
+            st.setInt(8,user.getId());
 
             st.executeUpdate();
 
@@ -127,12 +128,13 @@ public class PSQLUserDao implements UserDao {
 
     @Override
     public int[] findMaxNumberOfCharsPerColumn() {
-        int numberOfColumns = 5;
+        int numberOfColumns = 6;
         int[] maxLengths = new int[numberOfColumns];
         String sql = "SELECT " +
                 "max(length(cast(id as varchar(20)))), " +
                 "max(length(first_name)), " +
                 "max(length(last_name)), " +
+                "max(length(email)), " +
                 "max(length(password)), " +
                 "max(length(cast(user_role as varchar(20)))) " +
                 "FROM users";

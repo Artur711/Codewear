@@ -22,4 +22,7 @@ public interface ProductDao {
 
     boolean checkIfProductExist(int productIdToCheck);
 
+    int[] findMaxNumberOfCharsPerColumn();
+
+    List<Product> getProductWithProductName(String name);
 }
