@@ -1,6 +1,5 @@
 package com.codecool.dao;
 
-import com.codecool.enums.Role;
 import com.codecool.enums.UserTable;
 import com.codecool.model.User;
 
@@ -8,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSQLUserDao implements UserDao {
 
@@ -70,8 +71,9 @@ public class PSQLUserDao implements UserDao {
     }
 
     @Override
-    public User getUserWithUserID(int id) {
+    public List<User> getUserWithUserID(int id) {
         String sql = "SELECT id, first_name, last_name, email, password, address, user_role FROM users WHERE id = ?";
+        List<User> users = new ArrayList<>();
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
@@ -83,12 +85,12 @@ public class PSQLUserDao implements UserDao {
                 user.setPassword(rs.getString(UserTable.PASSWORD.getIndex()));
                 user.setAddress(rs.getString(UserTable.ADDRESS.getIndex()));
                 user.setRoleID(rs.getInt(UserTable.USER_ROLE.getIndex()));
-                return user;
+                users.add(user);
             }
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
-        return null;
+        return users;
     }
 
     @Override
@@ -121,6 +123,31 @@ public class PSQLUserDao implements UserDao {
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
         }
+    }
+
+    @Override
+    public int[] findMaxNumberOfCharsPerColumn() {
+        int numberOfColumns = 5;
+        int[] maxLengths = new int[numberOfColumns];
+        String sql = "SELECT " +
+                "max(length(cast(id as varchar(20)))), " +
+                "max(length(first_name)), " +
+                "max(length(last_name)), " +
+                "max(length(password)), " +
+                "max(length(cast(user_role as varchar(20)))) " +
+                "FROM users";
+
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            for (int i = 0; i < maxLengths.length; i++) {
+                maxLengths[i] = rs.getInt(i + 1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query: " + e.getMessage());
+        }
+        return maxLengths;
     }
 
 }

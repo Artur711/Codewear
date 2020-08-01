@@ -17,9 +17,9 @@ public class MainView {
 
     private final Scanner scanner = new Scanner(System.in);
     private final String[] fields = {UserInfo.FIRST_NAME.getDisplay(),
-            UserInfo.LAST_NAME.getDisplay(),
-            UserInfo.EMAIL.getDisplay(),
-            UserInfo.PASSWORD.getDisplay()};
+                                     UserInfo.LAST_NAME.getDisplay(),
+                                     UserInfo.EMAIL.getDisplay(),
+                                     UserInfo.PASSWORD.getDisplay()};
 
     public final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT());
     public final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), WHITE_TEXT());
@@ -40,7 +40,7 @@ public class MainView {
     }
 
     public void displayAdminMenu(User user) {
-        String[] options = {"Database management", "Show all orders by customer", "Show past due orders", "Sign out"};
+        String[] options = {"Database management", "Show all customer orders with customerID", "Show past due orders", "Sign out"};
         System.out.println(colorize("\n  W E L C O M E  T O  A D M I N  D A S H B O A R D\n", HEADER_FORMAT));
         displayMenuOptions(options);
         displayPrompt(9, 3, user.getFirstName());
@@ -50,16 +50,15 @@ public class MainView {
         System.out.print(colorize("\033["+verticalOffset+";" + horizontalOffset + "H" + owner + ":$ ", PROMPT_FORMAT));
     }
 
-
     public int getIntegerInput() {
-        int input = 0;
-
-        try {
-            input = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
+        while(!scanner.hasNextInt()){
             scanner.next();
+            System.out.println("\n" + colorize("  Enter integer", MENU_FORMAT));
+            System.out.print("\033[2C");
         }
+        int input = scanner.nextInt();
+        scanner.nextLine();
+
         return input;
     }
 
@@ -67,11 +66,111 @@ public class MainView {
         return scanner.nextLine();
     }
 
-    public void displayOrders(List<Order> orders) {
+    public void displayUsersTable(List<User> users, int[] maxLengths) {
+        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getUsersTableHeadersLengths());
+        StringBuilder sb;
+        System.out.println();
+        String[] headers = {"id", "first_name", "last_name", "password", "user_role"};
+
+        displayHeaders(maxLengthsIncludingHeaders, headers);
+        sb = new StringBuilder();
+        for (User user : users) {
+
+            String[] fields = {String.valueOf(user.getId()), user.getFirstName(), user.getLastName(),
+                               user.getPassword(), String.valueOf(user.getRoleID())};
+
+            sb.append("  ");
+            for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
+                sb.append("| ")
+                        .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], fields[i].trim()))
+                        .append(" ");
+            }
+            sb.append("|\n");
+        }
+        System.out.println(sb.toString());
+    }
+
+    private void displayHeaders(int[] maxLengthsIncludingHeaders, String[] headers) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("  ");
+
+        for (int i = 0; i < headers.length; i++) {
+            sb.append("| ")
+              .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], headers[i].trim()))
+              .append(" ");
+        }
+        sb.append("|\n");
+
+        drawHorizontalLine(calculateSum(maxLengthsIncludingHeaders) + (maxLengthsIncludingHeaders.length * 2) + maxLengthsIncludingHeaders.length);
+        System.out.print(colorize(sb.toString(), MENU_FORMAT));
+        drawHorizontalLine(calculateSum(maxLengthsIncludingHeaders) + (maxLengthsIncludingHeaders.length * 2) + maxLengthsIncludingHeaders.length);
+    }
+
+    public void displayOrdersTable(List<Order> orders, int[] maxLengths) {
+        int[] maxLengthsIncludingHeaders = findLongestCharacterPerColumn(maxLengths, getOrdersTableHeadersLengths());
+        StringBuilder sb;
+        System.out.println();
+        String[] headers = {"sales_order_id", "status", "user_id", "first_name", "last_name", "order_date", "due_date", "total_due"};
+
+        displayHeaders(maxLengthsIncludingHeaders, headers);
+        sb = new StringBuilder();
+
         for (Order order : orders) {
-            System.out.println(order);
+
+            String[] fields = {String.valueOf(order.getId()), order.getStatus(), String.valueOf(order.getUserID()),
+                               order.getCustomerFirstName(), order.getCustomerLastName(), order.getOrderDate().toString(),
+                               order.getDueDate().toString(), String.valueOf(order.getTotalDue())};
+
+            sb.append("  ");
+            for (int i = 0; i < maxLengthsIncludingHeaders.length; i++) {
+                sb.append("| ")
+                  .append(findHowManySpacesToAppend(maxLengthsIncludingHeaders[i], fields[i].trim()))
+                  .append(" ");
+            }
+            sb.append("|\n");
+        }
+        System.out.println(sb.toString());
+    }
+
+    private int[] findLongestCharacterPerColumn(int[] maxLengths, int[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            maxLengths[i] = Math.max(maxLengths[i], headers[i]);
+        }
+        return maxLengths;
+    }
+
+    public String findHowManySpacesToAppend(int longestWordLength, String field) {
+        int numChars = longestWordLength - field.length();
+        if (numChars % 2 == 0) {
+            return " ".repeat(numChars / 2) + field + " ".repeat(numChars / 2);
+        } else {
+            return " ".repeat(numChars / 2) + field + " ".repeat((numChars / 2) + 1);
         }
     }
+
+    public void drawHorizontalLine(int length) {
+        System.out.print("  ");
+        System.out.println("-".repeat(length));
+    }
+
+    public int[] getUsersTableHeadersLengths() {
+        String[] headers = {"id", "first_name", "last_name", "password", "user_role"};
+        return getHeadersLengths(headers);
+    }
+
+    public int[] getOrdersTableHeadersLengths() {
+        String[] headers = {"sales_order_id", "status", "user_id", "first_name", "last_name", "order_date", "due_date", "total_due"};
+        return getHeadersLengths(headers);
+    }
+
+    public int[] getHeadersLengths(String[] headers) {
+        int[] headersLengths = new int[headers.length];
+        for (int i = 0; i < headers.length; i++) {
+            headersLengths[i] = headers[i].length();
+        }
+        return headersLengths;
+    }
+
 
     public void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -79,20 +178,18 @@ public class MainView {
     }
 
     public void pressEnterToContinue(String prompt) {
-        System.out.println(prompt);
+        System.out.print(prompt);
         scanner.nextLine();
     }
 
     public User getUserData() {
         String[] answers = new String[] {"", "", "", ""};
-        String[] fields = {"last name", "email", "password", "password"};
 
-        displayRegistrationScreen(UserInfo.FIRST_NAME.getDisplay(), answers);
         for (int i = 0; i < fields.length ; i++) {
-            answers[i] = getStringInput();
             displayRegistrationScreen(fields[i], answers);
-
+            answers[i] = getStringInput();
         }
+
         return new User(answers[0], answers[1], answers[2], answers[3]);
     }
 
@@ -102,31 +199,29 @@ public class MainView {
         for (int i = 0; i < fields.length; i++) {
             System.out.println(fields[i].toUpperCase() + ": " + answers[i]);
         }
+    }
 
+    public User getUserCredentials() {
+        String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
+        String[] answers = new String[] {"", ""};
+
+        for (int i = 0; i < credentials.length ; i++) {
+            displayLoginScreen(credentials[i], answers);
+            answers[i] = getStringInput();
+
+        }
+        return new User(answers[0], answers[1]);
     }
 
     public void displayLoginScreen(String field, String[] answers) {
         clearScreen();
         String[] credentials = {UserInfo.EMAIL.getDisplay(), UserInfo.PASSWORD.getDisplay()};
-        System.out.println();
-        System.out.println(colorize("  Please enter your " + field, HEADER_FORMAT));
+        System.out.println("\n" + colorize("  Please enter your " + field, HEADER_FORMAT));
         System.out.println();
         for (int i = 0; i < answers.length; i++) {
             System.out.println(colorize("  " + credentials[i].toUpperCase() + ": ", MENU_FORMAT) + colorize(answers[i], HEADER_FORMAT));
         }
         displayPrompt(7, 3, "Guest");
-    }
-
-    public User getUserCredentials() {
-        String[] credentials = {UserInfo.PASSWORD.getDisplay(), UserInfo.PASSWORD.getDisplay()};
-        String[] answers = new String[] {"", ""};
-        displayLoginScreen(UserInfo.EMAIL.getDisplay(), answers);
-        for (int i = 0; i < credentials.length ; i++) {
-            answers[i] = getStringInput();
-            displayLoginScreen(credentials[i], answers);
-
-        }
-        return new User(answers[0], answers[1]);
     }
 
     public void displayAccountCreationMessage() {
@@ -148,5 +243,13 @@ public class MainView {
 
     private void showPrompt(String prompt, String defaultValue) {
         System.out.print(prompt + "current value -> " + defaultValue + "): ");
+    }
+
+    private int calculateSum(int[] array) {
+        int sum = 0;
+        for (int number : array) {
+            sum += number;
+        }
+        return sum;
     }
 }

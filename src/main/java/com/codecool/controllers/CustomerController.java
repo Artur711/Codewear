@@ -9,6 +9,8 @@ import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.CustomerView;
 import com.codecool.view.MainView;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
 
 
 import java.sql.Date;
@@ -53,14 +55,14 @@ public class CustomerController {
                     Product product = selectDAO.runSearch();
                     if (product != null) {
                         if(productDao.checkIfProductExist(product.getId())) {
-                            System.out.println("Choose quantity of product: ");
+                            System.out.println(colorize("Choose quantity of product: ", mainView.HEADER_FORMAT));
                             int quantity = mainView.getIntegerInput();
                             //Scanner scanner = new Scanner(System.in);
                             //int quantity = scanner.nextInt();
                             if(cartDao.availableQuantityOnStock(product.getQuantity(), quantity) && quantity > 0){
                                 cartDao.addToUserCart(user.getId(), product.getId(), quantity);
                             }else{
-                                System.out.println("Quantity available in stock: " + product.getQuantity());
+                                System.out.println(colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }
                         }
                     }
@@ -75,12 +77,14 @@ public class CustomerController {
                         float totalPrice = getTotalPrice(mapOrders);
                         Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
                         orderDao.add(order);
-                        System.out.println("Order submitted.");
+                        System.out.println(colorize("Order submitted.", mainView.PROMPT_FORMAT));
                     }
-                    System.out.println("Your cart is empty.");
+                    System.out.println(colorize("Your cart is empty.", mainView.HEADER_FORMAT));
                     break;
                 case 4:
-                    System.out.println(user.toString());
+                    System.out.println(colorize("My personal details: ", mainView.HEADER_FORMAT));
+                    System.out.println(colorize("ID: " + user.getId() + "\n First name: " + user.getFirstName() + "\n Last name: " + user.getLastName() +
+                            "\n E-mail: " + user.getEmail() + "\n Adress :" + user.getAddress(), mainView.MENU_FORMAT));
                     break;
                 case 5:
                     view.clearScreen();

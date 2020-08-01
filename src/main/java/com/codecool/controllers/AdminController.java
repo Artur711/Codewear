@@ -9,6 +9,8 @@ import com.codecool.view.MainView;
 
 import java.util.List;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 
 public class AdminController {
 
@@ -36,7 +38,6 @@ public class AdminController {
 
             switch(mainView.getIntegerInput()) {
                 case 1:
-                    mainView.clearScreen();
                     dbmanager.run();
                     break;
                 case 2:
@@ -55,16 +56,17 @@ public class AdminController {
 
     public void showOrdersBYCustomerID() {
         mainView.clearScreen();
-        System.out.println("Enter customerID:");
-        List<Order> orders = orderDao.showOrdersByCustomerID(mainView.getIntegerInput());
-        mainView.displayOrders(orders);
-        mainView.pressEnterToContinue("\nPress enter to go back");
+        System.out.println("\n" + colorize("  Enter customerID:", mainView.MENU_FORMAT));
+        mainView.displayPrompt(4, 3, currentUser.getFirstName());
+        List<Order> orders = orderDao.getOrdersByCustomerID(mainView.getIntegerInput());
+        mainView.displayOrdersTable(orders,orderDao.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue(colorize("\n  Press enter to go back", mainView.MENU_FORMAT));
     }
 
     public void showPastDueDateOrders() {
         mainView.clearScreen();
-        List<Order> orders = orderDao.showPastDueDateOrders();
-        mainView.displayOrders(orders);
-        mainView.pressEnterToContinue("\nPress enter to go back");
+        List<Order> orders = orderDao.getPastDueDateOrders();
+        mainView.displayOrdersTable(orders, orderDao.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue(colorize("\n  Press enter to go back", mainView.MENU_FORMAT));
     }
 }
