@@ -280,7 +280,7 @@ public class MainView {
     }
 
     public void displayConfirmationRequestMessage(String name, int records) {
-        System.out.printf("\n" + colorize("  Are you sure you want to remove user: %s? [Y/N]%n",MENU_FORMAT), name);
+        System.out.printf("\n" + colorize("  Are you sure you want to remove product: %s? [Y/N]%n",MENU_FORMAT), name);
         System.out.printf("\n" + colorize("  Current number of records: %d%n", HEADER_FORMAT), records);
     }
 

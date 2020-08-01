@@ -55,15 +55,17 @@ public class UserManager extends Manager {
         System.out.println("\n" + colorize("  Enter id of user to be removed:", mainView.HEADER_FORMAT));
         mainView.displayPrompt(4, 3, currentUser.getFirstName());
         List<User> users = userDao.getUserWithUserID(mainView.getIntegerInput());
-        User user = users.get(0);
-        if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
-            mainView.clearScreen();
-            mainView.displayConfirmationRequestMessage(user.getFirstName(), user.getLastName(), userDao.getNumberOfRecords());
-            mainView.displayPrompt(6, 3, currentUser.getFirstName());
-            if (mainView.getStringInput().equalsIgnoreCase("y")) {
-                userDao.delete(user);
-                mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
-                mainView.pressEnterToContinue("  Press enter to go back");
+        if (users.size() > 0) {
+            User user = users.get(0);
+            if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
+                mainView.clearScreen();
+                mainView.displayConfirmationRequestMessage(user.getFirstName(), user.getLastName(), userDao.getNumberOfRecords());
+                mainView.displayPrompt(6, 3, currentUser.getFirstName());
+                if (mainView.getStringInput().equalsIgnoreCase("y")) {
+                    userDao.delete(user);
+                    mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
+                    mainView.pressEnterToContinue("  Press enter to go back");
+                }
             }
         } else {
             System.out.println("\n" + colorize("  You cannot delete this user or user doesn't exist", mainView.MENU_FORMAT));
@@ -78,7 +80,7 @@ public class UserManager extends Manager {
         userDao.addUser(user, user.getRoleID());
         user = userDao.validateUser(user);
         List<User> users = userDao.getUserWithUserID(user.getId());
-        System.out.println(colorize("  User has been created:\n", mainView.MENU_FORMAT));
+        System.out.println("\n" + colorize("  User has been created:\n", mainView.MENU_FORMAT));
         mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
         mainView.pressEnterToContinue("  Press enter to go back");
     }
