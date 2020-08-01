@@ -55,34 +55,37 @@ public class UserManager extends Manager {
         System.out.println("\n" + colorize("  Enter id of user to be removed:", mainView.HEADER_FORMAT));
         mainView.displayPrompt(4, 3, currentUser.getFirstName());
         List<User> users = userDao.getUserWithUserID(mainView.getIntegerInput());
-        if (users.size() > 0) {
-            User user = users.get(0);
-            if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
-                mainView.clearScreen();
-                mainView.displayConfirmationRequestMessage(user.getFirstName(), user.getLastName(), userDao.getNumberOfRecords());
-                mainView.displayPrompt(6, 3, currentUser.getFirstName());
-                if (mainView.getStringInput().equalsIgnoreCase("y")) {
-                    userDao.delete(user);
-                    mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
-                    mainView.pressEnterToContinue("  Press enter to go back");
-                }
-            }
-        } else {
+        if (users.size() == 0) {
             System.out.println("\n" + colorize("  You cannot delete this user or user doesn't exist", mainView.MENU_FORMAT));
             mainView.pressEnterToContinue("  Press enter to go back");
+            return;
         }
 
+        User user = users.get(0);
+        if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
+            mainView.clearScreen();
+            mainView.displayConfirmationRequestMessage(user.getFirstName(), user.getLastName(), userDao.getNumberOfRecords());
+            mainView.displayPrompt(6, 3, currentUser.getFirstName());
+            if (mainView.getStringInput().equalsIgnoreCase("y")) {
+                userDao.delete(user);
+                mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
+                mainView.pressEnterToContinue("  Press enter to go back");
+            }
+        }
     }
 
     @Override
     protected void add() {
         User user = enterUserData();
-        userDao.addUser(user, user.getRoleID());
-        user = userDao.validateUser(user);
-        List<User> users = userDao.getUserWithUserID(user.getId());
-        System.out.println("\n" + colorize("  User has been created:\n", mainView.MENU_FORMAT));
-        mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
-        mainView.pressEnterToContinue("  Press enter to go back");
+        if (user != null) {
+            userDao.addUser(user, user.getRoleID());
+            user = userDao.validateUser(user);
+            List<User> users = userDao.getUserWithUserID(user.getId());
+            System.out.println("\n" + colorize("  User has been created:\n", mainView.MENU_FORMAT));
+            mainView.displayUsersTable(users, userDao.findMaxNumberOfCharsPerColumn());
+            mainView.pressEnterToContinue("  Press enter to go back");
+        }
+
     }
 
     @Override
@@ -127,7 +130,13 @@ public class UserManager extends Manager {
             displayUserCreationScreen(fields[i], answers);
             answers[i] = mainView.getStringInput();
         }
-        return new User(answers[0], answers[1], answers[2], autoGeneratePassword(), Integer.parseInt(answers[3]));
+        try {
+            return new User(answers[0], answers[1], answers[2], autoGeneratePassword(), Integer.parseInt(answers[3]));
+        } catch (NumberFormatException e) {
+            System.out.println(colorize("  Wrong data type. " + e.getMessage(), mainView.MENU_FORMAT));
+            mainView.pressEnterToContinue("  Press enter to go back");
+        }
+        return null;
     }
 
     private void displayUserCreationScreen(String field, String[] answers) {

@@ -63,7 +63,12 @@ public class MainView {
     }
 
     public String getStringInput() {
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+        while (input.isEmpty()) {
+            input = scanner.nextLine();
+            System.out.println(colorize("  Enter text", MENU_FORMAT));
+        }
+        return input;
     }
 
     public void displayUsersTable(List<User> users, int[] maxLengths) {
