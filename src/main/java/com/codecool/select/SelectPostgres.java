@@ -48,16 +48,15 @@ public class SelectPostgres implements SelectDAO {
         boolean isWhereStatement = false;
         StringBuilder sb = new StringBuilder(query);
 
-        for (int index = 0; index < selectOption.length; index++) {
-            String valueOfMap = mapOptionToSelect.get(selectOption[index]);
+        for (String option : selectOption) {
+            String valueOfMap = mapOptionToSelect.get(option);
 
             if (!(valueOfMap == null)) {
                 if (!valueOfMap.equals("All") && !isWhereStatement) {
-                    sb.append(String.format(" where %s = '%s'", selectOption[index], valueOfMap));
+                    sb.append(String.format(" where %s = '%s'", option, valueOfMap));
                     isWhereStatement = true;
-                }
-                else if (!valueOfMap.equals("All")) {
-                    sb.append(String.format(" and %s = '%s'", selectOption[index], valueOfMap));
+                } else if (!valueOfMap.equals("All")) {
+                    sb.append(String.format(" and %s = '%s'", option, valueOfMap));
                 }
             }
         }
