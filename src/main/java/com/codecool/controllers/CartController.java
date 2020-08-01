@@ -10,7 +10,6 @@ import com.codecool.view.CartView;
 import com.codecool.view.MainView;
 import com.codecool.view.SelectView;
 
-import java.sql.SQLOutput;
 import java.util.Map;
 
 public class CartController {
@@ -80,7 +79,7 @@ public class CartController {
     public void showDetailsOption(String userName) {
         int productId = cartView.getProductIdFromCustomer(userName);
         if(productDao.checkIfProductExist(productId)){
-            selectView.printProductDetails(productDao.getProductFromDatabase(productId));
+            selectView.printProductDetails(getProduct(productId));
         }else {
             cartView.msgProductNotExist();
         }
