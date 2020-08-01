@@ -53,4 +53,8 @@ public class CartView {
         mainView.displayPrompt(19, 3, userName);
         return mainView.getIntegerInput();
     }
+
+    public void msgProductNotExist(){
+        System.out.println("  Product by this id not exist in your cart.");
+    }
 }

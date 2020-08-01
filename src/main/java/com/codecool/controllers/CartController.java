@@ -4,6 +4,7 @@ package com.codecool.controllers;
 import com.codecool.dao.ProductDao;
 import com.codecool.dao.CartDao;
 
+import com.codecool.model.Product;
 import com.codecool.model.User;
 import com.codecool.view.CartView;
 import com.codecool.view.MainView;
@@ -47,35 +48,21 @@ public class CartController {
 
             cartView.printEndLine();
 
-            int productId = 0;
-            int quantity = 0;
             cartView.CartMenu();
             mainView.displayPrompt(13 + cartMap.size(), 3, user.getFirstName());
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
-                    selectView.printProductDetails(productDao.getProductFromDatabase(productId));
-                    mainView.pressEnterToContinue("  Press enter to continue");
+                    showDetailsOption(user.getFirstName());
                     break;
                 case 2:
-                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
-                    cartDao.delete(user.getId(), productId);
-                    mainView.pressEnterToContinue("  Product removed. Press enter to continue");
+                    deleteOption(user.getFirstName(), user.getId());
                     break;
                 case 3:
-                    cartDao.clear(user.getId());
+                    clearOption(user.getId());
                     break;
                 case 4:
-                    productId = cartView.getProductIdFromCustomer(user.getFirstName());
-                    quantity = cartView.getQuantityFromCustomer(user.getFirstName());
-                    if(cartDao.isAvailableOnStock(getProductQuantityOnStock(productId), quantity) && quantity > 0){
-                        cartDao.add(user.getId(), productId, quantity);
-                    }else{
-                        mainView.pressEnterToContinue("    Quantity available in stock: " + getProductQuantityOnStock(productId) + " Press enter to continue");
-                    }
-                    cartDao.changeQuantityOfProduct(user.getId(), productId, quantity);
-                    mainView.pressEnterToContinue("  Quantity changed. Press enter to continue");
+                    changeQuantityOption(user.getFirstName(), user.getId());
                     break;
                 case 5:
                     isRunning = false;
@@ -84,7 +71,51 @@ public class CartController {
         }
     }
 
-    public int getProductQuantityOnStock(int productId){
-        return productDao.getProductFromDatabase(productId).getQuantity();
+
+    public Product getProduct(int productId) {
+        return productDao.getProductFromDatabase(productId);
+    }
+
+
+    public void showDetailsOption(String userName) {
+        int productId = cartView.getProductIdFromCustomer(userName);
+        if(productDao.checkIfProductExist(productId)){
+            selectView.printProductDetails(productDao.getProductFromDatabase(productId));
+        }else {
+            cartView.msgProductNotExist();
+        }
+        mainView.pressEnterToContinue("  Press enter to continue");
+    }
+
+    public void deleteOption(String userName, int userId){
+        int productId = cartView.getProductIdFromCustomer(userName);
+        if(productDao.checkIfProductExist(productId)){
+            cartDao.delete(userId, productId);
+            mainView.pressEnterToContinue("  Product removed. Press enter to continue");
+        }else{
+            cartView.msgProductNotExist();
+        }
+        mainView.pressEnterToContinue("  Press enter to continue");
+    }
+
+    public void clearOption(int userId){
+        cartDao.clear(userId);
+    }
+
+    public void changeQuantityOption(String userName, int userId){
+        int productId = cartView.getProductIdFromCustomer(userName);
+        int quantity = cartView.getQuantityFromCustomer(userName);
+
+        if(productDao.checkIfProductExist(productId)){
+            if(cartDao.isAvailableOnStock(getProduct(productId).getQuantity(), quantity) && quantity > 0){
+                cartDao.changeQuantityOfProduct(userId, productId, quantity);
+                mainView.pressEnterToContinue("  Quantity changed. Press enter to continue");
+            }else{
+                mainView.pressEnterToContinue("  Quantity available in stock: " + getProduct(productId).getQuantity() + " Press enter to continue");
+            }
+        }else{
+            cartView.msgProductNotExist();
+            mainView.pressEnterToContinue("  Press enter to continue");
+        }
     }
 }
