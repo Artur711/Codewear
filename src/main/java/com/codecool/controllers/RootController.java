@@ -9,7 +9,10 @@ import com.codecool.enums.Role;
 
 import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
+import com.codecool.select.SelectPostgres;
 import com.codecool.view.MainView;
+
+import java.sql.Connection;
 
 
 public class RootController {
@@ -18,14 +21,17 @@ public class RootController {
     private final UserDao userDao;
     private final ProductDao productDao;
     private final OrderDao orderDao;
-    private final CustomerController customerController;
+    private final CartDao cartDao;
+    private final Connection conn;
 
-    public RootController(UserDao userDao, SelectDAO selectDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao) {
+    public RootController(UserDao userDao, CartDao cartDao, ProductDao productDao, OrderDao orderDao, Connection conn) {
         this.userDao = userDao;
         this.productDao = productDao;
         this.orderDao = orderDao;
+        this.cartDao = cartDao;
+        this.conn = conn;
         mainView = new MainView();
-        customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView);
+
 
     }
 
@@ -70,6 +76,8 @@ public class RootController {
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
             System.out.print("\nYou have successfully logged in");
             mainView.pressEnterToContinue("");
+            SelectDAO selectDao = new SelectPostgres(conn, user.getFirstName());
+            CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView);
             customerController.run(user);
 
         } else {

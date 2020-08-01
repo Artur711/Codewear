@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class SelectPostgresTest {
     private final ApplicationController ac = new ApplicationController();
     private final Connection conn = ac.setup();
-    private final SelectDAO selectObject = new SelectPostgres(conn);
+    private final SelectDAO selectObject = new SelectPostgres(conn, "TEST");
     private final String query = "SELECT * FROM products";
     private Map<String, String> optionToSelect;
 

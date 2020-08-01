@@ -37,7 +37,7 @@ public class SelectView extends MainView {
         printLineOfFrame();
     }
 
-    public void printProductDetails(Product product, int numberOfAllSearch, int indexOfProduct) {
+    public void printProductDetails(Product product, int numberOfAllSearch, int indexOfProduct, String userName) {
         clearScreen();
         int numberOfRestSpaces;
         int quantitySignsInRigidText;
@@ -110,7 +110,7 @@ public class SelectView extends MainView {
         sB.append(colorize(" || \n", HEADER_FORMAT));
         System.out.print(sB.toString());
         printLineOfFrame();
-        displayPrompt(7, 3, "Guest");
+        displayPrompt(2, 3, userName);
     }
 
     private void printLineOfFrame() {
@@ -142,7 +142,8 @@ public class SelectView extends MainView {
         return  sB.toString();
     }
 
-    public void provideOption() {
-        System.out.print(colorize("Provide your option number: ", PROMPT_FORMAT));
+    public void provideOption(String userName) {
+        displayPrompt(2, 3, userName);
+//        System.out.print(colorize("Provide your option number: ", PROMPT_FORMAT));
     }
 }

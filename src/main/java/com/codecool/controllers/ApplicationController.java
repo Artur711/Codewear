@@ -20,12 +20,11 @@ public class ApplicationController {
         Connection conn = setup();
 
         UserDao userDao = new PSQLUserDao(conn);
-        SelectDAO selectDao = new SelectPostgres(conn);
         CartDao cartDao = new PSQLCartDao(conn);
         ProductDao productDao = new PSQLProductDao(conn);
         OrderDao orderDao = new PSQLOrderDao(conn);
 
-        new RootController(userDao, selectDao, cartDao, productDao, orderDao).run();
+        new RootController(userDao, cartDao, productDao, orderDao, conn).run();
 
         try {
             conn.close();

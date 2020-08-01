@@ -19,13 +19,15 @@ public class SelectPostgres implements SelectDAO {
     private final SelectView view = new SelectView();
     private final Connection conn;
     private String command;
+    private final String userName;
     private final Map<String, String> mapOptionToSelect = new HashMap<>();
     private final ProductDao tableProd;
     private final String [] selectOption = {"gender", "type", "colour", "sizes"};
 
-    public SelectPostgres(Connection conn) {
+    public SelectPostgres(Connection conn, String userName) {
         this.conn = conn;
         this.tableProd = new PSQLProductDao(conn);
+        this.userName = userName;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class SelectPostgres implements SelectDAO {
 
         List<Object> optionList = tableProd.getOptions(command);
         view.printSelectOption(optionList);
-        view.provideOption();
+        view.provideOption(userName);
 
         while (isRun) {
             Scanner scan = new Scanner(System.in);
@@ -92,7 +94,7 @@ public class SelectPostgres implements SelectDAO {
 
         while (isRun) {
             int searchNumber = productList.indexOf(product) + 1;
-            view.printProductDetails(product, productList.size(), searchNumber);
+            view.printProductDetails(product, productList.size(), searchNumber, userName);
             String result = scan.nextLine().toLowerCase();
 
             switch (result) {
