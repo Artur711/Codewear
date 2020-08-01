@@ -1,6 +1,7 @@
 package com.codecool.view;
 
 import com.codecool.model.User;
+
 import com.diogonunes.jcolor.AnsiFormat;
 
 import java.util.InputMismatchException;
@@ -12,20 +13,22 @@ import static com.diogonunes.jcolor.Attribute.*;
 public class CustomerView {
 
     private Scanner scanner = new Scanner(System.in);
-
+    MainView mainView;
+    User user;
     public final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT());
     public final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), WHITE_TEXT());
     public final AnsiFormat PROMPT_FORMAT = new AnsiFormat(BOLD(), BLUE_TEXT());
 
-    User user;
 
 
-    public void CustomerMenu() {
+    public void CustomerMenu(User user) {
         String[] options = {"Search", "My cart", "Confirm cart", "My personal details", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
             System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
-        System.out.print(colorize("  \nChoose one of the options: ", PROMPT_FORMAT));
+        System.out.println(" ");
+        System.out.print(colorize("  Choose one of the options: ", PROMPT_FORMAT));
+        //mainView.displayPrompt(4, 3, user.getFirstName());
     }
 
     public int getIntegerInput() {
@@ -44,19 +47,13 @@ public class CustomerView {
 
     public void CustomerHelp() {
         String[] options = {"If you need any help, don't hesitate and contact us codewear@codecool.com.", "Products overview is available after registration.", "Orders are execute in maximum 30 days. \n"};
-        System.out.println(colorize("Help", HEADER_FORMAT));
+        System.out.println(colorize("  Help:", HEADER_FORMAT));
+        System.out.println(" ");
         for (int i = 0; i < options.length; i++) {
-            System.out.format(colorize("%d. %s\n", MENU_FORMAT), i + 1, options[i]);
+            System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
     }
 
-    public void userDetails() {
-        String[] options = {"ID: " + user.getId(), "First name: " + user.getFirstName(), "Last name: " + user.getLastName(), "E-mail: " + user.getEmail(), "Adress :" + user.getAddress()};
-        System.out.println(colorize("My personal details: ", HEADER_FORMAT));
-        for (int i = 0; i < options.length; i++) {
-            System.out.format(colorize("%d. %s\n", MENU_FORMAT), i + 1, options[i]);
-        }
-    }
 
 
     public void orderMenu() {
