@@ -21,12 +21,12 @@ public class CustomerView {
     public void CustomerMenu(User user, MainView mainView) {
         System.out.println("\n" + colorize("  Welcome, " + user.getFirstName() + "!", mainView.HEADER_FORMAT));
         System.out.println(" ");
-        String[] options = {"Search", "My cart", "Confirm cart", "Personal details", "Update personal details", "Help", "Logout"};
+        String[] options = {"Search", "My cart", "Confirm cart", "Personal details", "Update personal details", "My orders", "Help", "Logout"};
         for (int i = 0; i < options.length; i++) {
             System.out.format(colorize("  %d. %s\n", MENU_FORMAT), i + 1, options[i]);
         }
         System.out.println(" ");
-        mainView.displayPrompt(12, 2, " " + user.getFirstName());
+        mainView.displayPrompt(13, 3, user.getFirstName());
     }
 
     public int getIntegerInput() {
@@ -44,7 +44,7 @@ public class CustomerView {
     }
 
     public void CustomerHelp(MainView mainView) {
-        String[] options = {"If you need any help, don't hesitate and contact us codewear@codecool.com.", "Products overview is available after registration.", "For all orders payment policy is: Pay on Arrival", "Orders are execute in maximum 30 days. \n"};
+        String[] options = {"If you need any help, don't hesitate and contact us codewear@codecool.com.", "Products overview is available after registration.", "You can add your address in |Update personal details|", "For all orders payment policy is: Pay on Arrival", "Orders are execute in maximum 30 days. \n"};
         System.out.println("\n" + colorize("  Help:", HEADER_FORMAT));
         System.out.println(" ");
         for (int i = 0; i < options.length; i++) {
@@ -61,7 +61,7 @@ public class CustomerView {
         System.out.println(colorize("  Last name: ",mainView.MENU_FORMAT) + colorize(user.getLastName(),mainView.HEADER_FORMAT));
         System.out.println(colorize("  E-mail: ", mainView.MENU_FORMAT) + colorize(user.getEmail(), mainView.HEADER_FORMAT));
         System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT)); // Address can be null
-        mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 
 

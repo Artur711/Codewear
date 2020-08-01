@@ -16,6 +16,7 @@ import static com.diogonunes.jcolor.Ansi.colorize;
 import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -78,10 +79,13 @@ public class CustomerController {
                     updateCustomerDetails(userDao, user);
                     break;
                 case 6:
+                    showCustomerOrders(user);
+                    break;
+                case 7:
                     view.clearScreen();
                     view.CustomerHelp(mainView);
                     break;
-                case 7:
+                case 8:
                     isRunning = false;
                     break;
             }
@@ -117,7 +121,6 @@ public class CustomerController {
                 int quantity = mainView.getIntegerInput();
                 if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                     cartDao.add(user.getId(), product.getId(), quantity);
-                    System.out.println(colorize("  Added to cart " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }else{
                     System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }
@@ -136,8 +139,8 @@ public class CustomerController {
             view.clearScreen();
             System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
         }
-        System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
-        mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+        System.out.println(colorize("  Your cart is empty.", mainView.PROMPT_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 
     private void updateCustomerDetails(UserDao userDao, User user) {
@@ -146,14 +149,22 @@ public class CustomerController {
         String lastName = mainView.readInput("LAST_NAME (varchar(255), ", user.getLastName(), user);
         String email = mainView.readInput("EMAIL (varchar(255), ", user.getEmail(), user);
         String password = mainView.readInput("PASSWORD (varchar(255), ", user.getPassword(), user);
-        String address = mainView.readInput("ADRESS", user.getAddress(), user);
+        String address = mainView.readInput("ADDRESS character varying(255), ", user.getAddress(), user);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
         user.setAddress(address);
         userDao.update(user);
-        System.out.println("\n" + colorize("  User has been updated", mainView.HEADER_FORMAT));
-        mainView.pressEnterToContinue("  Press enter to go back");
+        System.out.println("\n" + colorize(user.getFirstName() + ", your details has been updated", mainView.HEADER_FORMAT));
+        mainView.pressEnterToContinue("    Press enter to go back to customer menu");
+
+
+    }
+    private void showCustomerOrders(User user) {
+        mainView.clearScreen();
+        List<Order> orders = orderDao.getOrdersByCustomerID(user.getId());
+        mainView.displayOrdersTable(orders,orderDao.findMaxNumberOfCharsPerColumn());
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 }
