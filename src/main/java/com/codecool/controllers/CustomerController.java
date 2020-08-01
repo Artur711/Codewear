@@ -137,7 +137,7 @@ public class CustomerController {
             orderDao.add(order);
             new PSQLSaveOrderDetails(conn, productDao, mapOrders, user.getId()).run();
             view.clearScreen();
-            System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
+            System.out.println("\n" + colorize("  Order submitted. Your order number is " + order.getOrderNumber(), mainView.PROMPT_FORMAT));
         }
         System.out.println(colorize("  Your cart is empty.", mainView.PROMPT_FORMAT));
         mainView.pressEnterToContinue("  Press enter to go back to customer menu");
