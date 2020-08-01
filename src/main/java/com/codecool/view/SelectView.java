@@ -65,7 +65,7 @@ public class SelectView extends MainView {
         printLineWithProductIDAndQuntity(product);
         printLineWithPrice(product);
 
-        sB.append(getEmptyLine());
+        System.out.print(getEmptyLine());
 
         printLineWithNameOfProduct(product);
         printLineWithTypeAndSize(product);
@@ -78,7 +78,7 @@ public class SelectView extends MainView {
         printLineWithOptionQuitAndNumberOfSearch(indexOfProduct, numberOfAllSearch);
 
         printLineOfFrame();
-        displayPrompt(2, 3, userName);
+        displayPrompt(13, 3, userName);
     }
 
     private void printLineWithProductIDAndQuntity(Product product) {
