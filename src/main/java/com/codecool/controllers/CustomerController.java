@@ -1,9 +1,6 @@
 package com.codecool.controllers;
 
-import com.codecool.dao.CartDao;
-import com.codecool.dao.OrderDao;
-import com.codecool.dao.PSQLSaveOrderDetails;
-import com.codecool.dao.ProductDao;
+import com.codecool.dao.*;
 import com.codecool.model.Order;
 import com.codecool.model.Product;
 import com.codecool.model.User;
@@ -11,6 +8,7 @@ import com.codecool.select.SelectDAO;
 import com.codecool.view.CustomerView;
 import com.codecool.view.MainView;
 import com.codecool.view.SelectView;
+import com.codecool.dao.UserDao;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
 
@@ -27,6 +25,7 @@ public class CustomerController {
     private ProductDao productDao;
     private OrderDao orderDao;
     private Connection conn;
+    private UserDao userDao;
 
     CustomerView view;
     SelectView selectView;
@@ -35,13 +34,14 @@ public class CustomerController {
     CartController cartController;
 
 
-    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView, Connection conn) {
+    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView, Connection conn, UserDao userDao) {
         this.selectDAO = selectDAO;
         this.cartDao = cartDao;
         this.productDao = productDao;
         this.orderDao = orderDao;
         this.mainView = mainView;
         this.conn = conn;
+        this.userDao = userDao;
 
         this.selectView = selectView;
 
@@ -75,6 +75,7 @@ public class CustomerController {
                     view.userDetails(user, mainView);
                     break;
                 case 5:
+                    updateCustomerDetails(userDao, user);
                     break;
                 case 6:
                     view.clearScreen();
@@ -116,6 +117,7 @@ public class CustomerController {
                 int quantity = mainView.getIntegerInput();
                 if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                     cartDao.add(user.getId(), product.getId(), quantity);
+                    System.out.println(colorize("  Added to cart " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }else{
                     System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }
@@ -136,5 +138,22 @@ public class CustomerController {
         }
         System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
         mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
+    }
+
+    private void updateCustomerDetails(UserDao userDao, User user) {
+        System.out.println();
+        String firstName = mainView.readInput("FIRST_NAME (varchar(255), ", user.getFirstName(), user);
+        String lastName = mainView.readInput("LAST_NAME (varchar(255), ", user.getLastName(), user);
+        String email = mainView.readInput("EMAIL (varchar(255), ", user.getEmail(), user);
+        String password = mainView.readInput("PASSWORD (varchar(255), ", user.getPassword(), user);
+        String address = mainView.readInput("ADRESS", user.getAddress(), user);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setAddress(address);
+        userDao.update(user);
+        System.out.println("\n" + colorize("  User has been updated", mainView.HEADER_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back");
     }
 }

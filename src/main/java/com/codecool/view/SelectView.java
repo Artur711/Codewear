@@ -32,7 +32,7 @@ public class SelectView extends MainView {
             StringBuilder sB = new StringBuilder(str);
             sB.append(colorize("|| ", HEADER_FORMAT));
             String row = String.format("%d %s", index + 1, optionList.get(index).toString());
-            sB.append(row);
+            sB.append(colorize(row, MENU_FORMAT));
             sB.append(getRestSpaces(NUMBER_SPACES - 2 - row.length()));
             sB.append(colorize(" ||", HEADER_FORMAT));
             System.out.println(sB.toString());
@@ -83,13 +83,13 @@ public class SelectView extends MainView {
 
     private void printLineWithProductIDAndQuntity(Product product) {
         sB = new StringBuilder(str);
-        sB.append(String.format("Product id: %d",product.getId()));
+        sB.append(colorize(String.format("Product id: %d",product.getId()), MENU_FORMAT));
         quantitySignsInRigidText = 32;
         numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText
                 - String.valueOf(product.getId()).length()
                 - String.valueOf(product.getQuantity()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("Pieces available: %d", product.getQuantity()));
+        sB.append(colorize(String.format("Pieces available: %d", product.getQuantity()), MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
@@ -99,14 +99,14 @@ public class SelectView extends MainView {
         quantitySignsInRigidText = 11;
         numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - String.valueOf(product.getPrices()).length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("Price: %d $", product.getPrices()));
+        sB.append(colorize(String.format("Price: %d $", product.getPrices()), MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
 
     private void printLineWithNameOfProduct(Product product) {
         sB = new StringBuilder(str);
-        sB.append(String.format("Product name: %s", product.getName()));
+        sB.append(colorize(String.format("Product name: %s", product.getName()), MENU_FORMAT));
         quantitySignsInRigidText = 16;
         numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getName().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
@@ -116,18 +116,18 @@ public class SelectView extends MainView {
 
     private void printLineWithTypeAndSize(Product product) {
         sB = new StringBuilder(str);
-        sB.append(String.format("Product type: %s", product.getType()));
+        sB.append(colorize(String.format("Product type: %s", product.getType()), MENU_FORMAT));
         quantitySignsInRigidText = 22;
         numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getType().length() - product.getSizes().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
-        sB.append(String.format("SIZE: %s", product.getSizes()));
+        sB.append(colorize(String.format("SIZE: %s", product.getSizes()), MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
 
     private void printLineWithColour(Product product) {
         sB = new StringBuilder(str);
-        sB.append(String.format("Colour: %s", product.getColour()));
+        sB.append(colorize(String.format("Colour: %s", product.getColour()), MENU_FORMAT));
         quantitySignsInRigidText = 10;
         numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getColour().length();
         sB.append(getRestSpaces(numberOfRestSpaces));
@@ -161,7 +161,7 @@ public class SelectView extends MainView {
         quantitySignsInRigidText = 13;
         String strSearch = String.format("Number of results: %d/%d", indexOfProduct, numberOfAllSearch);
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText - strSearch.length()));
-        sB.append(strSearch);
+        sB.append(colorize(strSearch, MENU_FORMAT));
         sB.append(colorize(" ||", HEADER_FORMAT));
         System.out.println(sB.toString());
     }
