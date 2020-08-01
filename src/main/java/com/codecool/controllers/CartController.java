@@ -93,8 +93,8 @@ public class CartController {
             mainView.pressEnterToContinue("  Product removed. Press enter to continue");
         }else{
             cartView.msgProductNotExist();
+            mainView.pressEnterToContinue("  Press enter to continue");
         }
-        mainView.pressEnterToContinue("  Press enter to continue");
     }
 
     public void clearOption(int userId){
