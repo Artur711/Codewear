@@ -9,6 +9,7 @@ import com.codecool.view.CartView;
 import com.codecool.view.MainView;
 import com.codecool.view.SelectView;
 
+import java.sql.SQLOutput;
 import java.util.Map;
 
 public class CartController {
@@ -55,10 +56,11 @@ public class CartController {
                     System.out.println("Choose product id: ");
                     productId = mainView.getIntegerInput();
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId), 1, 1);
-
+                    mainView.pressEnterToContinue(user.getFirstName());
+                    System.out.println("Press enter to continue");
                     break;
                 case 2:
-                    System.out.println("Type product id to delte: ");
+                    System.out.println("Type product id to delete: ");
                     productId = mainView.getIntegerInput();
                     cartDao.delete(user.getId(), productId);
                     break;

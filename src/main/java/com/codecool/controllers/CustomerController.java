@@ -2,6 +2,7 @@ package com.codecool.controllers;
 
 import com.codecool.dao.CartDao;
 import com.codecool.dao.OrderDao;
+import com.codecool.dao.PSQLSaveOrderDetails;
 import com.codecool.dao.ProductDao;
 import com.codecool.model.Order;
 import com.codecool.model.Product;
@@ -14,6 +15,7 @@ import com.codecool.view.SelectView;
 import static com.diogonunes.jcolor.Ansi.colorize;
 
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class CustomerController {
     private CartDao cartDao;
     private ProductDao productDao;
     private OrderDao orderDao;
+    private Connection conn;
 
     CustomerView view;
     SelectView selectView;
@@ -32,12 +35,13 @@ public class CustomerController {
 
 
 
-    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView) {
+    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView, Connection conn) {
         this.selectDAO = selectDAO;
         this.cartDao = cartDao;
         this.productDao = productDao;
         this.orderDao = orderDao;
         this.mainView = mainView;
+        this.conn = conn;
 
         this.selectView = selectView;
 
@@ -53,7 +57,11 @@ public class CustomerController {
         while (isRunning) {
 
             view.clearScreen();
-            view.CustomerMenu();
+            System.out.println(colorize("  Customer menu", mainView.HEADER_FORMAT));
+            System.out.println(" ");
+            System.out.println(colorize("  Welcome, " + user.getFirstName(), mainView.HEADER_FORMAT));
+            System.out.println(" ");
+            view.CustomerMenu(user);
             int input = view.getIntegerInput();
 
             switch (input) {
@@ -83,18 +91,26 @@ public class CustomerController {
                         float totalPrice = getTotalPrice(mapOrders);
                         Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
                         orderDao.add(order);
+                        new PSQLSaveOrderDetails(conn, productDao, mapOrders, user.getId()).run();
                         System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
                     }
                     System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
                     break;
                 case 4:
-                    System.out.println(colorize("My personal details: ", mainView.HEADER_FORMAT));
-                    System.out.println(colorize("ID: " + user.getId() + "\n First name: " + user.getFirstName() + "\n Last name: " + user.getLastName() +
-                            "\n E-mail: " + user.getEmail() + "\n Adress :" + user.getAddress(), mainView.MENU_FORMAT));
+                    view.clearScreen();
+                    System.out.println(colorize("  My personal details: ", mainView.HEADER_FORMAT));
+                    System.out.println(" ");
+                    System.out.println(colorize("  ID: " + user.getId(), mainView.MENU_FORMAT));
+                    System.out.println(colorize("  First name: " + user.getFirstName(), mainView.MENU_FORMAT));
+                    System.out.println(colorize("  Last name: " + user.getLastName(), mainView.MENU_FORMAT));
+                    System.out.println(colorize("  E-mail: " + user.getEmail(), mainView.MENU_FORMAT));
+                    System.out.println(colorize("  Address: " + user.getAddress(), mainView.MENU_FORMAT));
+                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
                     break;
                 case 5:
                     view.clearScreen();
                     view.CustomerHelp();
+                    mainView.pressEnterToContinue("  Press enter to go back to customer menu...");
                     break;
                 case 6:
                     isRunning = false;
