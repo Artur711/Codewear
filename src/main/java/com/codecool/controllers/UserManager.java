@@ -58,13 +58,13 @@ public class UserManager extends Manager {
         User user = users.get(0);
         if (user != null && user.getRoleID() != Role.ADMIN.getRoleID()) {
             mainView.clearScreen();
-            System.out.printf("\n" + colorize("  Are you sure you want to remove user: %s, %s? [Y/N]%n",mainView.MENU_FORMAT), user.getLastName(), user.getFirstName());
-            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
+            mainView.displayConfirmationRequestMessage(user.getFirstName(), user.getLastName(), userDao.getNumberOfRecords());
             mainView.displayPrompt(6, 3, currentUser.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 userDao.delete(user);
-                System.out.println("\n" + colorize("  User has been removed from database", mainView.MENU_FORMAT));
-                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
+                mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
+//                System.out.println("\n" + colorize("  User has been removed from database", mainView.MENU_FORMAT));
+//                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
                 mainView.pressEnterToContinue("  Press enter to go back");
             }
         } else {
@@ -114,7 +114,7 @@ public class UserManager extends Manager {
         mainView.pressEnterToContinue("  Press enter to go back");
     }
 
-    public User enterUserData() {
+    private User enterUserData() {
         String[] answers = new String[] {"", "", "", ""};
         String[] fields = {
                 UserInfo.FIRST_NAME.getDisplay(),
@@ -130,7 +130,7 @@ public class UserManager extends Manager {
         return new User(answers[0], answers[1], answers[2], autoGeneratePassword(), Integer.parseInt(answers[3]));
     }
 
-    public void displayUserCreationScreen(String field, String[] answers) {
+    private void displayUserCreationScreen(String field, String[] answers) {
         mainView.clearScreen();
         System.out.println(colorize("\n  Please enter user's " + field + "\n", mainView.HEADER_FORMAT));
         for (int i = 0; i < UserInfo.values().length - 1; i++) {

@@ -69,7 +69,7 @@ public class RootController {
 
     }
 
-    public void createUserAccount() {
+    private void createUserAccount() {
         User user = mainView.getUserData();
         if (userDao.addUser(user, Role.CUSTOMER.getRoleID()) == 1) {
             mainView.clearScreen();
@@ -77,7 +77,7 @@ public class RootController {
         }
     }
 
-    public void validateUser() {
+    private void validateUser() {
         User user = userDao.validateUser(mainView.getUserCredentials());
         if (user != null && user.getRoleID() == Role.ADMIN.getRoleID()) {
             AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);

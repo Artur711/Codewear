@@ -273,4 +273,20 @@ public class MainView {
         }
         return sum;
     }
+
+    public void displayConfirmationRequestMessage(String firstName, String lastName, int records) {
+        System.out.printf("\n" + colorize("  Are you sure you want to remove user: %s, %s? [Y/N]%n",MENU_FORMAT), firstName, lastName);
+        System.out.printf("\n" + colorize("  Current number of records: %d%n", HEADER_FORMAT), records);
+    }
+
+    public void displayConfirmationRequestMessage(String name, int records) {
+        System.out.printf("\n" + colorize("  Are you sure you want to remove user: %s? [Y/N]%n",MENU_FORMAT), name);
+        System.out.printf("\n" + colorize("  Current number of records: %d%n", HEADER_FORMAT), records);
+    }
+
+    public void displayRemovalMessage(String type, int records) {
+        System.out.println("\n" + colorize("  " + type + " has been removed from database", MENU_FORMAT));
+        System.out.printf("\n" + colorize("  Current number of records: %d%n", HEADER_FORMAT), records);
+    }
+
 }
