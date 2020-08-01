@@ -82,6 +82,8 @@ public class RootController {
             AdminController admin = new AdminController(user, mainView, userDao, productDao, orderDao);
             admin.run();
         } else if (user != null && user.getRoleID() == Role.CUSTOMER.getRoleID()) {
+            System.out.print(colorize("  \nYou have successfully logged in", mainView.HEADER_FORMAT));
+            mainView.pressEnterToContinue("");
             SelectDAO selectDao = new SelectPostgres(conn, user.getFirstName());
             CustomerController customerController = new CustomerController(cartDao, productDao, selectDao, orderDao, mainView, selectView);
             customerController.run(user);

@@ -63,14 +63,14 @@ public class CustomerController {
                     Product product = selectDAO.runSearch();
                     if (product != null) {
                         if(productDao.checkIfProductExist(product.getId())) {
-                            System.out.println(colorize("Choose quantity of product: ", mainView.HEADER_FORMAT));
+                            System.out.println(colorize("  Choose quantity of product: ", mainView.HEADER_FORMAT));
                             int quantity = mainView.getIntegerInput();
                             //Scanner scanner = new Scanner(System.in);
                             //int quantity = scanner.nextInt();
                             if(cartDao.availableQuantityOnStock(product.getQuantity(), quantity) && quantity > 0){
                                 cartDao.addToUserCart(user.getId(), product.getId(), quantity);
                             }else{
-                                System.out.println(colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
+                                System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                             }
                         }
                     }
@@ -85,9 +85,9 @@ public class CustomerController {
                         float totalPrice = getTotalPrice(mapOrders);
                         Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
                         orderDao.add(order);
-                        System.out.println(colorize("Order submitted.", mainView.PROMPT_FORMAT));
+                        System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
                     }
-                    System.out.println(colorize("Your cart is empty.", mainView.HEADER_FORMAT));
+                    System.out.println(colorize("  Your cart is empty.", mainView.HEADER_FORMAT));
                     break;
                 case 4:
                     System.out.println(colorize("My personal details: ", mainView.HEADER_FORMAT));
