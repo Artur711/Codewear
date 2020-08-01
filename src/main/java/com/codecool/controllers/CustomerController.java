@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Random;
 
 public class CustomerController {
     private SelectDAO selectDAO;
@@ -32,7 +33,6 @@ public class CustomerController {
     MainView mainView;
 
     CartController cartController;
-
 
 
     public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView, Connection conn) {
@@ -89,7 +89,7 @@ public class CustomerController {
                     if (mapOrders.size() > 0) {
                         cartDao.clear(user.getId());
                         float totalPrice = getTotalPrice(mapOrders);
-                        Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", "", user.getId(), totalPrice);
+                        Order order = new Order(user.getFirstName(), user.getLastName(), Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now().plusDays(30)), "submitted", generateOrderNumber(), user.getId(), totalPrice);
                         orderDao.add(order);
                         new PSQLSaveOrderDetails(conn, productDao, mapOrders, user.getId()).run();
                         System.out.println(colorize("  Order submitted.\n", mainView.PROMPT_FORMAT));
@@ -126,5 +126,17 @@ public class CustomerController {
 
         }
         return totalPrice;
+    }
+
+    private String generateOrderNumber() {
+        int numberOfDigits = 5;
+        int numberOfChars = 7;
+        StringBuilder sb = new StringBuilder(numberOfChars);
+        Random random = new Random();
+        sb.append("SO");
+        for (int i = 0; i < numberOfDigits; i++) {
+            sb.append(random.nextInt(10));
+        }
+        return sb.toString();
     }
 }
