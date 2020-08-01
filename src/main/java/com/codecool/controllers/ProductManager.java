@@ -55,13 +55,11 @@ public class ProductManager extends Manager {
         Product product = productDAO.getProductFromDatabase(mainView.getIntegerInput());
         if (product != null) {
             mainView.clearScreen();
-            System.out.printf("\n" + colorize("  Are you sure you want to remove product: %s? [Y/N]%n", mainView.MENU_FORMAT), product.getName());
-            System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
+            mainView.displayConfirmationRequestMessage(product.getName(), productDAO.getNumberOfRecords());
             mainView.displayPrompt(6, 3, currentUser.getFirstName());
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 productDAO.delete(product);
-                System.out.println("\n" + colorize("  Product has been removed from database", mainView.MENU_FORMAT));
-                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
+                mainView.displayRemovalMessage("Product", productDAO.getNumberOfRecords());
                 mainView.pressEnterToContinue("  Press enter to go back");
             }
         } else {
@@ -112,7 +110,7 @@ public class ProductManager extends Manager {
         mainView.pressEnterToContinue("  Press enter to go back");
     }
 
-    public Product enterProductData() {
+    private Product enterProductData() {
         String[] answers = new String[] {"", "", "", "", "", "", ""};
         String[] fields = {"product_name", "gender", "type", "colour", "size", "price", "quantity on stock"};
 
@@ -123,7 +121,7 @@ public class ProductManager extends Manager {
         return new Product(answers[0], answers[1], answers[2], answers[3], answers[4], Integer.parseInt(answers[5]), Integer.parseInt(answers[6]));
     }
 
-    public void displayProductCreationScreen(String field, String[] answers) {
+    private void displayProductCreationScreen(String field, String[] answers) {
         mainView.clearScreen();
         System.out.println(colorize("\n  Please enter product " + field + "\n", mainView.HEADER_FORMAT));
         for (int i = 0; i < answers.length; i++) {
