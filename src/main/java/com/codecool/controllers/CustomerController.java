@@ -156,8 +156,8 @@ public class CustomerController {
         user.setPassword(password);
         user.setAddress(address);
         userDao.update(user);
-        System.out.println("\n" + colorize(user.getFirstName() + ", your details has been updated", mainView.HEADER_FORMAT));
-        mainView.pressEnterToContinue("    Press enter to go back to customer menu");
+        System.out.println("\n" + "  " + colorize(user.getFirstName() + ", your details has been updated", mainView.HEADER_FORMAT));
+        mainView.pressEnterToContinue("  Press enter to go back to customer menu");
 
 
     }

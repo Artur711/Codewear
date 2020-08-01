@@ -43,7 +43,6 @@ public class ProductManager extends Manager {
                 default:
                     System.out.println("There is no such choice");
             }
-
         }
     }
 
@@ -134,6 +133,5 @@ public class ProductManager extends Manager {
                     colorize("  QUANTITY_ON_STOCK int", mainView.MENU_FORMAT)}[i] + ": " + colorize(answers[i], mainView.HEADER_FORMAT));
         }
         mainView.displayPrompt(12,3, currentUser.getFirstName());
-
     }
 }
