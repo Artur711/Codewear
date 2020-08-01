@@ -60,8 +60,6 @@ public class ProductManager extends Manager {
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 productDAO.delete(product);
                 mainView.displayRemovalMessage("Product", productDAO.getNumberOfRecords());
-//                System.out.println("\n" + colorize("  Product has been removed from database", mainView.MENU_FORMAT));
-//                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), productDAO.getNumberOfRecords());
                 mainView.pressEnterToContinue("  Press enter to go back");
             }
         } else {

@@ -63,8 +63,6 @@ public class UserManager extends Manager {
             if (mainView.getStringInput().equalsIgnoreCase("y")) {
                 userDao.delete(user);
                 mainView.displayRemovalMessage("User", userDao.getNumberOfRecords());
-//                System.out.println("\n" + colorize("  User has been removed from database", mainView.MENU_FORMAT));
-//                System.out.printf("\n" + colorize("  Current number of records: %d%n", mainView.HEADER_FORMAT), userDao.getNumberOfRecords());
                 mainView.pressEnterToContinue("  Press enter to go back");
             }
         } else {
