@@ -55,7 +55,7 @@ public class CartController {
                 case 1:
                     System.out.println("Choose product id: ");
                     productId = mainView.getIntegerInput();
-                    selectView.printProductDetails(productDao.getProductFromDatabase(productId), 1, 1);
+                    selectView.printProductDetails(productDao.getProductFromDatabase(productId));
                     mainView.pressEnterToContinue(user.getFirstName());
                     System.out.println("Press enter to continue");
                     break;
