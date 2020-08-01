@@ -137,7 +137,7 @@ public class SelectView extends MainView {
 
     private void printLineWithOptionAddAndView() {
         sB = new StringBuilder(str);
-        sB.append(colorize("Add to cart (A)", PROMPT_FORMAT)));
+        sB.append(colorize("Add to cart (A)", PROMPT_FORMAT));
         quantitySignsInRigidText = 36;
         sB.append(getRestSpaces(NUMBER_SPACES - quantitySignsInRigidText));
         sB.append(colorize("Product Preview (V)", PROMPT_FORMAT));
