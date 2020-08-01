@@ -113,6 +113,62 @@ public class SelectView extends MainView {
         displayPrompt(2, 3, userName);
     }
 
+
+    public void printProductDetails2(Product product, int numberOfAllSearch, int indexOfProduct) {
+        clearScreen();
+        int numberOfRestSpaces;
+        int quantitySignsInRigidText;
+        printLineOfFrame();
+        String str = colorize("|| ", HEADER_FORMAT);
+
+        StringBuilder sB = new StringBuilder(str);
+        sB.append(String.format("Product id: %d",product.getId()));
+        quantitySignsInRigidText = 32;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText
+                - String.valueOf(product.getId()).length()
+                - String.valueOf(product.getQuantity()).length();
+        sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(String.format("Pieces available: %d", product.getQuantity()));
+        sB.append(colorize(" || \n", HEADER_FORMAT));
+
+        sB.append(colorize("|| ", HEADER_FORMAT));
+        quantitySignsInRigidText = 11;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - String.valueOf(product.getPrices()).length();
+        sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(String.format("Price: %d $", product.getPrices()));
+        sB.append(colorize(" || \n", HEADER_FORMAT));
+
+        sB.append(getEmptyLine());
+
+        sB.append(colorize("|| ", HEADER_FORMAT));
+        sB.append(String.format("Product name: %s", product.getName()));
+        quantitySignsInRigidText = 16;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getName().length();
+        sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(colorize(" || \n", HEADER_FORMAT));
+
+        sB.append(colorize("|| ", HEADER_FORMAT));
+        sB.append(String.format("Product type: %s", product.getType()));
+        quantitySignsInRigidText = 22;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getType().length() - product.getSizes().length();
+        sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(String.format("SIZE: %s", product.getSizes()));
+        sB.append(colorize(" || \n", HEADER_FORMAT));
+
+        sB.append(colorize("|| ", HEADER_FORMAT));
+        sB.append(String.format("Colour: %s", product.getColour()));
+        quantitySignsInRigidText = 10;
+        numberOfRestSpaces = NUMBER_SPACES - quantitySignsInRigidText - product.getColour().length();
+        sB.append(getRestSpaces(numberOfRestSpaces));
+        sB.append(colorize(" || \n", HEADER_FORMAT));
+
+        sB.append(getEmptyLine());
+
+        System.out.print(sB.toString());
+        printLineOfFrame();
+
+    }
+
     private void printLineOfFrame() {
         System.out.print(colorize("##", HEADER_FORMAT));
 

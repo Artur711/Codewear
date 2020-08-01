@@ -9,6 +9,8 @@ import com.codecool.model.User;
 import com.codecool.select.SelectDAO;
 import com.codecool.view.CustomerView;
 import com.codecool.view.MainView;
+import com.codecool.view.SelectView;
+
 import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
 
@@ -20,24 +22,30 @@ import java.util.Scanner;
 
 public class CustomerController {
     private SelectDAO selectDAO;
-    CustomerView view;
-    MainView mainView;
-    CartController cartController;
     private CartDao cartDao;
     private ProductDao productDao;
     private OrderDao orderDao;
 
+    CustomerView view;
+    SelectView selectView;
+    MainView mainView;
+
+    CartController cartController;
 
 
-    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView) {
+
+    public CustomerController(CartDao cartDao, ProductDao productDao, SelectDAO selectDAO, OrderDao orderDao, MainView mainView, SelectView selectView) {
         this.selectDAO = selectDAO;
         this.cartDao = cartDao;
         this.productDao = productDao;
         this.orderDao = orderDao;
         this.mainView = mainView;
 
+        this.selectView = selectView;
+
+
         view = new CustomerView();
-        cartController = new CartController(cartDao, productDao);
+        cartController = new CartController(cartDao, productDao, selectView);
     }
 
     public void run(User user) {
