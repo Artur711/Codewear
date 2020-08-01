@@ -122,7 +122,7 @@ public class CustomerController {
                 if(cartDao.isAvailableOnStock(product.getQuantity(), quantity) && quantity > 0){
                     cartDao.add(user.getId(), product.getId(), quantity);
                 }else{
-                    System.out.println(colorize("  Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
+                    System.out.println("\n" + colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }
             }
         }
@@ -139,7 +139,7 @@ public class CustomerController {
             view.clearScreen();
             System.out.println("\n" + colorize("  Order submitted. Your order number is " + order.getOrderNumber(), mainView.PROMPT_FORMAT));
         }
-        System.out.println(colorize("  Your cart is empty.", mainView.PROMPT_FORMAT));
+        System.out.println("\n" + colorize("  Your cart is empty.", mainView.PROMPT_FORMAT));
         mainView.pressEnterToContinue("  Press enter to go back to customer menu");
     }
 
