@@ -78,7 +78,7 @@ public class SelectView extends MainView {
         printLineWithOptionQuitAndNumberOfSearch(indexOfProduct, numberOfAllSearch);
 
         printLineOfFrame();
-        displayPrompt(15, 3, userName);
+        displayPrompt(14, 1, userName);
     }
 
     private void printLineWithProductIDAndQuntity(Product product) {
