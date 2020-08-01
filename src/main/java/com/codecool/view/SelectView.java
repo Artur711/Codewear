@@ -78,7 +78,7 @@ public class SelectView extends MainView {
         printLineWithOptionQuitAndNumberOfSearch(indexOfProduct, numberOfAllSearch);
 
         printLineOfFrame();
-        displayPrompt(13, 3, userName);
+        displayPrompt(14, 3, userName);
     }
 
     private void printLineWithProductIDAndQuntity(Product product) {
@@ -197,7 +197,7 @@ public class SelectView extends MainView {
     }
 
     public void provideOption(String userName) {
-        displayPrompt(2, 3, userName);
+        displayPrompt(10, 3, userName);
 //        System.out.print(colorize("Provide your option number: ", PROMPT_FORMAT));
     }
 }
