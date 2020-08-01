@@ -11,27 +11,31 @@ public class CartView {
 
     public final AnsiFormat HEADER_FORMAT = new AnsiFormat(BOLD(), BRIGHT_YELLOW_TEXT());
     public final AnsiFormat PROMPT_FORMAT = new AnsiFormat(BOLD(), BLUE_TEXT());
+    public final AnsiFormat MENU_FORMAT = new AnsiFormat(BOLD(), WHITE_TEXT());
 
 
     public void CartMenu() {
         String[] options = {"Show details", "Delete product", "Clear cart", "Change quantity of product", "Back to Customer Menu"};
         for (int i = 0; i < options.length; i++) {
-            System.out.format("%d. %s\n", i + 1, options[i]);
+            System.out.println(colorize("  " + (i + 1) + ". " + options[i], MENU_FORMAT));
         }
         System.out.print("\nChoose one of the options: ");
     }
 
     public void printProduct(Product product, int quantity) {
-        System.out.println(colorize(String.format("%d %s %d",product.getId(), product.getName(), quantity), HEADER_FORMAT));
+        System.out.println(colorize(String.format("    %d %s %d",product.getId(), product.getName(), quantity), HEADER_FORMAT));
     }
 
     public void printStartLine(){
-        System.out.println("------------------------------");
-        System.out.println(colorize("| ID | MODEL/TYPE | QUANTITY |", PROMPT_FORMAT));
-        System.out.println("------------------------------");
+        System.out.println();
+        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
+        System.out.println(colorize("  | ID | MODEL/TYPE | QUANTITY |", PROMPT_FORMAT));
+        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
     }
 
     public void printEndLine(){
-        System.out.println("------------------------------");
+
+        System.out.println(colorize("  ------------------------------", MENU_FORMAT));
+        System.out.println();
     }
 }
