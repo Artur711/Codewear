@@ -50,16 +50,14 @@ public class CartController {
             int productId = 0;
             int quantity = 0;
             cartView.CartMenu();
-
+            mainView.displayPrompt(13 + cartMap.size(), 3, user.getFirstName());
             int input = mainView.getIntegerInput();
             switch (input) {
                 case 1:
-                    mainView.displayPrompt(13 + cartMap.size(), 3, user.getFirstName());
                     //System.out.println("Choose product id: ");
                     productId = mainView.getIntegerInput();
                     selectView.printProductDetails(productDao.getProductFromDatabase(productId));
-                    mainView.pressEnterToContinue(user.getFirstName());
-                    System.out.println("Press enter to continue");
+                    mainView.pressEnterToContinue("Press enter to continue");
                     break;
                 case 2:
                     System.out.println("Type product id to delete: ");
