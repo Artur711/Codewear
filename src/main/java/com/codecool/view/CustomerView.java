@@ -56,7 +56,6 @@ public class CustomerView {
     public void userDetails(User user, MainView mainView) {
         System.out.println("\n" + colorize("  My personal details: ", mainView.HEADER_FORMAT));
         System.out.println(" ");
-        System.out.println(colorize("  ID: " + user.getId(), mainView.MENU_FORMAT));
         System.out.println(colorize("  First name: " + user.getFirstName(), mainView.MENU_FORMAT));
         System.out.println(colorize("  Last name: " + user.getLastName(), mainView.MENU_FORMAT));
         System.out.println(colorize("  E-mail: " + user.getEmail(), mainView.MENU_FORMAT));

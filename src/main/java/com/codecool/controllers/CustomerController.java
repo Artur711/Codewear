@@ -126,7 +126,7 @@ public class CustomerController {
                     System.out.println("\n" + colorize("Quantity available in stock: " + product.getQuantity(), mainView.PROMPT_FORMAT));
                 }
             }
-            mainView.pressEnterToContinue("  Press enter to continue");
+            mainView.pressEnterToContinue("Press enter to continue");
         }
     }
 
